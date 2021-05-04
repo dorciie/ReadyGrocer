@@ -41,7 +41,8 @@ class RegisterController extends Controller
             $query = $newShop->save();
     
             // return redirect('profile');
-            return("shop");
+            // return("shop");
+            return redirect('shop/shoplogin')->with('success','You have been successfully registered');
         
         }
         else{
@@ -62,7 +63,8 @@ class RegisterController extends Controller
             $query = $newCust->save();
     
             // return redirect('profilecustomer');
-            return("customer");
+            // return("customer");
+            return redirect('customer/custLogin')->with('success','You have been successfully registered');
 
         }
 
