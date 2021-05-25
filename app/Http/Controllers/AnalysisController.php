@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-//untuk password nanti
 use Illuminate\Support\Facades\DB;
 use App\Models\shopOwner;
 
-class shopOwnerController extends Controller
+class AnalysisController extends Controller
 {
-    function shopDashboard(){
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
         if(session()->has('LoggedShop')){
             $shopOwner = DB::table('shop_owners')
             ->where('id', session('LoggedShop'))
@@ -19,16 +24,7 @@ class shopOwnerController extends Controller
                 'LoggedShopInfo'=> $shopOwner
             ];
         }
-        return view('shop.index', $data);
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+        return view('shop.analysis.index',$data);
     }
 
     /**

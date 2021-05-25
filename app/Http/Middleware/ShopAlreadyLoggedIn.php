@@ -18,7 +18,7 @@ class ShopAlreadyLoggedIn
     {
         if( session()->has('LoggedShop') && ( url('shop/shoplogin') == $request->url() ) ){
             //return back();
-            return redirect('shopDashboard');
+            return redirect('shop/dashboard');
         }
         return $next($request);
     }
