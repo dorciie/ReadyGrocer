@@ -17,6 +17,9 @@ class ForgotPasswordController extends Controller
     }
 
     public function password(Request $request){
+        $request->validate([
+            'email'     => 'required|email'
+        ]);
         //dd($request->all());
         $customer = customer::whereEmail($request->email)->first();
 
@@ -74,6 +77,10 @@ class ForgotPasswordController extends Controller
     }
 
     public function shoppassword(Request $request){
+
+        $request->validate([
+            'email'     => 'required|email'
+        ]);
         //dd($request->all());
         $shopOwner = DB::table('shop_owners')
             ->where('email', $request->email)

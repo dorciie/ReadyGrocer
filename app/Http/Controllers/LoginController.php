@@ -27,7 +27,7 @@ class LoginController extends Controller
         if($shopOwner){ 
             if(Hash::check($request->password, $shopOwner->password)){ 
                 $request->session()->put('LoggedShop', $shopOwner->id); 
-                return redirect('shopDashboard');
+                return redirect('shop/dashboard');
             }else{
                 return back()->with('fail','Invalid email and/or password')->withInput();;
             }
@@ -35,18 +35,7 @@ class LoginController extends Controller
             return back()->with('fail','Invalid email and/or password')->withInput();;
         }
     }
-    function shopDashboard(){
-        if(session()->has('LoggedShop')){
-            $shopOwner = DB::table('shop_owners')
-            ->where('id', session('LoggedShop'))
-            ->first();
-
-            $data = [
-                'LoggedShopInfo'=> $shopOwner
-            ];
-        }
-        return view('shop.shopDashboard', $data);
-    }
+    
 
     //Customer...............................................................................................
     function login(){

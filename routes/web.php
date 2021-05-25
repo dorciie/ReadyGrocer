@@ -3,6 +3,14 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ForgotPasswordController;
+// customer controller.......................................................
+// shop controller.......................................................
+use App\Http\Controllers\shopOwnerController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ShopItemController;
+use App\Http\Controllers\AnalysisController;
+use App\Http\Controllers\ViewOrderController;
+use App\Http\Controllers\ShopProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,14 +48,33 @@ Route::get('customer/reset_password/{email}',[ForgotPasswordController::class,'r
 Route::post('customer/reset_password/{email}',[ForgotPasswordController::class,'resetPassword']);
 
 
-//shop..............................................
+//.................................Shop Owner..............................................
+//Authentication
 Route::get('shop/shoplogin',[LoginController::class,'Shoplogin'])->middleware('ShopAlreadyLoggedIn');
 Route::post('Shopcheck',[LoginController::class,'Shopcheck'])->name('shop.auth.check');//apply this at login page
-Route::get('shopDashboard',[LoginController::class,'shopDashboard'])->middleware('ShopisLogged');
 Route::get('shoplogout',[LogoutController::class,'Shoplogout']);
 Route::get('shop/shopforgot_password',[ForgotPasswordController::class,'shopforgot']);
 Route::post('shop/shopforgot_password',[ForgotPasswordController::class,'shoppassword']);
 Route::get('shop/shopreset_password/{email}',[ForgotPasswordController::class,'shopreset']);
 Route::post('shop/shopreset_password/{email}',[ForgotPasswordController::class,'shopresetPassword']);
 
+//Shop Dashboard
+Route::get('shop/dashboard',[shopOwnerController::class,'shopDashboard'])->middleware('ShopisLogged');
 
+//Category section
+Route::resource('category', 'App\Http\Controllers\CategoryController')->middleware('ShopisLogged');
+
+//Item Section
+Route::resource('item', 'App\Http\Controllers\ShopItemController')->middleware('ShopisLogged');
+
+//Analysis Section
+Route::resource('analysis', 'App\Http\Controllers\AnalysisController')->middleware('ShopisLogged');
+
+//Order Section
+Route::resource('order', 'App\Http\Controllers\ViewOrderController')->middleware('ShopisLogged');
+
+//Shop profile Section
+Route::resource('profile', 'App\Http\Controllers\ShopProfileController')->middleware('ShopisLogged');
+
+
+//every page lepas login kena letak middleware('ShopisLogged') so bila login as customer tkleh masuk dekat shop
