@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\shopOwner;
 
+use App\Models\customer;
 class customerController extends Controller
 {
     /**
@@ -13,7 +16,25 @@ class customerController extends Controller
      */
     public function index()
     {
-        //
+        $shops = shopOwner::all()->toArray();
+        return view('customer.tables',compact('shops'));
+    }
+
+    public function shopdetails($shopID)
+    {
+        $shopdetail = DB::table('shop_owners')->get()->where('id', $shopID)->toArray();
+
+        // $shopdetail = DB::Select('select * from shop_owners WHERE id = shopID');
+    
+        return view('customer.shopDetails',compact('shopdetail'));
+    }
+    public function favShop($shopID)
+    {
+         DB::table('customers')
+              ->where('id', 2) //letak cust id
+              ->update(['fav_shop' => $shopID]);
+    
+        return back();
     }
 
     /**

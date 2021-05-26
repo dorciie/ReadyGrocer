@@ -30,9 +30,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Route::get('/customerindex', function () {
-//     return view('index');
-// });
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('RegisterController','App\Http\Controllers\RegisterController@index');
 
@@ -46,7 +44,12 @@ Route::get('customer/forgot_password',[ForgotPasswordController::class,'forgot']
 Route::post('customer/forgot_password',[ForgotPasswordController::class,'password']);
 Route::get('customer/reset_password/{email}',[ForgotPasswordController::class,'reset']);
 Route::post('customer/reset_password/{email}',[ForgotPasswordController::class,'resetPassword']);
-
+Route::get('listofshops', [App\Http\Controllers\customerController::class, 'index']);
+Route::get('{shopID}',[App\Http\Controllers\customerController::class, 'shopdetails'])->name('shopdetails');
+Route::get('favShop/{shopID}/',[App\Http\Controllers\customerController::class, 'favShop'])->name('favShop');
+Route::get('/dashboard', function () {
+    return view('customer/dashboard');
+});
 
 //.................................Shop Owner..............................................
 //Authentication
