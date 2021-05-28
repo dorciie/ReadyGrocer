@@ -6,6 +6,7 @@ use App\Http\Controllers\ForgotPasswordController;
 // customer controller.......................................................
 // shop controller.......................................................
 use App\Http\Controllers\shopOwnerController;
+use App\Http\Controllers\custDashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShopItemController;
 use App\Http\Controllers\AnalysisController;
@@ -38,18 +39,18 @@ Route::post('RegisterController','App\Http\Controllers\RegisterController@index'
 // customer........................................
 Route::get('customer/custLogin',[LoginController::class,'login'])->middleware('AlreadyLoggedIn');
 Route::post('check',[LoginController::class,'check'])->name('auth.check'); //apply this at login page
-Route::get('custDashboard',[LoginController::class,'custDashboard'])->middleware('isLogged');
+// Route::get('dashboardd',[LoginController::class,'custDashboard'])->middleware('isLogged');
 Route::get('Custlogout',[LogoutController::class,'Custlogout']);
 Route::get('customer/forgot_password',[ForgotPasswordController::class,'forgot']);
 Route::post('customer/forgot_password',[ForgotPasswordController::class,'password']);
 Route::get('customer/reset_password/{email}',[ForgotPasswordController::class,'reset']);
 Route::post('customer/reset_password/{email}',[ForgotPasswordController::class,'resetPassword']);
-Route::get('listofshops', [App\Http\Controllers\customerController::class, 'index']);
-Route::get('{shopID}',[App\Http\Controllers\customerController::class, 'shopdetails'])->name('shopdetails');
-Route::get('favShop/{shopID}/',[App\Http\Controllers\customerController::class, 'favShop'])->name('favShop');
-Route::get('/dashboard', function () {
-    return view('customer/dashboard');
-});
+Route::get('listofshops', [App\Http\Controllers\customerController::class, 'index'])->middleware('isLogged');
+Route::get('shop/{shopID}',[App\Http\Controllers\customerController::class, 'shopdetails'])->name('shopdetails')->middleware('isLogged');
+Route::get('favShop/{shopID}/',[App\Http\Controllers\customerController::class, 'favShop'])->name('favShop')->middleware('isLogged');
+Route::get('dashboard', [LoginController::class,'custDashboard'])->middleware('isLogged');
+Route::get('itemCategory', [custDashboardController::class,'listOfCategory'])->name('category');
+
 
 //.................................Shop Owner..............................................
 //Authentication
