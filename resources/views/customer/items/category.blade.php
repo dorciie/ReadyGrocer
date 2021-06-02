@@ -366,9 +366,11 @@
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
             <div class="page-breadcrumb">
+                @foreach($shop as $favshop)
                 <div class="row">
                     <div class="col-12 d-flex no-block align-items-center">
-                        <h4 class="page-title">Shop</h4>
+                    
+                        <h4 class="page-title">{{$favshop->shopName}}</h4>
                         <div class="ms-auto text-end">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
@@ -379,6 +381,7 @@
                         </div>
                     </div>
                 </div>
+                @endforeach
             </div>
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
@@ -390,40 +393,39 @@
                 <!-- ============================================================== -->
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
+            
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title mb-0">Category</h5>
+                            
+                                <h5 class="card-title mb-0">Category Name</h5>
+                           
                             </div>
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">First</th>
-                                        <th scope="col">Last</th>
-                                        <th scope="col">Handle</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Brand</th>
+                                        <th scope="col">Price(RM)</th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody> @foreach($name as $row)
+                                    @foreach($items as $item)
+                                    
                                     <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
+                                        <th scope="row">{{ $loop->iteration }}</th>
+                                        <td><a href="{{route('itemDetails',['itemID' => $item->id])}}">{{$item->item_name}}</a></td>
+                                        <td>{{$item->item_brand}}</td>
+                                        <td>{{$item->item_price}}</td>
+                                        <td><button type="button" class="btn btn-primary">List</button></td>
+                                        <td><button type="button" class="btn btn-primary">Cart</button></td>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
+                                    @endforeach 
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

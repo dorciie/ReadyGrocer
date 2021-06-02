@@ -2,51 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GroceryList;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\shopOwner;
 
-use App\Models\customer;
-class customerController extends Controller
+use Illuminate\Support\Facades\DB;
+class GroceryListController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request,$itemID)
     {
-    }
+        $this->validate($request,[
+            'item_frequency'=>'required',
+            'item_quantity'=>'required',
+        ]);
 
-    public function shopdetails($shopID)
-    {
         if(session()->has('LoggedCustomer')){
             $customer = DB::table('customers')
             ->where('id', session('LoggedCustomer'))
             ->first();}
-            
-        $shopdetail = DB::table('shop_owners')->get()->where('id', $shopID)->toArray();
 
-        // $shopdetail = DB::Select('select * from shop_owners WHERE id = shopID');
-    
+        $item = DB::table('shop_items')
+        ->where('id', $itemID)
+        ->first();
 
+        $newList = new GroceryList;
+            $newList->customer_id=$customer->id;
+            $newList->category_id=$item->category_id;
+            $newList->shop_id=$customer->fav_shop;
+            $newList->item_id=$itemID;
+            $newList->item_quantity=$request->input('item_quantity');
+            $newList->item_frequency=$request->input('item_frequency');
 
-        return view('customer.shopDetails',compact('shopdetail'))->with('custID',$customer);
+            $newList->save();
+        return back()->with('success','successful');
     }
-    public function favShop($shopID)
+
+    public function addList($itemID)
     {
-        if(session()->has('LoggedCustomer')){
-            $customer = DB::table('customers')
-            ->where('id', session('LoggedCustomer'))
-            ->first();}
-            
-         DB::table('customers')
-              ->where('id', $customer->id) //letak cust id
-              ->update(['fav_shop' => $shopID]);
-    
-        return back()->with('success','Favourite shop is updated!');
+        
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -65,7 +64,7 @@ class customerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

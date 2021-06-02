@@ -7,6 +7,7 @@ use App\Http\Controllers\ForgotPasswordController;
 // shop controller.......................................................
 use App\Http\Controllers\shopOwnerController;
 use App\Http\Controllers\custDashboardController;
+use App\Http\Controllers\GroceryListController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShopItemController;
 use App\Http\Controllers\AnalysisController;
@@ -45,12 +46,16 @@ Route::get('customer/forgot_password',[ForgotPasswordController::class,'forgot']
 Route::post('customer/forgot_password',[ForgotPasswordController::class,'password']);
 Route::get('customer/reset_password/{email}',[ForgotPasswordController::class,'reset']);
 Route::post('customer/reset_password/{email}',[ForgotPasswordController::class,'resetPassword']);
-Route::get('listofshops', [App\Http\Controllers\customerController::class, 'index'])->middleware('isLogged');
-Route::get('shop/{shopID}',[App\Http\Controllers\customerController::class, 'shopdetails'])->name('shopdetails')->middleware('isLogged');
-Route::get('favShop/{shopID}/',[App\Http\Controllers\customerController::class, 'favShop'])->name('favShop')->middleware('isLogged');
+Route::get('listofshops', [App\Http\Controllers\custDashboardController::class, 'index'])->name('shops')->middleware('isLogged');
+Route::get('shopdetails/{shopID}',[App\Http\Controllers\customerController::class, 'shopdetails'])->name('shopdetails')->middleware('isLogged');
+Route::get('favshop/{shopID}',[App\Http\Controllers\customerController::class, 'favShop'])->name('favShop')->middleware('isLogged');
 Route::get('dashboard', [LoginController::class,'custDashboard'])->middleware('isLogged');
-Route::get('itemCategory', [custDashboardController::class,'listOfCategory'])->name('category');
+Route::get('itemCategory/{categoryID}', [custDashboardController::class,'listOfCategory'])->name('category');
+Route::get('itemDetails/{itemID}', [custDashboardController::class,'itemdetails'])->name('itemDetails');
+// Route::get('addItemList','App\Http\Controllers\GroceryListController@index');
 
+Route::get('addItemList/{itemID}', [GroceryListController::class,'index'])->name('addItemList');
+// Route::resource('GroceryList','GroceryListController');
 
 //.................................Shop Owner..............................................
 //Authentication
@@ -60,10 +65,10 @@ Route::get('shoplogout',[LogoutController::class,'Shoplogout']);
 Route::get('shop/shopforgot_password',[ForgotPasswordController::class,'shopforgot']);
 Route::post('shop/shopforgot_password',[ForgotPasswordController::class,'shoppassword']);
 Route::get('shop/shopreset_password/{email}',[ForgotPasswordController::class,'shopreset']);
-Route::post('shop/shopreset_password/{email}',[ForgotPasswordController::class,'shopresetPassword']);
+Route::get('shop/shopreset_password/{email}',[ForgotPasswordController::class,'shopresetPassword']);
 
 //Shop Dashboard
-Route::get('shop/dashboard',[shopOwnerController::class,'shopDashboard'])->middleware('ShopisLogged');
+Route::get('shop/shopdashboard',[shopOwnerController::class,'shopDashboard'])->middleware('ShopisLogged');
 
 //Category section
 Route::resource('category', 'App\Http\Controllers\CategoryController')->middleware('ShopisLogged');

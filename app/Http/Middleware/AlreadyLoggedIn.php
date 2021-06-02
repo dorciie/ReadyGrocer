@@ -18,7 +18,7 @@ class AlreadyLoggedIn
     {
         if( session()->has('LoggedCustomer') && ( url('customer/custLogin') == $request->url() ) ){
             //return back();
-            return redirect('custDashboard');
+            return redirect('dashboard');
         }
         return $next($request);
     }

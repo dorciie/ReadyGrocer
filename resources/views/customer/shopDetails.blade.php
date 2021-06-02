@@ -349,9 +349,14 @@
                                 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
                                 <!------ Include the above in your HEAD tag ---------->
 
-                                <div class="container emp-profile"> @foreach($shopdetail as $s)
+                                <div class="container emp-profile">
+                                    @foreach($shopdetail as $s)
                                     <form method="get" action="{{route('favShop',['shopID' => $s->id])}}">
-                                       
+                                        @if(Session::get('success'))
+                                        <div class="alert alert-success">
+                                            {{Session::get('success')}}
+                                        </div>
+                                        @endif
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="profile-img">
@@ -362,26 +367,26 @@
                                             <div class="col-md-6">
                                                 <div class="profile-head">
                                                     <h5>
-                                                    {{$s->id}}
+                                                        {{$s->id}}
                                                     </h5>
                                                     <h6>
-                                                    {{$s->shopName}}
+                                                        {{$s->shopName}}
                                                     </h6>
                                                     <p class="proile-rating">RANKINGS : <span>{{$s->rating}}</span></p>
                                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                                                         <li class="nav-item">
                                                             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
                                                         </li>
-                                                        
+
                                                     </ul>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="profile-work">
-                                                   
+
                                                 </div>
                                             </div>
                                             <div class="col-md-8">
@@ -429,14 +434,14 @@
                                                         </div>
                                                         <!-- <div id="googleMap" style="width:100%;height:400px;"></div> -->
                                                     </div><br>
-                                                    
-                                                   <button type="submit" class="btn btn-info btn-lg">Fave</button>
-                                              </div>
+
+                                                    <button type="submit" class="btn btn-info btn-lg">Fave</button>
+                                                </div>
                                             </div>
                                         </div>
-                                        </form>
-                                        @endforeach
-                                   
+                                    </form>
+                                    @endforeach
+
                                 </div>
                             </div>
                         </div>

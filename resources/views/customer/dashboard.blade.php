@@ -309,16 +309,17 @@
         <!-- ============================================================== -->
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
-        <div class="page-wrapper">
+        @foreach($shop as $shopfav)
+         <div class="page-wrapper">
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-12 d-flex no-block align-items-center">
-                    @foreach($shop as $row)
-                        <h4 class="page-title">{{$row->shopName}}</h4>
-                        @endforeach
+                   
+                        <h4 class="page-title">{{$shopfav->shopName}}</h4>
+                       
                         <div class="icon">
                         <i class="me-2 mdi mdi-flag-triangle"></i>
                         </div>
@@ -332,7 +333,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> 
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -344,44 +345,27 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
                 <div class="row">
+                @foreach($categories as $category)
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
                             @foreach($name as $row)
-                                <h5 class="card-title">Categoryy</h5>
-                                @endforeach
+                                <h5 class="card-title"><a href="{{ route('category',['categoryID' => $category->id]) }}">{{$category->category_name}}</a></h5>
+                              @endforeach
                                 <div class="col">
                                     <div class="row align-items-start">
-                                        <a class="col"href ="{{ url('itemCategory') }}" >
+                                    @foreach($items as $item)
+                                      @if (($item->category_id) ===($category->id) )
+
+                                        <a class="col"href ="" >
                                             <div class="card-body border border-secondary">
-                                                <h5 class="card-title" >Item 1</h5>
+                                                <h5 class="card-title" >{{$item->item_name}}</h5>
                                                 <p>Lorem ipsum </p>
                                             </div>
                                         </a>
-                                        <div class="col">
-                                        <div class="card-body border border-secondary">
-                                                <h5 class="card-title">One third width</h5>
-                                                <p>Lorem ipsum </p>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                        <div class="card-body border border-secondary">
-                                                <h5 class="card-title">One third width</h5>
-                                                <p>Lorem ipsum </p>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                        <div class="card-body border border-secondary">
-                                                <h5 class="card-title">One third width</h5>
-                                                <p>Lorem ipsum </p>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                        <div class="card-body border border-secondary">
-                                                <h5 class="card-title">One third width</h5>
-                                                <p>Lorem ipsum </p>
-                                            </div>
-                                        </div>
+                                        @endif
+                                        @endforeach
+                                       
                                         <div class="col-md-3 col-sm-5 d-grid">
                                         <button type="button" class="btn btn-lg btn-outline-info " id ="ts-info"width= "100px" >see more</button>
                                         </div>
@@ -390,6 +374,7 @@
                             </div>
                         </div>
                     </div>
+                    @endforeach
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
@@ -435,8 +420,9 @@
                             </div>
                         </div>
                     </div>
-                   
-                   
+                    @foreach($name as $row)
+                    <a href="{{route('shops')}}">shops</a>
+                    @endforeach
                     <a href="Custlogout">Logout</a>
 
 
@@ -465,6 +451,7 @@
             <!-- End footer -->
             <!-- ============================================================== -->
         </div>
+        @endforeach
         <!-- ============================================================== -->
         <!-- End Page wrapper  -->
         <!-- ============================================================== -->

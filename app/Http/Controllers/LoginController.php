@@ -27,7 +27,7 @@ class LoginController extends Controller
         if($shopOwner){ 
             if(Hash::check($request->password, $shopOwner->password)){ 
                 $request->session()->put('LoggedShop', $shopOwner->id); 
-                return redirect('shop/dashboard');
+                return redirect('shop/shopdashboard');
             }else{
                 return back()->with('fail','Invalid email and/or password')->withInput();;
             }
@@ -68,12 +68,14 @@ class LoginController extends Controller
             ->where('id', session('LoggedCustomer'))
             ->first();
             
-            $shop = DB::table('shop_owners')->get()->where('id', $customer->fav_shop)->toArray();
-            
+            $shop = DB::table('shop_owners')->get()->where('id', $customer->fav_shop);
+            $categories = DB::table('categories')->get()->where('shop_id', $customer->fav_shop);
+            $items = DB::table('shop_items')->get()->where('shop_id', $customer->fav_shop);
+
             $data = [
                 'LoggedCustomerInfo'=> $customer
             ];
         }
-        return view('customer.dashboard',compact('shop'))->with('name',$data);
+        return view('customer.dashboard')->with('shop',$shop)->with('name',$data)->with('categories',$categories)->with('items',$items);
     }
 }

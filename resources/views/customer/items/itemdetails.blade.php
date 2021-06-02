@@ -9,15 +9,20 @@
     <meta name="keywords" content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Matrix lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Matrix admin lite design, Matrix admin lite dashboard bootstrap 5 dashboard template">
     <meta name="description" content="Matrix Admin Lite Free Version is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Shops</title>
+    <title>Matrix Admin Lite Free Versions Template by WrapPixel</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/favicon.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('/assets/images/favicon.png')}}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{asset('bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css')}}">
-
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/extra-libs/multicheck/multicheck.css')}}">
     <link href="{{asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css')}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{asset('/assets/extra-libs/multicheck/multicheck.css')}}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="{{asset('dist/css/style.min.css')}}" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 
 <body>
@@ -311,10 +316,11 @@
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
+            @foreach($shop as $favshop)
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-12 d-flex no-block align-items-center">
-                        <h4 class="page-title">Tables</h4>
+                        <h4 class="page-title">{{$favshop->shopName}}</h4>
                         <div class="ms-auto text-end">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
@@ -326,6 +332,8 @@
                     </div>
                 </div>
             </div>
+            @endforeach
+
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -338,75 +346,222 @@
                 <!-- ============================================================== -->
                 <div class="row">
                     <div class="col-12">
-                        
-
-
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Shops</h5>
-                                <div class="table-responsive">
-                                    <table id="zero_config" class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Position</th>
-                                                <th>Office</th>
-                                                <th>Age</th>
-                                                <th>Start date</th>
-                                                <th>Salary</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($shops as $row)
-                                            <tr>
-                                           
-                                                <th scope="row"><a href="{{route('shopdetails',['shopID' => $row['id']])}}">{{$row['id']}}</a></th>
-                                               
-                                                <td>{{$row['shopName']}}</td>
-                                                <td>{{$row['address']}}</td>
-                                                <td>{{$row['shopName']}}</td>
-                                                <td>{{$custID}}</td>
-                                                <td>$320,800</td>
 
-                                            </tr>
-                                            @endforeach
-                                       
-                                        </tbody>
-                                       
-                                    </table>
+
+                                <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+                                <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+                                <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                                <!------ Include the above in your HEAD tag ---------->
+
+                                <div class="container emp-profile">
+
+
                                 </div>
+                                @foreach($shop as $shop)
+                                <div class="row">
+                                @if(Session::get('success'))
+                                        <div class="alert alert-success">
+                                            {{Session::get('success')}}
+                                        </div>
+                                        @endif
+                                        @if(Session::get('error'))
+                                        <div class="alert alert-danger">
+                                            {{Session::get('error')}}
+                                        </div>
+                                        @endif
+                                    <div class="col-md-4">
+                                        <div class="profile-img">
+                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="profile-head">
+                                            <h5>
+                                                {{$shop->id}}
+                                            </h5>
+                                            <h6>
+                                                {{$shop->shopName}}
+                                            </h6>
+                                            <p class="proile-rating">RANKINGS : <span>rating</span></p>
+                                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                @endforeach
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="profile-work">
+
+                                        </div>
+                                    </div>
+                                    @foreach($items as $item)
+                                    <div class="col-md-8">
+                                    
+                                        <div class="tab-content profile-tab" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>Item Id</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p>{{$item->id}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>Item Name</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p>{{$item->item_name}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>Price</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p>{{$item->item_price}} </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>Description</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p>{{$item->item_description}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>Size</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p>{{$item->item_size}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>Stock</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p>{{$item->item_stock}}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">List</button>
+                                                    <button type="button" class="btn btn-primary btn-lg">Cart</button>
+
+                                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                            <div class="modal-content">
+                                                            <form method="get" action="{{route('addItemList',['itemID' => $item->id])}}">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Add to List</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <label>Item Name</label>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <p>{{$item->item_name}}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <label>Item Quantity</label>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group mb-3">
+                                                                                <input type="number" class="form-control" name="item_quantity"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <label>Item Frequency</label>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group mb-3">
+                                                                                <select class="form-select" name="item_frequency" aria-label="Default select example">
+                                                                                    <option selected>Select Frequency</option>
+                                                                                    <option value="None">None</option>
+                                                                                    <option value="Daily">Daily</option>
+                                                                                    <option value="Weekly">Weekly</option>
+                                                                                    <option value="Monthly">Monthly</option>
+                                                                                </select>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-info btn-lg">Save changes</button>
+                                                                </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div><br>
+
+
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    
+                                </div>
+                                </form>
+
 
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- ============================================================== -->
-                <!-- End PAge Content -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Right sidebar -->
-                <!-- ============================================================== -->
-                <!-- .right-sidebar -->
-                <!-- ============================================================== -->
-                <!-- End Right sidebar -->
-                <!-- ============================================================== -->
+
             </div>
             <!-- ============================================================== -->
-            <!-- End Container fluid  -->
+            <!-- End PAge Content -->
             <!-- ============================================================== -->
             <!-- ============================================================== -->
-            <!-- footer -->
+            <!-- Right sidebar -->
             <!-- ============================================================== -->
-            <footer class="footer text-center">
-                All Rights Reserved by Matrix-admin. Designed and Developed by <a href="https://www.wrappixel.com">WrapPixel</a>.
-            </footer>
+            <!-- .right-sidebar -->
             <!-- ============================================================== -->
-            <!-- End footer -->
+            <!-- End Right sidebar -->
             <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
+        <!-- End Container fluid  -->
         <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer text-center">
+            All Rights Reserved by Matrix-admin. Designed and Developed by <a href="https://www.wrappixel.com">WrapPixel</a>.
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
@@ -426,17 +581,11 @@
     <script src="../../dist/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="../../dist/js/custom.min.js"></script>
-    <!-- this page js -->
-    <script src="../../assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
-    <script src="../../assets/extra-libs/multicheck/jquery.multicheck.js"></script>
-    <script src="../../assets/extra-libs/DataTables/datatables.min.js"></script>
-    <script>
-        /****************************************
-         *       Basic Table                   *
-         ****************************************/
-        $('#zero_config').DataTable();
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3AJsTeZEYWKKUZVhrQnq9gtzsCg0LzBI&callback=myMap"></script> -->
 </body>
 
 </html>
