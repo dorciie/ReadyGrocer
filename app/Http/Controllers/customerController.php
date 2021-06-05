@@ -27,12 +27,9 @@ class customerController extends Controller
             
         $shopdetail = DB::table('shop_owners')->get()->where('id', $shopID)->toArray();
 
-        // $shopdetail = DB::Select('select * from shop_owners WHERE id = shopID');
-    
-
-
-        return view('customer.shopDetails',compact('shopdetail'))->with('custID',$customer);
+        return view('customer.shop.shopDetails',compact('shopdetail'))->with('custID',$customer);
     }
+    
     public function favShop($shopID)
     {
         if(session()->has('LoggedCustomer')){

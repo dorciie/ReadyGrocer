@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGroceryListsTable extends Migration
+class CreateGroceryCartsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,15 @@ class CreateGroceryListsTable extends Migration
      */
     public function up()
     {
-        Schema::create('grocery_lists', function (Blueprint $table) {
+        Schema::create('grocery_carts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('shop_id');
-            $table->unsignedBigInteger('item_id');
             $table->integer('item_quantity');
-            $table->char('item_frequency');
+            $table->float('item_price')->default(0);
+
+            $table->unsignedBigInteger('shop_id');
+            $table->unsignedBigInteger('customer_id');
             $table->foreign('shop_id')->references('id')->on('shop_owners')->onDelete('cascade'); //cascade -> delete shop akan delete item
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade'); //cascade -> delete shop akan delete item
-            $table->foreign('item_id')->references('id')->on('shop_items')->onDelete('cascade'); //cascade -> delete shop akan delete item
 
             $table->timestamps();
         });
@@ -35,6 +34,6 @@ class CreateGroceryListsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('grocery_lists');
+        Schema::dropIfExists('grocery_carts');
     }
 }

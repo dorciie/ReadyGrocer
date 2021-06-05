@@ -8,6 +8,8 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\shopOwnerController;
 use App\Http\Controllers\custDashboardController;
 use App\Http\Controllers\GroceryListController;
+use App\Http\Controllers\custShopController;
+use App\Http\Controllers\GroceryCartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShopItemController;
 use App\Http\Controllers\AnalysisController;
@@ -30,6 +32,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/test', function () {
+    return view('customer/cart/test');
+});
 Auth::routes();
 
 
@@ -40,22 +45,37 @@ Route::post('RegisterController','App\Http\Controllers\RegisterController@index'
 // customer........................................
 Route::get('customer/custLogin',[LoginController::class,'login'])->middleware('AlreadyLoggedIn');
 Route::post('check',[LoginController::class,'check'])->name('auth.check'); //apply this at login page
-// Route::get('dashboardd',[LoginController::class,'custDashboard'])->middleware('isLogged');
+Route::get('dashboard', [LoginController::class,'custDashboard'])->name('custDashboard')->middleware('isLogged');
 Route::get('Custlogout',[LogoutController::class,'Custlogout']);
 Route::get('customer/forgot_password',[ForgotPasswordController::class,'forgot']);
 Route::post('customer/forgot_password',[ForgotPasswordController::class,'password']);
 Route::get('customer/reset_password/{email}',[ForgotPasswordController::class,'reset']);
 Route::post('customer/reset_password/{email}',[ForgotPasswordController::class,'resetPassword']);
-Route::get('listofshops', [App\Http\Controllers\custDashboardController::class, 'index'])->name('shops')->middleware('isLogged');
-Route::get('shopdetails/{shopID}',[App\Http\Controllers\customerController::class, 'shopdetails'])->name('shopdetails')->middleware('isLogged');
-Route::get('favshop/{shopID}',[App\Http\Controllers\customerController::class, 'favShop'])->name('favShop')->middleware('isLogged');
-Route::get('dashboard', [LoginController::class,'custDashboard'])->middleware('isLogged');
+
+
+Route::get('listofshops', [App\Http\Controllers\custShopController::class, 'index'])->name('shops')->middleware('isLogged');
+Route::get('shopdetails/{shopID}',[App\Http\Controllers\custShopController::class, 'shopdetails'])->name('shopdetails')->middleware('isLogged');
+Route::get('favshop/{shopID}',[App\Http\Controllers\custShopController::class, 'favShop'])->name('favShop')->middleware('isLogged');
+
 Route::get('itemCategory/{categoryID}', [custDashboardController::class,'listOfCategory'])->name('category');
 Route::get('itemDetails/{itemID}', [custDashboardController::class,'itemdetails'])->name('itemDetails');
-// Route::get('addItemList','App\Http\Controllers\GroceryListController@index');
+Route::get('groceryList', [custDashboardController::class,'list'])->name('groceryList')->middleware('isLogged');
+Route::get('groceryCart', [custDashboardController::class,'cart'])->name('groceryCart')->middleware('isLogged');
+Route::get('checkout', [custDashboardController::class,'checkout'])->name('checkout')->middleware('isLogged');
 
+Route::get('updateCart/{itemID}', [GroceryCartController::class,'cart'])->name('updateCart')->middleware('isLogged');
+Route::get('updateCart2/{itemID}', [GroceryCartController::class,'cart2'])->name('updateCart2')->middleware('isLogged');
+
+Route::get('updateList/{itemID}', [GroceryListController::class,'destroy'])->name('updateList')->middleware('isLogged');
+Route::get('updateList2/{itemID}', [GroceryListController::class,'update'])->name('updateList2')->middleware('isLogged');
 Route::get('addItemList/{itemID}', [GroceryListController::class,'index'])->name('addItemList');
-// Route::resource('GroceryList','GroceryListController');
+
+
+
+
+
+
+
 
 //.................................Shop Owner..............................................
 //Authentication
