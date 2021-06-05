@@ -16,7 +16,7 @@ class CreateGroceryCartsTable extends Migration
         Schema::create('grocery_carts', function (Blueprint $table) {
             $table->id();
             $table->integer('item_quantity');
-            $table->float('item_price')->default(0);
+            $table->float('total_price')->default(0);
 
             $table->unsignedBigInteger('shop_id');
             $table->unsignedBigInteger('customer_id');
