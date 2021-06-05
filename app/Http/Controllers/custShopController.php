@@ -1,17 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 use App\Models\customer;
 use App\Models\shopOwner;
-use App\Models\shopItem;
-use App\Models\GroceryList;
-use App\Models\Category;
-use App\Models\GroceryCart;
 use Illuminate\Support\Facades\DB;
 
-class custDashboardController extends Controller
+
+use Illuminate\Http\Request;
+
+class custShopController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,72 +26,36 @@ class custDashboardController extends Controller
         return view('customer.shop.tables',compact('shops'))->with('custID',$customer);
     }
 
+    public function shopdetails($shopID)
+    {
+        if(session()->has('LoggedCustomer')){
+            $customer = DB::table('customers')
+            ->where('id', session('LoggedCustomer'))
+            ->first();}
+            
+        $shopdetail = DB::table('shop_owners')->get()->where('id', $shopID)->toArray();
 
-    public function listOfCategory($categoryID)
+        return view('customer.shop.shopDetails',compact('shopdetail'))->with('custID',$customer);
+    }
+
+    public function favShop($shopID)
     {
         if(session()->has('LoggedCustomer')){
             $customer = customer::where('id', session('LoggedCustomer'))
             ->first();}
             
-      
-        $shop = shopOwner::get()->where('id', $customer->fav_shop);
-        $items = shopItem::all()->where('shop_id', $customer->fav_shop)->where('category_id', $categoryID);
-        $data = [
-            'LoggedCustomerInfo'=> $customer
-        ];
-        return view('customer.items.category')->with('name',$data)->with('customer',$customer)->with('items',$items)->with('shop',$shop);
+         customer::where('id', $customer->id) //letak cust id
+              ->update(['fav_shop' => $shopID]);
+    
+        return back()->with('success','Favourite shop is updated!');
     }
 
-    public function itemDetails($itemID)
-    {
-        if(session()->has('LoggedCustomer')){
-            $customer = customer::where('id', session('LoggedCustomer'))
-            ->first();}
-            
-        
-      
-        $shop = DB::table('shop_owners')
-        ->get()
-        ->where('id', $customer->fav_shop);
 
-        $items = shopItem::all()
-        ->where('shop_id', $customer->fav_shop)
-        ->where('id', $itemID);
-
-        $data = [
-            'LoggedCustomerInfo'=> $customer
-        ];
-        return view('customer.items.itemdetails')->with('name',$data)->with('customer',$customer)->with('shop',$shop)->with('shop',$shop)->with('items',$items);
-    }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function list()
-    {
-      
-        
-        $list = GroceryList::all()->where('customer_id', session('LoggedCustomer'));
-
-        return view('customer.GroceryList.GroceryList')->with('list',$list);
-    }
-
-    public function cart()
-    {
-      
-        $cart = GroceryCart::all()->where('customer_id', session('LoggedCustomer'));
-        $info = DB::table('shop_items')
-        ->join('grocery_carts','shop_items.id','=','grocery_carts.item_id')->get();
-        return view('customer.cart.groceryCart')->with('cart',$cart)->with('info',$info);
-    }
-
-    public function checkout()
-    {
-        $checkout = GroceryCart::where('customer_id',session('LoggedCustomer'))->delete();
-        return view('customer.cart.checkout')->with('success','Cart successfully check out');
-    }
-
     public function create()
     {
         //

@@ -16,25 +16,32 @@ class customerController extends Controller
      */
     public function index()
     {
-        $shops = shopOwner::all()->toArray();
-        return view('customer.tables',compact('shops'));
     }
 
     public function shopdetails($shopID)
     {
+        if(session()->has('LoggedCustomer')){
+            $customer = DB::table('customers')
+            ->where('id', session('LoggedCustomer'))
+            ->first();}
+            
         $shopdetail = DB::table('shop_owners')->get()->where('id', $shopID)->toArray();
 
-        // $shopdetail = DB::Select('select * from shop_owners WHERE id = shopID');
-    
-        return view('customer.shopDetails',compact('shopdetail'));
+        return view('customer.shop.shopDetails',compact('shopdetail'))->with('custID',$customer);
     }
+    
     public function favShop($shopID)
     {
+        if(session()->has('LoggedCustomer')){
+            $customer = DB::table('customers')
+            ->where('id', session('LoggedCustomer'))
+            ->first();}
+            
          DB::table('customers')
-              ->where('id', 2) //letak cust id
+              ->where('id', $customer->id) //letak cust id
               ->update(['fav_shop' => $shopID]);
     
-        return back();
+        return back()->with('success','Favourite shop is updated!');
     }
 
     /**
