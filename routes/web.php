@@ -88,7 +88,7 @@ Route::get('shop/shopreset_password/{email}',[ForgotPasswordController::class,'s
 Route::get('shop/shopreset_password/{email}',[ForgotPasswordController::class,'shopresetPassword']);
 
 //Shop Dashboard
-Route::get('shop/shopdashboard',[shopOwnerController::class,'shopDashboard'])->middleware('ShopisLogged');
+Route::get('shop/dashboard',[shopOwnerController::class,'shopDashboard'])->middleware('ShopisLogged');
 
 //Category section
 Route::resource('category', 'App\Http\Controllers\CategoryController')->middleware('ShopisLogged');
