@@ -128,6 +128,8 @@
                     <div class="col-sm-9">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" name="item_image" value="{{old('item_image')}}" accept="image/*" required>
+                            {{-- <label class="custom-file-label" for="item_image">Choose
+                                file...</label> --}}
                             {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
                         </div>
                         <span class="text-danger">@error('item_image'){{ $message }} @enderror</span>

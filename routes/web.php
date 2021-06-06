@@ -81,7 +81,7 @@ Route::get('addItemList/{itemID}', [GroceryListController::class,'index'])->name
 //Authentication
 Route::get('shop/shoplogin',[LoginController::class,'Shoplogin'])->middleware('ShopAlreadyLoggedIn');
 Route::post('Shopcheck',[LoginController::class,'Shopcheck'])->name('shop.auth.check');//apply this at login page
-Route::get('shoplogout',[LogoutController::class,'Shoplogout']);
+Route::get('/shoplogout',[LogoutController::class,'Shoplogout']);
 Route::get('shop/shopforgot_password',[ForgotPasswordController::class,'shopforgot']);
 Route::post('shop/shopforgot_password',[ForgotPasswordController::class,'shoppassword']);
 Route::get('shop/shopreset_password/{email}',[ForgotPasswordController::class,'shopreset']);
@@ -101,6 +101,8 @@ Route::resource('analysis', 'App\Http\Controllers\AnalysisController')->middlewa
 
 //Order Section
 Route::resource('order', 'App\Http\Controllers\ViewOrderController')->middleware('ShopisLogged');
+Route::get('order_customer',[ViewOrderController::class,'customer'])->middleware('ShopisLogged');
+Route::post('deliver_order',[ViewOrderController::class,'deliverOrder'])->name('deliver.order')->middleware('ShopisLogged');
 
 //Shop profile Section
 Route::resource('profile', 'App\Http\Controllers\ShopProfileController')->middleware('ShopisLogged');

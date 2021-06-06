@@ -125,7 +125,7 @@
                 </div>
                 <div class="form-group row">
                     <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label" >Image <span class="text-danger">*</span></label>
+                        class="col-sm-2 text-end control-label col-form-label" >Image</label>
                     <div class="col-sm-9">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" name="item_image" value="{{$item->item_image}}" accept="image/*">
@@ -142,7 +142,8 @@
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Description</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control" name="item_description" value="{{$item->item_description}}"></textarea>
+                        {{-- <textarea class="form-control" name="item_description" value="{{$item->item_description}}"></textarea> --}}
+                        <input type="text" class="form-control" name="item_description" value="{{$item->item_description}}">
                         <span class="text-danger">@error('item_description'){{ $message }} @enderror</span>
                     </div>
                 </div>
