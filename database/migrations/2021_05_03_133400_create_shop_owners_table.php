@@ -15,10 +15,10 @@ class CreateShopOwnersTable extends Migration
     {
         Schema::create('shop_owners', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // 
+            $table->string('name'); 
             $table->char('email'); 
-            $table->char('shopName'); //
-            $table->char('address'); //
+            $table->char('shopName'); 
+            $table->char('address'); 
             $table->string('password');
             $table->decimal('rating',5,2)->nullable();
             $table->double('address_latitude')->nullable();

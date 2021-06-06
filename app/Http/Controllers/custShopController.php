@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\customer;
+use App\Models\shopOwner;
+use Illuminate\Support\Facades\DB;
+
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\shopOwner;
 
-use App\Models\customer;
-class customerController extends Controller
+class custShopController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,6 +17,13 @@ class customerController extends Controller
      */
     public function index()
     {
+        if(session()->has('LoggedCustomer')){
+        $customer = customer::where('id', session('LoggedCustomer'))
+        ->first();}
+        
+        $shops = shopOwner::all()->toArray();
+
+        return view('customer.shop.tables',compact('shops'))->with('custID',$customer);
     }
 
     public function shopdetails($shopID)
@@ -29,20 +37,19 @@ class customerController extends Controller
 
         return view('customer.shop.shopDetails',compact('shopdetail'))->with('custID',$customer);
     }
-    
+
     public function favShop($shopID)
     {
         if(session()->has('LoggedCustomer')){
-            $customer = DB::table('customers')
-            ->where('id', session('LoggedCustomer'))
+            $customer = customer::where('id', session('LoggedCustomer'))
             ->first();}
             
-         DB::table('customers')
-              ->where('id', $customer->id) //letak cust id
+         customer::where('id', $customer->id) //letak cust id
               ->update(['fav_shop' => $shopID]);
     
         return back()->with('success','Favourite shop is updated!');
     }
+
 
     /**
      * Show the form for creating a new resource.

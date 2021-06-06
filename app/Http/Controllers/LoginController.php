@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 //untuk password nanti
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\shopOwner;
 use App\Models\customer;
+use App\Models\ShopItem;
 
 class LoginController extends Controller
 {
@@ -27,7 +29,7 @@ class LoginController extends Controller
         if($shopOwner){ 
             if(Hash::check($request->password, $shopOwner->password)){ 
                 $request->session()->put('LoggedShop', $shopOwner->id); 
-                return redirect('shop/dashboard');
+                return redirect('shop/shopdashboard');
             }else{
                 return back()->with('fail','Invalid email and/or password')->withInput();;
             }
@@ -54,7 +56,7 @@ class LoginController extends Controller
         if($customer){ 
             if(Hash::check($request->password, $customer->password)){
                 $request->session()->put('LoggedCustomer', $customer->id); 
-                return redirect('custDashboard');
+                return redirect('dashboard');
             }else{
                 return back()->with('fail','Invalid password')->withInput();;
             }
@@ -67,11 +69,15 @@ class LoginController extends Controller
             $customer = DB::table('customers')
             ->where('id', session('LoggedCustomer'))
             ->first();
+            
+            $shop = shopOwner::get()->where('id', $customer->fav_shop);
+            $categories = Category::get()->where('shop_id', $customer->fav_shop);
+            $items = ShopItem::join('categories','shop_items.category_id','=','categories.id')->get()->where('shop_id', $customer->fav_shop);
 
             $data = [
                 'LoggedCustomerInfo'=> $customer
             ];
         }
-        return view('customer.custDashboard', $data);
+        return view('customer.dashboard')->with('shop',$shop)->with('name',$data)->with('categories',$categories)->with('items',$items);
     }
 }
