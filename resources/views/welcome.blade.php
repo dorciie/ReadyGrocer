@@ -6,7 +6,8 @@
         <meta name="generator" content="">
 
         <title>Laravel</title>
-
+        
+        <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/favicon.png')}}">
         <link href="{{ asset('mainPage/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
         <link href="{{ asset('mainPage/css/style.css') }}" rel="stylesheet">
@@ -14,7 +15,12 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto:200,300,400,500,600,700" rel="stylesheet">
     </head>
     <body>
-
+        <div class="preloader">
+            <div class="lds-ripple">
+                <div class="lds-pos"></div>
+                <div class="lds-pos"></div>
+            </div>
+        </div>
 
         <!-- HEADER =============================-->
         <header class="item header margin-top-0">
@@ -30,7 +36,7 @@
                 </div>
                 <div id="navbar-collapse-02" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="propClone"><a href="#">Home</a></li>
+                        <li class="propClone"><a href="/">Home</a></li>
                         <li class="propClone"><a href="{{ url('/shop/shoplogin') }}">Login as Shop owner</a></li>
                         <li class="propClone"><a href="{{ url('/customer/custLogin') }}">Login as Customer</a></li>
                     </ul>
@@ -136,6 +142,11 @@
                 }
             );
         });
+        </script>
+        <script>
+            // setTimeout(function(){
+            // window.location.href = '/';
+            // }, 50);
         </script>
             
         </body>

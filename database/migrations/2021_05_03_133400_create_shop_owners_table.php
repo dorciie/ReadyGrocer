@@ -15,14 +15,18 @@ class CreateShopOwnersTable extends Migration
     {
         Schema::create('shop_owners', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->char('email');
-            $table->char('shopName');
-            $table->char('address');
+            $table->string('name'); // 
+            $table->char('email'); 
+            $table->char('shopName'); //
+            $table->char('address'); //
             $table->string('password');
             $table->decimal('rating',5,2)->nullable();
             $table->double('address_latitude')->nullable();
             $table->double('address_longitude')->nullable();
+            $table->longText('shop_description')->nullable(); //
+            $table->float('delivery_charge')->nullable(); //
+            $table->string('phone_number')->nullable(); //
+            $table->string('shop_image')->nullable(); //
             $table->timestamps();
         });
     }

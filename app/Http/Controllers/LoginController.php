@@ -54,7 +54,7 @@ class LoginController extends Controller
         if($customer){ 
             if(Hash::check($request->password, $customer->password)){
                 $request->session()->put('LoggedCustomer', $customer->id); 
-                return redirect('dashboard');
+                return redirect('custDashboard');
             }else{
                 return back()->with('fail','Invalid password')->withInput();;
             }
@@ -67,13 +67,11 @@ class LoginController extends Controller
             $customer = DB::table('customers')
             ->where('id', session('LoggedCustomer'))
             ->first();
-            
-            $shop = DB::table('shop_owners')->get()->where('id', $customer->fav_shop)->toArray();
-            
+
             $data = [
                 'LoggedCustomerInfo'=> $customer
             ];
         }
-        return view('customer.dashboard',compact('shop'))->with('name',$data);
+        return view('customer.custDashboard', $data);
     }
 }
