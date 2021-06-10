@@ -8,6 +8,8 @@ use App\Models\ShopItem;
 use App\Models\Customer;
 use App\Models\GroceryCart;
 use App\Models\GroceryList;
+use Illuminate\Support\Facades\DB;
+
 
 class GroceryCartController extends Controller
 {
@@ -42,7 +44,7 @@ class GroceryCartController extends Controller
             $newCart->customer_id=$customer->id;
             $newCart->shop_id=$customer->fav_shop;
             $newCart->item_id=$itemID;
-            $newCart->item_price=($item->offer_price)*($request->item_quantity);
+            $newCart->total_price=($item->offer_price)*($request->item_quantity);
             $newCart->item_quantity=$request->input('item_quantity');
 
             $newCart->save();
@@ -81,6 +83,10 @@ class GroceryCartController extends Controller
          return back()->with('success','successful');
 
         
+
+    }
+
+    public function editItem(){
 
     }
 
@@ -136,7 +142,36 @@ class GroceryCartController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $item = DB::table('grocery_carts')
+        ->join('shop_items','grocery_carts.item_id','=','shop_items.id')
+        ->first();
+
+        $request->validate([
+            'item_quantity' => 'max:'.$item->item_stock
+        ]);
+
+        $update = GroceryCart::where('id',$id)
+        ->update([
+            'item_quantity' => $request->item_quantity,
+            'total_price' =>($item->offer_price)*($request->item_quantity)
+             ]);
+    
+            return back();
+       
+    
+    }
+    
+    public function checkout(Request $request){
+         $update = GroceryCart::where('customer_id',session('LoggedCustomer'))
+        ->update([
+            'checkout' => 'true',
+            'payment' => $request->payment,
+            ]);
+            
+            if($update){
+                        return view('customer.cart.checkout')->with('success','Cart has been checkout');
+            }
+            return back()->with('error','Cart cannot be check out');;
     }
 
     /**

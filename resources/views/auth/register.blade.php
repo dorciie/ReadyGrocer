@@ -127,6 +127,7 @@
 
                                             <button type="button" onclick="getLocation()">Show On Map</button>
 
+
                                             <input type="hidden" name="address_latitude" id="address_latitude" value="" />
                                             <input type="hidden" name="address_longitude" id="address_longitude" value="" />
                                         </div>
@@ -154,17 +155,21 @@
                                                     country: "USA"
                                                 }*/
                                             });
+
                                             google.maps.event.addListener(autocomplete, 'place_changed', function() {
                                                 var near_place = autocomplete.getPlace();
                                                 document.getElementById("caddress").value = near_place.geometry.location.lat() + "," + near_place.geometry.location.lng();
+
                                             });
                                         });
                                     </script>
+
 
                                     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key={{env('GOOGLE_MAP_API')}}"></script>
 
                                     <script>
                                         var x = document.getElementById("demo");
+
                                         function getLocation() {
                                             if (navigator.geolocation) {
                                                 navigator.geolocation.getCurrentPosition(showPosition);
@@ -172,12 +177,14 @@
                                                 x.innerHTML = "Geolocation is not supported by this browser.";
                                             }
                                         }
+
                                         function showPosition(position) {
                                             myMap(position);
                                             // document.getElementById("caddress").value = "Current Location";
                                         }
                                         function myMap(position) {
                                             
+
                                             addr = document.getElementById('caddress').value;
                                             var res = addr.split(",");
                                             document.getElementById("address_latitude").value = parseFloat(res[0]);
@@ -187,19 +194,23 @@
                                                 zoom: 13,
                                             };
                                             var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
                                             var myMarker = new google.maps.Marker({
                                                 position: {
                                                     lat: parseFloat(res[0]),
                                                     lng: parseFloat(res[1]),
+
                                                 },
                                                 draggable: true,
                                                 map,
                                                 title: "you are here",
                                             });
+
                                             google.maps.event.addListener(myMarker, 'dragend', function(evt) {
                                                 document.getElementById('address_latitude').value = evt.latLng.lat().toFixed(6);
                                                 document.getElementById('address_longitude').value = evt.latLng.lng().toFixed(6);
                                                 // document.getElementById('caddress').value = evt.latLng.lat().toFixed(6)+","+evt.latLng.lng().toFixed(6);
+
                                                 document.getElementById('caddress').value = "Selected Location";
                                                 map.panTo(evt.latLng);
                                             });

@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Models\shopOwner;
 use App\Models\customer;
 use Illuminate\Support\Facades\Hash;
+use Mail;
 
 
 class RegisterController extends Controller
@@ -39,10 +40,12 @@ class RegisterController extends Controller
             $newShop->address_longitude=$request->address_longitude;
 
             $query = $newShop->save();
-    
+
+           
             // return redirect('profile');
             // return("shop");
-            return redirect('shop/shoplogin')->with('success','You have been successfully registered');
+            $this->sendEmailShop($newShop);
+            return view('shop/auth/verification')->with('success','You have been successfully registered');
         
         }
         else{
@@ -62,15 +65,36 @@ class RegisterController extends Controller
             $newCust->address_longitude=$request->address_longitude;
             $query = $newCust->save();
     
-            // return redirect('profilecustomer');
-            // return("customer");
-            return redirect('customer/custLogin')->with('success','You have been successfully registered');
+            
+            $this->sendEmail($newCust);
+            return view('customer/auth/verification')->with('success','Please Verify Email before Proceeding');
 
         }
 
         return ;
     }
 
+    public function sendEmail($customer){
+        Mail::send(
+            'customer.auth.verifyEmail',
+            ['customer'=> $customer],
+            function($message) use ($customer){
+                $message->to($customer->email);
+                $message->subject("$customer->name, Verify Your Email");
+            }
+        );
+    }
+
+    public function sendEmailShop($shop){
+        Mail::send(
+            'shop.auth.verifyEmail',
+            ['shop'=> $shop],
+            function($message) use ($shop){
+                $message->to($shop->email);
+                $message->subject("$shop->name, Verify Your Email");
+            }
+        );
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -100,7 +124,11 @@ class RegisterController extends Controller
      */
     public function show($id)
     {
-        //
+        $update = shopOwner::where('id',$id)
+        ->update([
+            'is_verified' => 'true'
+            ]);
+     return redirect('shop/shoplogin')->with('success','You have been successfully registered');
     }
 
     /**
@@ -111,7 +139,12 @@ class RegisterController extends Controller
      */
     public function edit($id)
     {
-        //
+        $update = customer::where('id',$id)
+        ->update([
+            'is_verified' => 'true'
+            ]);
+     return redirect('customer/custLogin')->with('success','You have been successfully registered');
+
     }
 
     /**
