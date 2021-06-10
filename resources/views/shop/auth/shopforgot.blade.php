@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -41,10 +41,10 @@
             </div>
         </div>
     </body>
-</html> --}}
+</html>
 
 
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html dir="ltr">
 
 <head>
@@ -66,7 +66,7 @@
                 <div class="lds-pos"></div>
                 <div class="lds-pos"></div>
             </div>
-        </div>  --}}
+        </div>  
         <div class="d-flex no-block justify-content-center align-items-center bg-dark">
             <div class="auth-box bg-dark border-top border-secondary">
                 <div id="loginform">
@@ -117,4 +117,4 @@
     <script src="{{asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
 </body>
 
-</html>
+</html> --}}

@@ -70,14 +70,24 @@
                         <span class="text-danger">@error('email'){{ $message }} @enderror</span>
                     </div>
                 </div> --}}
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Address <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" name="address" value="{{$shopOwner->address}}">
                         <span class="text-danger">@error('address'){{ $message }} @enderror</span>
                     </div>
+                </div> --}}
+
+                <div class="form-group row">
+                    <label for="fname"
+                        class="col-sm-2 text-end control-label col-form-label">Address <span class="text-danger">*</span></label>
+                    <div class="col-md-9">
+                        <input id="search_input" type="string" class="form-control @error('address') is-invalid @enderror" name="address" value="{{$shopOwner->address}}">
+                        <span class="text-danger">@error('address'){{ $message }} @enderror</span>
+                    </div>
                 </div>
+
                 <div class="form-group row">
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Contact Number</label>
@@ -108,16 +118,20 @@
                         <span class="text-danger">@error('shop_description'){{ $message }} @enderror</span>
                     </div>
                 </div>
-                {{-- <div class="form-group">
-                    <label for="">Password</label>
-                    <input type="password" class="form-control" name="password" placeholder="Enter password">
-                    <span class="text-danger">@error('password'){{ $message }} @enderror</span>
+                
+                <div class="form-group row">
+                    <label for="fname"
+                        class="col-sm-2 text-end control-label col-form-label">Location</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <input id="caddress" type="string" class="form-control " name="caddress" value="{{$shopOwner->address_latitude}}, {{$shopOwner->address_longitude}}" readonly><br>
+                            <button class="btn btn-info" type="button" onclick="myMap()">Show On Map</button>
+                            <input type="hidden" name="address_latitude" id="address_latitude" value="{{$shopOwner->address_latitude}}" />
+                            <input type="hidden" name="address_longitude" id="address_longitude" value="{{$shopOwner->address_longitude}}" />
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="">Confirm Password</label>
-                    <input type="password" class="form-control" name="password_confirm" placeholder="Enter password">
-                    <span class="text-danger">@error('password'){{ $message }} @enderror</span>
-                </div> --}}
+                <div id="googleMap" style="width:100%; height:400px"></div>
             </div>
             <div class="border-top">
                 <div class="card-body" style="text-align:center;">
@@ -130,6 +144,50 @@
 
 @section('script')
 <script>
-    
+    var searchInput = 'search_input';
+    $(document).ready(function() {
+        var autocomplete;
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+            types: ['geocode'],
+            /*componentRestrictions: {
+                country: "USA"
+            }*/
+        });
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            var near_place = autocomplete.getPlace();
+            document.getElementById("caddress").value = near_place.geometry.location.lat() + "," + near_place.geometry.location.lng();
+        });
+    });
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key={{env('GOOGLE_MAP_API')}}"></script>
+<script>
+    function myMap() {
+        
+        addr = document.getElementById('caddress').value;
+        var res = addr.split(",");
+        document.getElementById("address_latitude").value = parseFloat(res[0]);
+        document.getElementById("address_longitude").value = parseFloat(res[1]);
+        var mapProp = {
+            center: new google.maps.LatLng(res[0], res[1]),
+            zoom: 13,
+        };
+        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        var myMarker = new google.maps.Marker({
+            position: {
+                lat: parseFloat(res[0]),
+                lng: parseFloat(res[1]),
+            },
+            draggable: true,
+            map,
+            title: "you are here",
+        });
+        google.maps.event.addListener(myMarker, 'dragend', function(evt) {
+            document.getElementById('address_latitude').value = evt.latLng.lat().toFixed(6);
+            document.getElementById('address_longitude').value = evt.latLng.lng().toFixed(6);
+            // document.getElementById('caddress').value = evt.latLng.lat().toFixed(6)+","+evt.latLng.lng().toFixed(6);
+            document.getElementById('caddress').value = "Selected Location";
+            map.panTo(evt.latLng);
+        });
+    }
 </script>
 @endsection

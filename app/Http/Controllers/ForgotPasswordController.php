@@ -58,7 +58,7 @@ class ForgotPasswordController extends Controller
 
         $customer = customer::whereEmail($request->email)->first();
         if($request->password != $request->password_confirm){
-            return redirect()->back()->with(['fail' => 'Please try again']);
+            return redirect()->back()->with(['fail' => 'WARNING! Password and Confirm password are not the same']);
         }
         
         $todayDate = date('Y-m-d H:i:s');
@@ -125,7 +125,7 @@ class ForgotPasswordController extends Controller
             ->where('email', $request->email)
             ->first();
         if($request->password != $request->password_confirm){
-            return redirect()->back()->with(['fail' => 'Please Password and Confirm password same']);
+            return redirect()->back()->with(['fail' => 'WARNING! Password and Confirm password are not the same']);
         }
         $todayDate = date('Y-m-d H:i:s');
         $query = DB::table('shop_owners')

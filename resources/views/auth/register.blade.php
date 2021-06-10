@@ -127,6 +127,7 @@
 
                                             <button type="button" onclick="getLocation()">Show On Map</button>
 
+
                                             <input type="hidden" name="address_latitude" id="address_latitude" value="" />
                                             <input type="hidden" name="address_longitude" id="address_longitude" value="" />
                                         </div>
@@ -146,7 +147,6 @@
 
                                     <script>
                                         var searchInput = 'search_input';
-
                                         $(document).ready(function() {
                                             var autocomplete;
                                             autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
@@ -164,7 +164,8 @@
                                         });
                                     </script>
 
-                                    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyBn1EDlWEDfbZRriXxGByn45ZmgNiTwbxI"></script>
+
+                                    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key={{env('GOOGLE_MAP_API')}}"></script>
 
                                     <script>
                                         var x = document.getElementById("demo");
@@ -180,9 +181,7 @@
                                         function showPosition(position) {
                                             myMap(position);
                                             // document.getElementById("caddress").value = "Current Location";
-
                                         }
-
                                         function myMap(position) {
                                             
 
@@ -206,8 +205,6 @@
                                                 map,
                                                 title: "you are here",
                                             });
-
-
 
                                             google.maps.event.addListener(myMarker, 'dragend', function(evt) {
                                                 document.getElementById('address_latitude').value = evt.latLng.lat().toFixed(6);

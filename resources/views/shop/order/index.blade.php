@@ -145,7 +145,7 @@
 
         $.ajax({
             type    : "POST",
-            url     : "{{route('deliver.order')}}",
+            url     : "{{route('deliver.order')}}", //tambah ni kat belakang $shopOwner->id
             data    : {
                 _token:'{{csrf_token()}}',
                 custEmail:custEmail
