@@ -14,6 +14,7 @@ class LogoutController extends Controller
             session()->pull('LoggedShop');
             return view('welcome');
         }
+        return view('welcome');
     }
 
     //Customer...............................................................................................
@@ -22,5 +23,6 @@ class LogoutController extends Controller
             session()->pull('LoggedCustomer');
             return view('welcome');
         }
+        return view('welcome');
     }
 }
