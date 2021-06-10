@@ -113,4 +113,4 @@ Route::post('password_change',[ShopProfileController::class,'updatePassword'])->
 
 
 //every page lepas login kena letak middleware('ShopisLogged') so bila login as customer tkleh masuk dekat shop
-\PWA::routes();
+//\PWA::routes();
