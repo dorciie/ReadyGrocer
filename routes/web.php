@@ -85,7 +85,7 @@ Route::get('/shoplogout',[LogoutController::class,'Shoplogout']);
 Route::get('shop/shopforgot_password',[ForgotPasswordController::class,'shopforgot']);
 Route::post('shop/shopforgot_password',[ForgotPasswordController::class,'shoppassword']);
 Route::get('shop/shopreset_password/{email}',[ForgotPasswordController::class,'shopreset']);
-Route::get('shop/shopreset_password/{email}',[ForgotPasswordController::class,'shopresetPassword']);
+Route::post('shop/shopreset_password/{email}',[ForgotPasswordController::class,'shopresetPassword']);
 
 //Shop Dashboard
 Route::get('shop/dashboard',[shopOwnerController::class,'shopDashboard'])->middleware('ShopisLogged');
@@ -101,11 +101,12 @@ Route::resource('analysis', 'App\Http\Controllers\AnalysisController')->middlewa
 
 //Order Section
 Route::resource('order', 'App\Http\Controllers\ViewOrderController')->middleware('ShopisLogged');
-Route::get('order_customer',[ViewOrderController::class,'customer'])->middleware('ShopisLogged');
-Route::post('deliver_order',[ViewOrderController::class,'deliverOrder'])->name('deliver.order')->middleware('ShopisLogged');
+Route::get('order_customer',[ViewOrderController::class,'customer'])->middleware('ShopisLogged'); //show customer
+Route::post('deliver_order',[ViewOrderController::class,'deliverOrder'])->name('deliver.order')->middleware('ShopisLogged'); //send email to deliver
 
 //Shop profile Section
 Route::resource('profile', 'App\Http\Controllers\ShopProfileController')->middleware('ShopisLogged');
+Route::post('password_change',[ShopProfileController::class,'updatePassword'])->middleware('ShopisLogged');
 
 
 //every page lepas login kena letak middleware('ShopisLogged') so bila login as customer tkleh masuk dekat shop

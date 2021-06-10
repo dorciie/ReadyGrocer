@@ -45,7 +45,7 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$item->item_name}}</td>
-                            <td><img src="{{ Storage::url($item->item_image) }}" width="200px"></td>
+                            <td><img src="{{ Storage::url($item->item_image) }}" width="100px"></td>
                             <td>{{$item->item_brand}}</td>
                             <td>{{$item->item_stock}}</td>
                             @if($item->item_status=='active')
