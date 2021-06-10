@@ -150,7 +150,7 @@
                  <strong>Test</strong>&nbsp;&nbsp;&nbsp;<img src="{{asset('assets/images/users/2.jpg')}}" alt="user" class="rounded-circle" width="31"> 
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href=""><i class="ti-user me-1 ms-1"></i>My Profile</a>
+                    <a class="dropdown-item" href="{{route('custProfile.index')}}"><i class="ti-user me-1 ms-1"></i>My Profile</a>
                  
                     <a class="dropdown-item" href="Custlogout"><i class="fa fa-power-off me-1 ms-1"></i> Logout</a>
                 </ul>

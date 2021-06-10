@@ -15,6 +15,7 @@ use App\Http\Controllers\ShopItemController;
 use App\Http\Controllers\AnalysisController;
 use App\Http\Controllers\ViewOrderController;
 use App\Http\Controllers\ShopProfileController;
+use App\Models\customer;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,10 +38,13 @@ Route::get('/test', function () {
 });
 Auth::routes();
 
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('RegisterController','App\Http\Controllers\RegisterController@index');
+Route::get('verified/{custID}', [RegisterController::class, 'edit'])->name('verified');
+Route::post('verified/{custID}', [RegisterController::class, 'edit'])->name('verified');
 
+Route::get('verifiedShop/{shopID}', [RegisterController::class, 'show'])->name('verified');
+Route::post('verifiedShop/{shopID}', [RegisterController::class, 'show'])->name('verified');
 
 // customer........................................
 Route::get('customer/custLogin',[LoginController::class,'login'])->middleware('AlreadyLoggedIn');
@@ -52,24 +56,23 @@ Route::post('customer/forgot_password',[ForgotPasswordController::class,'passwor
 Route::get('customer/reset_password/{email}',[ForgotPasswordController::class,'reset']);
 Route::post('customer/reset_password/{email}',[ForgotPasswordController::class,'resetPassword']);
 
-
-Route::get('listofshops', [App\Http\Controllers\custShopController::class, 'index'])->name('shops')->middleware('isLogged');
-Route::get('shopdetails/{shopID}',[App\Http\Controllers\custShopController::class, 'shopdetails'])->name('shopdetails')->middleware('isLogged');
-Route::get('favshop/{shopID}',[App\Http\Controllers\custShopController::class, 'favShop'])->name('favShop')->middleware('isLogged');
+Route::resource('shops', 'App\Http\Controllers\custShopController')->middleware('isLogged');
 
 Route::get('itemCategory/{categoryID}', [custDashboardController::class,'listOfCategory'])->name('category');
 Route::get('itemDetails/{itemID}', [custDashboardController::class,'itemdetails'])->name('itemDetails');
 Route::get('groceryList', [custDashboardController::class,'list'])->name('groceryList')->middleware('isLogged');
 Route::get('groceryCart', [custDashboardController::class,'cart'])->name('groceryCart')->middleware('isLogged');
-Route::get('checkout', [custDashboardController::class,'checkout'])->name('checkout')->middleware('isLogged');
+Route::get('checkout', [GroceryCartController::class,'checkout'])->name('checkout')->middleware('isLogged');
 
 Route::get('updateCart/{itemID}', [GroceryCartController::class,'cart'])->name('updateCart')->middleware('isLogged');
 Route::get('updateCart2/{itemID}', [GroceryCartController::class,'cart2'])->name('updateCart2')->middleware('isLogged');
+Route::get('editCartItem/{cartItemID}', [GroceryCartController::class,'update'])->name('editCartItem')->middleware('isLogged');
 
 Route::get('updateList/{itemID}', [GroceryListController::class,'destroy'])->name('updateList')->middleware('isLogged');
 Route::get('updateList2/{itemID}', [GroceryListController::class,'update'])->name('updateList2')->middleware('isLogged');
 Route::get('addItemList/{itemID}', [GroceryListController::class,'index'])->name('addItemList');
 
+Route::resource('custProfile', 'App\Http\Controllers\custProfileController')->middleware('isLogged');
 
 
 
@@ -109,3 +112,4 @@ Route::resource('profile', 'App\Http\Controllers\ShopProfileController')->middle
 
 
 //every page lepas login kena letak middleware('ShopisLogged') so bila login as customer tkleh masuk dekat shop
+\PWA::routes();

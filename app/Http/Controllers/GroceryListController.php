@@ -26,11 +26,7 @@ class GroceryListController extends Controller
             $customer = customer::where('id', session('LoggedCustomer'))
             ->first();}
 
-        $item = ShopItem::where('id', $itemID)
-        ->first();
-        
-
-        if (GroceryList::where('item_id', $item->id)->where('customer_id', $customer->id)->exists()) {
+        if (GroceryList::where('item_id', $itemID)->where('customer_id', $customer->id)->exists()) {
             
               return back()->with('error','already exits in your groceryList');
     }
@@ -38,7 +34,6 @@ class GroceryListController extends Controller
             $newList->customer_id=$customer->id;
             $newList->shop_id=$customer->fav_shop;
             $newList->item_id= $itemID;
-            $newList->item_price=$item->offer_price;
             $newList->item_quantity=$request->input('item_quantity');
             $newList->item_frequency=$request->input('item_frequency');
 

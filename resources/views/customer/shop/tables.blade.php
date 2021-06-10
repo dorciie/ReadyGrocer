@@ -37,7 +37,7 @@
                                             @foreach($shops as $row)
                                             <tr>
                                            
-                                                <th scope="row"><a href="{{route('shopdetails',['shopID' => $row['id']])}}">{{$row['id']}}</a></th>
+                                                <th scope="row"><a href="{{route('shops.show', $row['id'])}}">{{$row['id']}}</a></th>
                                                
                                                 <td>{{$row['shopName']}}</td>
                                                 <td>{{$row['address']}}</td>
