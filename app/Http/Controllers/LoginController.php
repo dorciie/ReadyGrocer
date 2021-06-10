@@ -32,7 +32,7 @@ class LoginController extends Controller
         if ($shopOwner) {
             if (Hash::check($request->password, $shopOwner->password)) {
                 $request->session()->put('LoggedShop', $shopOwner->id);
-                return redirect('shop/shopdashboard');
+                return redirect('shop/dashboard');
             } else {
                 return back()->with('fail', 'Invalid email and/or password')->withInput();;
 
