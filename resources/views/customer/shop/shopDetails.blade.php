@@ -30,7 +30,7 @@
 
                     <div class="container emp-profile">
                         @foreach($shopdetail as $s)
-                        <form method="get" action="{{url('shop.favShop',['shopID' => $s->id])}}">
+                        <form method="get" action="{{route('shops.edit', $s->id)}}">
                             @if(Session::get('success'))
                             <div class="alert alert-success">
                                 {{Session::get('success')}}

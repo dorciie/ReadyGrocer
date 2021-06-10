@@ -78,9 +78,16 @@ class custShopController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($shopID)
     {
-        //
+        if(session()->has('LoggedCustomer')){
+            $customer = DB::table('customers')
+            ->where('id', session('LoggedCustomer'))
+            ->first();}
+            
+        $shopdetail = DB::table('shop_owners')->get()->where('id', $shopID)->toArray();
+
+        return view('customer.shop.shopDetails',compact('shopdetail'))->with('custID',$customer);
     }
 
     /**
@@ -89,9 +96,16 @@ class custShopController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($shopID)
     {
-        //
+        if(session()->has('LoggedCustomer')){
+            $customer = customer::where('id', session('LoggedCustomer'))
+            ->first();}
+            
+         customer::where('id', $customer->id) //letak cust id
+              ->update(['fav_shop' => $shopID]);
+    
+        return back()->with('success','Favourite shop is updated!');
     }
 
     /**

@@ -34,7 +34,7 @@
             <div class="card-body">
 
 
-                <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+                <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
                 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
                 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
                 <!------ Include the above in your HEAD tag ---------->
@@ -55,9 +55,10 @@
                         {{Session::get('error')}}
                     </div>
                     @endif
+                    @foreach($items as $item)
                     <div class="col-md-4">
                         <div class="profile-img">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+                        <img src="{{ Storage::url($item->item_image) }}" width="100px">
 
                         </div>
                     </div>
@@ -87,7 +88,7 @@
 
                         </div>
                     </div>
-                    @foreach($items as $item)
+                    
                     <div class="col-md-8">
 
                         <div class="tab-content profile-tab" id="myTabContent">
@@ -193,6 +194,7 @@
                                                                         <option value="None" selected>None</option>
                                                                         <option value="Daily">Daily</option>
                                                                         <option value="Weekly">Weekly</option>
+                                                                        <option value="Fortnight">Fortnight</option>
                                                                         <option value="Monthly">Monthly</option>
                                                                     </select>
                                                                 </div>

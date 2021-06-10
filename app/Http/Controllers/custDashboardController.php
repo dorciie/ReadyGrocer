@@ -51,8 +51,6 @@ class custDashboardController extends Controller
             $customer = customer::where('id', session('LoggedCustomer'))
             ->first();}
             
-        
-      
         $shop = DB::table('shop_owners')
         ->get()
         ->where('id', $customer->fav_shop);
@@ -64,7 +62,7 @@ class custDashboardController extends Controller
         $data = [
             'LoggedCustomerInfo'=> $customer
         ];
-        return view('customer.items.itemdetails')->with('name',$data)->with('customer',$customer)->with('shop',$shop)->with('shop',$shop)->with('items',$items);
+        return view('customer.items.itemdetails')->with('name',$data)->with('customer',$customer)->with('shop',$shop)->with('items',$items);
     }
     /**
      * Show the form for creating a new resource.
@@ -75,7 +73,11 @@ class custDashboardController extends Controller
     {
       
         
-        $list = GroceryList::all()->where('customer_id', session('LoggedCustomer'));
+        $list = DB::table('grocery_lists')
+        ->join('shop_items','grocery_lists.item_id','=','shop_items.id')
+        ->where('customer_id', session('LoggedCustomer'))
+        ->select('grocery_lists.id AS id','shop_items.id AS item_id','grocery_lists.item_quantity AS item_quantity','grocery_lists.item_frequency AS item_frequency', 'grocery_lists.shop_id AS shop_id','shop_items.item_name AS item_name','shop_items.item_brand AS item_brand','shop_items.item_price AS item_price','shop_items.item_description AS item_description','shop_items.category_id AS category_id')
+        ->get();
 
         return view('customer.GroceryList.GroceryList')->with('list',$list);
     }
@@ -83,10 +85,13 @@ class custDashboardController extends Controller
     public function cart()
     {
       
-        $cart = GroceryCart::all()->where('customer_id', session('LoggedCustomer'));
-        $info = DB::table('shop_items')
-        ->join('grocery_carts','shop_items.id','=','grocery_carts.item_id')->get();
-        return view('customer.cart.groceryCart')->with('cart',$cart)->with('info',$info);
+        $info = DB::table('grocery_carts')
+        ->join('shop_items','grocery_carts.item_id','=','shop_items.id')
+        ->where('customer_id', session('LoggedCustomer'))
+        ->where('checkout','false')
+        ->select('grocery_carts.id AS id','grocery_carts.item_quantity AS item_quantity', 'grocery_carts.shop_id AS shop_id','grocery_carts.total_price AS total_price','shop_items.item_brand AS item_brand','shop_items.item_price AS item_price','shop_items.item_name AS item_name')
+        ->get();
+        return view('customer.cart.groceryCart')->with('info',$info);
     }
 
     public function checkout()
