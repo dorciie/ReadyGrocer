@@ -115,4 +115,5 @@ Route::post('password_change',[ShopProfileController::class,'updatePassword'])->
 //Promotion section
 Route::resource('promotion', 'App\Http\Controllers\PromotionController')->middleware('ShopisLogged');
 //every page lepas login kena letak middleware('ShopisLogged') so bila login as customer tkleh masuk dekat shop
+
 // \PWA::routes();
