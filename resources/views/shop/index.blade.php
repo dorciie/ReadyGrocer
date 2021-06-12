@@ -27,8 +27,8 @@
                 <div class="card card-hover">
                     <div class="box bg-warning text-center">
                         <h1 class="font-light text-white"><i class="mdi mdi-chart-bar"></i></h1>
-                        <h6 class="text-white">Total sales</h6>
-                        <h6 class="text-white">100</h6>
+                        <h6 class="text-white">Total sales on current month</h6>
+                        <h6 class="text-white">RM 100.00</h6>
                     </div>
                 </div>
             </div>
@@ -40,8 +40,8 @@
                     <div class="card-body">
                         <div class="d-md-flex align-items-center">
                             <div>
-                                <h4 class="card-title">Order Analysis</h4>
-                                <h5 class="card-subtitle">Overview of Latest Month</h5>
+                                <h4 class="card-title">Activity Log</h4>
+                                <h5 class="card-subtitle"></h5>
                             </div>
                         </div>
                         <div class="row">

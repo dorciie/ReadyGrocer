@@ -15,6 +15,7 @@ use App\Http\Controllers\ShopItemController;
 use App\Http\Controllers\AnalysisController;
 use App\Http\Controllers\ViewOrderController;
 use App\Http\Controllers\ShopProfileController;
+use App\Http\Controllers\PromotionController;
 use App\Models\customer;
 use Illuminate\Support\Facades\Route;
 
@@ -111,6 +112,8 @@ Route::post('deliver_order',[ViewOrderController::class,'deliverOrder'])->name('
 Route::resource('profile', 'App\Http\Controllers\ShopProfileController')->middleware('ShopisLogged');
 Route::post('password_change',[ShopProfileController::class,'updatePassword'])->middleware('ShopisLogged');
 
-
+//Promotion section
+Route::resource('promotion', 'App\Http\Controllers\PromotionController')->middleware('ShopisLogged');
 //every page lepas login kena letak middleware('ShopisLogged') so bila login as customer tkleh masuk dekat shop
-//\PWA::routes();
+
+// \PWA::routes();

@@ -17,8 +17,8 @@ class CreateShopItemsTable extends Migration
             $table->id();
             $table->string('item_name');
             $table->string('item_brand');
-            $table->dateTime('item_startPromo')->nullable();
-            $table->dateTime('item_endPromo')->nullable();
+            $table->date('item_startPromo')->nullable();
+            $table->date('item_endPromo')->nullable();
             $table->float('item_price')->default(0);
             $table->float('offer_price')->default(0)->nullable();
             $table->float('item_discount')->default(0)->nullable();

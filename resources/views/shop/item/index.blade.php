@@ -176,7 +176,7 @@
         e.preventDefault();
         swal({
             title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover this category!",
+            text: "Once deleted, you will not be able to recover this item!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -184,11 +184,11 @@
         .then((willDelete) => {
             if (willDelete) {
                 form.submit();
-                swal("Poof! This category has been deleted!", {
+                swal("Poof! This item has been deleted!", {
                 icon: "success",
                 });
             } else {
-                swal("This category is not deleted!");
+                swal("This item is not deleted!");
             }
         });
     });

@@ -8,23 +8,23 @@
                         href="{{url('shop/dashboard')}}" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span
                             class="hide-menu">Dashboard</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                        href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-table-large"></i><span
-                            class="hide-menu">Manage item </span></a>
-                    <ul aria-expanded="false" class="collapse  first-level">
-                        <li class="sidebar-item"><a href="{{route('item.index')}}" class="sidebar-link"><i
-                            class="mdi mdi-note-outline"></i><span class="hide-menu"> All Item </span></a></li>
-                        <li class="sidebar-item"><a href="{{route('item.create')}}" class="sidebar-link"><i
-                            class="mdi mdi-note-plus"></i><span class="hide-menu"> Add new Item</span></a></li>
-                    </ul>
-                </li>
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
                     href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-receipt"></i><span
-                        class="hide-menu">Category </span></a>
+                        class="hide-menu">Manage Category </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         <li class="sidebar-item"><a href="{{route('category.index')}}" class="sidebar-link"><i
                             class="mdi mdi-note-outline"></i><span class="hide-menu"> All Category </span></a></li>
                         <li class="sidebar-item"><a href="{{route('category.create')}}" class="sidebar-link"><i
                             class="mdi mdi-note-plus"></i><span class="hide-menu"> Add new Category</span></a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
+                    href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-table-large"></i><span
+                        class="hide-menu">Manage Item </span></a>
+                    <ul aria-expanded="false" class="collapse  first-level">
+                        <li class="sidebar-item"><a href="{{route('item.index')}}" class="sidebar-link"><i
+                            class="mdi mdi-note-outline"></i><span class="hide-menu"> All Item </span></a></li>
+                        <li class="sidebar-item"><a href="{{route('item.create')}}" class="sidebar-link"><i
+                            class="mdi mdi-note-plus"></i><span class="hide-menu"> Add new Item</span></a></li>
                     </ul>
                 </li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -33,6 +33,9 @@
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="{{route('analysis.index')}}" aria-expanded="false"><i class="mdi mdi-chart-bar"></i><span
                             class="hide-menu">Sales Analysis</span></a></li>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                        href="{{route('promotion.index')}}" aria-expanded="false"><i class="mdi mdi-calendar-clock"></i><span
+                            class="hide-menu">Schedule Promotion</span></a></li>
             </ul>
         </nav>
         <!-- End Sidebar navigation -->
