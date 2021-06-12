@@ -47,7 +47,7 @@
                         <span class="text-danger">@error('item_brand'){{ $message }} @enderror</span>
                     </div>
                 </div>
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Start Promotion</label>
                     <div class="col-sm-9">
@@ -62,7 +62,7 @@
                         <input type="datetime-local" class="form-control" name="item_endPromo" value="{{$item->item_endPromo}}">
                         <span class="text-danger">@error('item_endPromo'){{ $message }} @enderror</span>
                     </div>
-                </div>
+                </div> --}}
                 <div class="form-group row">
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Item Price <span class="text-danger">*</span></label>
@@ -89,7 +89,7 @@
                         </div>
                     </div>
                 </div> --}}
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Discount</label>
                     <div class="col-sm-9">
@@ -101,7 +101,7 @@
                         </div>
                         <span class="text-danger">@error('item_discount'){{ $message }} @enderror</span>
                     </div>
-                </div>
+                </div> --}}
                 <div class="form-group row">
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Category <span class="text-danger">*</span></label>

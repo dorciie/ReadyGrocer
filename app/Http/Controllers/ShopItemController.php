@@ -76,10 +76,10 @@ class ShopItemController extends Controller
         $this->validate($request,[
             'item_name'=>'required|string',
             'item_brand'=>'required|string',
-            'item_startPromo'=>'nullable',
-            'item_endPromo'=>'nullable',
+            // 'item_startPromo'=>'nullable',
+            // 'item_endPromo'=>'nullable',
             'item_price'=>'required|numeric',
-            'item_discount'=>'nullable|numeric',
+            // 'item_discount'=>'nullable|numeric',
             'category_id'=>'required|exists:categories,id',
             'item_stock'=>'required|numeric',
             'item_image'=>'required|image|mimes:jpeg,png,jpg,gif,svg',
@@ -101,11 +101,11 @@ class ShopItemController extends Controller
                 ->insert([
                     'item_name'=> $request->item_name,
                     'item_brand'=> $request->item_brand,
-                    'item_startPromo'=> $request->item_startPromo, //
-                    'item_endPromo'=> $request->item_endPromo, //
+                    // 'item_startPromo'=> $request->item_startPromo, //
+                    // 'item_endPromo'=> $request->item_endPromo, //
                     'item_price'=> $request->item_price, //
-                    'offer_price'=> $offer_price, //
-                    'item_discount'=> $request->item_discount, //
+                    // 'offer_price'=> $offer_price, //
+                    // 'item_discount'=> $request->item_discount, //
                     'category_id'=> $request->category_id, //
                     'item_stock'=> $request->item_stock,
                     'item_image'=> $path,
@@ -196,10 +196,10 @@ class ShopItemController extends Controller
             $this->validate($request,[
                 'item_name'=>'required|string',
                 'item_brand'=>'required|string',
-                'item_startPromo'=>'nullable',
-                'item_endPromo'=>'nullable',
+                // 'item_startPromo'=>'nullable',
+                // 'item_endPromo'=>'nullable',
                 'item_price'=>'required|numeric',
-                'item_discount'=>'nullable|numeric',
+                // 'item_discount'=>'nullable|numeric',
                 'category_id'=>'required|exists:categories,id',
                 'item_stock'=>'required|numeric',
                 'item_image'=>'image|mimes:jpeg,png,jpg,gif,svg',
@@ -215,17 +215,17 @@ class ShopItemController extends Controller
            
 
                 $todayDate = date('Y-m-d H:i:s');
-                $offer_price=($request->item_price-(($request->item_price*$request->item_discount)/100));
+                // $offer_price=($request->item_price-(($request->item_price*$request->item_discount)/100));
                 $query = DB::table('shop_items')
                         ->where('id', $id)
                         ->update([
                             'item_name'=> $request->item_name,
                             'item_brand'=> $request->item_brand,
-                            'item_startPromo'=> $request->item_startPromo, //
-                            'item_endPromo'=> $request->item_endPromo, //
+                            // 'item_startPromo'=> $request->item_startPromo, //
+                            // 'item_endPromo'=> $request->item_endPromo, //
                             'item_price'=> $request->item_price, //
-                            'offer_price'=> $offer_price, //
-                            'item_discount'=> $request->item_discount, //
+                            // 'offer_price'=> $offer_price, //
+                            // 'item_discount'=> $request->item_discount, //
                             'category_id'=> $request->category_id, //
                             'item_stock'=> $request->item_stock,
                             'item_image'=> $path,
@@ -249,11 +249,11 @@ class ShopItemController extends Controller
                         ->update([
                             'item_name'=> $request->item_name,
                             'item_brand'=> $request->item_brand,
-                            'item_startPromo'=> $request->item_startPromo, //
-                            'item_endPromo'=> $request->item_endPromo, //
+                            // 'item_startPromo'=> $request->item_startPromo, //
+                            // 'item_endPromo'=> $request->item_endPromo, //
                             'item_price'=> $request->item_price, //
-                            'offer_price'=> $offer_price, //
-                            'item_discount'=> $request->item_discount, //
+                            // 'offer_price'=> $offer_price, //
+                            // 'item_discount'=> $request->item_discount, //
                             'category_id'=> $request->category_id, //
                             'item_stock'=> $request->item_stock,
                             'item_description'=> $request->item_description, //
