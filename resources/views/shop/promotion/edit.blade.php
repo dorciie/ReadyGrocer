@@ -38,14 +38,14 @@
                                 <div class="form-group row">
                                     <label for="fname" class="col-md-3 control-label col-form-label">Start Promotion <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
-                                        <input type="date" class="form-control" name="item_startPromo" value="{{$item->item_startPromo}}">
+                                        <input type="date" class="min-today form-control" id="min" name="item_startPromo" value="{{$item->item_startPromo}}">
                                         <span class="text-danger">@error('item_startPromo'){{ $message }} @enderror</span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="fname" class="col-md-3 control-label col-form-label">End Promotion <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
-                                        <input type="date" class="form-control" name="item_endPromo" value="{{$item->item_endPromo}}">
+                                        <input type="date" class="min-today form-control" id="min" name="item_endPromo" value="{{$item->item_endPromo}}">
                                         <span class="text-danger">@error('item_endPromo'){{ $message }} @enderror</span>
                                     </div>
                                 </div>
@@ -78,5 +78,22 @@
 @endsection
 
 @section('script')
+<script>
+    $(function () {
+            $(document).ready(function () {
 
+                var todaysDate = new Date(); // Gets today's date
+                var year = todaysDate.getFullYear(); // YYYY
+                var month = ("0" + (todaysDate.getMonth() + 1)).slice(-2); // MM
+                var day = ("0" + (todaysDate.getDate()+1)).slice(-2); // DD
+
+                var minDate = (year + "-" + month + "-" +
+                day); // Results in "YYYY-MM-DD" for today's date 
+
+                // Now to set the max date value for the calendar to be today's date
+                $('[type="date"].min-today').attr('min', minDate);
+
+            });
+        });
+</script>
 @endsection

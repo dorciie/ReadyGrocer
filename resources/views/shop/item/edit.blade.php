@@ -47,22 +47,6 @@
                         <span class="text-danger">@error('item_brand'){{ $message }} @enderror</span>
                     </div>
                 </div>
-                {{-- <div class="form-group row">
-                    <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Start Promotion</label>
-                    <div class="col-sm-9">
-                        <input type="datetime-local" class="form-control" name="item_startPromo" value="{{$item->item_startPromo}}">
-                        <span class="text-danger">@error('item_startPromo'){{ $message }} @enderror</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">End Promotion</label>
-                    <div class="col-sm-9">
-                        <input type="datetime-local" class="form-control" name="item_endPromo" value="{{$item->item_endPromo}}">
-                        <span class="text-danger">@error('item_endPromo'){{ $message }} @enderror</span>
-                    </div>
-                </div> --}}
                 <div class="form-group row">
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Item Price <span class="text-danger">*</span></label>
@@ -76,32 +60,6 @@
                         <span class="text-danger">@error('item_price'){{ $message }} @enderror</span>
                     </div>
                 </div>
-                {{-- <div class="form-group row">
-                    <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Offer Price</label>
-                    <div class="col-sm-9">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">RM</span>
-                            </div>
-                            <input type="number" class="form-control" name="offer_price" value="{{$item->offer_price}}">
-                            <span class="text-danger">@error('offer_price'){{ $message }} @enderror</span>
-                        </div>
-                    </div>
-                </div> --}}
-                {{-- <div class="form-group row">
-                    <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Discount</label>
-                    <div class="col-sm-9">
-                        <div class="input-group">
-                            <input type="number" step="any"  min="0" max="100" class="form-control" name="item_discount" value="{{$item->item_discount}}">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">%</span>
-                            </div>
-                        </div>
-                        <span class="text-danger">@error('item_discount'){{ $message }} @enderror</span>
-                    </div>
-                </div> --}}
                 <div class="form-group row">
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Category <span class="text-danger">*</span></label>
@@ -142,7 +100,6 @@
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Description</label>
                     <div class="col-sm-9">
-                        {{-- <textarea class="form-control" name="item_description" value="{{$item->item_description}}"></textarea> --}}
                         <input type="text" class="form-control" name="item_description" value="{{$item->item_description}}">
                         <span class="text-danger">@error('item_description'){{ $message }} @enderror</span>
                     </div>
@@ -154,18 +111,6 @@
                         <input type="text" class="form-control" name="item_size" value="{{$item->item_size}}">
                         <span class="text-danger">@error('item_size'){{ $message }} @enderror</span>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Status <span class="text-danger">*</span></label>
-                        <div class="col-sm-9">
-                            <select name="item_status" class="form-select shadow-none">
-                                <option value="">----status----</option>
-                                <option value="active" {{$item->item_status=='active'?'selected':''}}>Active</option>
-                                <option value="inactive"{{$item->item_status=='inactive'?'selected':''}}>Inactive</option>
-                            </select>
-                            <span class="text-danger">@error('item_status'){{ $message }} @enderror</span>
-                        </div>
                 </div>
             </div>
             <div class="border-top">

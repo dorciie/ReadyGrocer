@@ -54,14 +54,6 @@
                         </tr>
                         @endforeach
                     </tbody>
-                    {{-- <tfoot>
-                        <tr>
-                            <th>Number</th>
-                            <th>Category Name</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot> --}}
                 </table>
             </div>
         </div>

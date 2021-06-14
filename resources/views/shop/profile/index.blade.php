@@ -2,33 +2,6 @@
 
 @section('content')
 
-{{-- <div class="row" style="margin-top:45px">
-    <div class="col-md-6 col-md-offset-3">
-        <h4>Profile page</h4>
-        <hr>
-        <table class="table table-hover">
-            <thead>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Logout</th>
-            </thead>
-            <tbody>
-                <td>{{$LoggedShopInfo->name}}</td>
-                <td>{{$LoggedShopInfo->email}}</td>
-                <td><a href="shoplogout">Logout</a></td>
-            </tbody>
-        </table>
-    </div>
-</div> --}}
-{{-- <div class="ms-auto text-end">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{url('shop/dashboard')}}">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">All Item</li>
-        </ol>
-    </nav>
-</div> --}}
-
 <div class="container-fluid">
     <div style="text-align: right;">
         <a class="btn btn-primary" href="{{route('profile.show',$shopOwner->id)}}"><i class="fas fa-edit"></i> Change password</a>

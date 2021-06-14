@@ -62,22 +62,6 @@
                         <span class="text-danger">@error('shopName'){{ $message }} @enderror</span>
                     </div>
                 </div>
-                {{-- <div class="form-group row">
-                    <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Email <span class="text-danger">*</span></label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" name="email" value="{{$shopOwner->email}}">
-                        <span class="text-danger">@error('email'){{ $message }} @enderror</span>
-                    </div>
-                </div> --}}
-                {{-- <div class="form-group row">
-                    <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Address <span class="text-danger">*</span></label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" name="address" value="{{$shopOwner->address}}">
-                        <span class="text-danger">@error('address'){{ $message }} @enderror</span>
-                    </div>
-                </div> --}}
 
                 <div class="form-group row">
                     <label for="fname"

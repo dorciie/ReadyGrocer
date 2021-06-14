@@ -65,8 +65,8 @@ class PromotionController extends Controller
     {
         // return $request->all();
         $this->validate($request,[
-            'item_startPromo'=>'required',
-            'item_endPromo'=>'required',
+            'item_startPromo'=>'required|before:item_endPromo',
+            'item_endPromo'=>'required|after:item_startPromo',
             'item_discount'=>'required|numeric',
         ]);
 
@@ -152,8 +152,8 @@ class PromotionController extends Controller
         $item=ShopItem::find($id);
         if($item){
             $this->validate($request,[
-                'item_startPromo'=>'required',
-                'item_endPromo'=>'required',
+                'item_startPromo'=>'required|before:item_endPromo',
+                'item_endPromo'=>'required|after:item_startPromo',
                 'item_discount'=>'required|numeric'
             ]);
                 $todayDate = date('Y-m-d H:i:s');

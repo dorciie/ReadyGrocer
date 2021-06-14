@@ -35,15 +35,6 @@ class ShopItemController extends Controller
         return view('shop.item.index',$data, compact('shopItem'));
     }
 
-    // public function itemStatus(Request $request){
-    //     if($request->mode=='true'){
-    //         DB::table('shop_items')->where('id',$request->id)->update(['status'=>'active']);
-    //     }else{
-    //         DB::table('shop_items')->where('id',$request->id)->update(['status'=>'inactive']);
-    //     }
-    //     return response()->json(['msg'=>'successfully update status','status'=>true]);
-    // }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -70,25 +61,18 @@ class ShopItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //'profile_image'     =>  'required|image|mimes:jpeg,png,jpg,gif|max:2048'
-        
+    {        
         $this->validate($request,[
             'item_name'=>'required|string',
             'item_brand'=>'required|string',
-            // 'item_startPromo'=>'nullable',
-            // 'item_endPromo'=>'nullable',
             'item_price'=>'required|numeric',
-            // 'item_discount'=>'nullable|numeric',
             'category_id'=>'required|exists:categories,id',
             'item_stock'=>'required|numeric',
             'item_image'=>'required|image|mimes:jpeg,png,jpg,gif,svg',
             'item_description'=>'nullable|string',
             'item_size'=>'required',
-            'item_status'=>'required|in:active,inactive',
         ]);
 
-        $offer_price=($request->item_price-(($request->item_price*$request->item_discount)/100));
         $shopOwner = DB::table('shop_owners')
         ->where('id', session('LoggedShop'))
         ->first();
@@ -101,22 +85,16 @@ class ShopItemController extends Controller
                 ->insert([
                     'item_name'=> $request->item_name,
                     'item_brand'=> $request->item_brand,
-                    // 'item_startPromo'=> $request->item_startPromo, //
-                    // 'item_endPromo'=> $request->item_endPromo, //
                     'item_price'=> $request->item_price, //
-                    // 'offer_price'=> $offer_price, //
-                    // 'item_discount'=> $request->item_discount, //
                     'category_id'=> $request->category_id, //
                     'item_stock'=> $request->item_stock,
                     'item_image'=> $path,
                     'item_description'=> $request->item_description, //
                     'item_size'=> $request->item_size, //
-                    'item_status'=> $request->item_status,
                     'created_at'=> $todayDate,
                     'updated_at'=> $todayDate,
                     'shop_id'=>$shopOwner->id
                 ]);
-                // return $data;
         if($query){
             return redirect()->route('item.index')->with('success','Successfully add new item');
         }else{
@@ -136,23 +114,7 @@ class ShopItemController extends Controller
      */
     public function show($id)
     {
-        // if(session()->has('LoggedShop')){
-        //     $shopOwner = DB::table('shop_owners')
-        //     ->where('id', session('LoggedShop'))
-        //     ->first();
-
-        //     $data = [
-        //         'LoggedShopInfo'=> $shopOwner
-        //     ];
-        // }
-        
-        // $shopItem=ShopItem::find($id)
-        // ->where('shop_id',$shopOwner->id);
-        // if($shopItem){
-        //     return view('shop.item.view',$data,compact('shopItem'));
-        // }else{
-        //     return back()->with('error','Data not found');
-        // }
+        //
     }
 
     /**
@@ -196,76 +158,107 @@ class ShopItemController extends Controller
             $this->validate($request,[
                 'item_name'=>'required|string',
                 'item_brand'=>'required|string',
-                // 'item_startPromo'=>'nullable',
-                // 'item_endPromo'=>'nullable',
                 'item_price'=>'required|numeric',
-                // 'item_discount'=>'nullable|numeric',
                 'category_id'=>'required|exists:categories,id',
                 'item_stock'=>'required|numeric',
                 'item_image'=>'image|mimes:jpeg,png,jpg,gif,svg',
                 'item_description'=>'nullable|string',
                 'item_size'=>'required',
-                'item_status'=>'required|in:active,inactive',
             ]);
 
             if ($request->hasFile('item_image')) {
-                Storage::delete('/public/'.$item->item_image);       
-                $path = $request->item_image->store('item', 'public');
-                // $item->item_image= $path;
-           
+                if($item->item_discount !=NULL){
+                    Storage::delete('/public/'.$item->item_image);       
+                    $path = $request->item_image->store('item', 'public');
 
-                $todayDate = date('Y-m-d H:i:s');
-                // $offer_price=($request->item_price-(($request->item_price*$request->item_discount)/100));
-                $query = DB::table('shop_items')
-                        ->where('id', $id)
-                        ->update([
-                            'item_name'=> $request->item_name,
-                            'item_brand'=> $request->item_brand,
-                            // 'item_startPromo'=> $request->item_startPromo, //
-                            // 'item_endPromo'=> $request->item_endPromo, //
-                            'item_price'=> $request->item_price, //
-                            // 'offer_price'=> $offer_price, //
-                            // 'item_discount'=> $request->item_discount, //
-                            'category_id'=> $request->category_id, //
-                            'item_stock'=> $request->item_stock,
-                            'item_image'=> $path,
-                            'item_description'=> $request->item_description, //
-                            'item_size'=> $request->item_size, //
-                            'item_status'=> $request->item_status,
-                            'updated_at'=> $todayDate
-                        ]);
-        
-                if($query){
-                    return redirect()->route('item.index')->with('success','Successfully updated item');
-                }else{
-                    return back()->with('error','Something went wrong');
+                    $offer_price=($request->item_price-(($request->item_price*$item->item_discount)/100));
+
+                    $todayDate = date('Y-m-d H:i:s');
+                    $query = DB::table('shop_items')
+                            ->where('id', $id)
+                            ->update([
+                                'item_name'=> $request->item_name,
+                                'item_brand'=> $request->item_brand,
+                                'item_price'=> $request->item_price, //
+                                'offer_price'=> $offer_price, //
+                                'category_id'=> $request->category_id, //
+                                'item_stock'=> $request->item_stock,
+                                'item_image'=> $path,
+                                'item_description'=> $request->item_description, //
+                                'item_size'=> $request->item_size, //
+                                'updated_at'=> $todayDate
+                            ]);
+            
+                    if($query){
+                        return redirect()->route('item.index')->with('success','Successfully updated item');
+                    }else{
+                        return back()->with('error','Something went wrong');
+                    }
+                }
+                else{
+                    $todayDate = date('Y-m-d H:i:s');
+                    $query = DB::table('shop_items')
+                            ->where('id', $id)
+                            ->update([
+                                'item_name'=> $request->item_name,
+                                'item_brand'=> $request->item_brand,
+                                'item_price'=> $request->item_price, //
+                                'category_id'=> $request->category_id, //
+                                'item_stock'=> $request->item_stock,
+                                'item_description'=> $request->item_description, //
+                                'item_size'=> $request->item_size, //
+                                'updated_at'=> $todayDate
+                            ]);
+                            if($query){
+                                return redirect()->route('item.index')->with('success','Successfully updated item');
+                            }else{
+                                return back()->with('error','Something went wrong');
+                            }
                 }
 
             }else{
-                $todayDate = date('Y-m-d H:i:s');
-                $offer_price=($request->item_price-(($request->item_price*$request->item_discount)/100));
-                $query = DB::table('shop_items')
-                        ->where('id', $id)
-                        ->update([
-                            'item_name'=> $request->item_name,
-                            'item_brand'=> $request->item_brand,
-                            // 'item_startPromo'=> $request->item_startPromo, //
-                            // 'item_endPromo'=> $request->item_endPromo, //
-                            'item_price'=> $request->item_price, //
-                            // 'offer_price'=> $offer_price, //
-                            // 'item_discount'=> $request->item_discount, //
-                            'category_id'=> $request->category_id, //
-                            'item_stock'=> $request->item_stock,
-                            'item_description'=> $request->item_description, //
-                            'item_size'=> $request->item_size, //
-                            'item_status'=> $request->item_status,
-                            'updated_at'=> $todayDate
-                        ]);
-                        if($query){
-                            return redirect()->route('item.index')->with('success','Successfully updated item');
-                        }else{
-                            return back()->with('error','Something went wrong');
-                        }
+                if($item->item_discount !=NULL){
+                    $todayDate = date('Y-m-d H:i:s');
+                    $offer_price=($request->item_price-(($request->item_price*$item->item_discount)/100));
+                    $query = DB::table('shop_items')
+                            ->where('id', $id)
+                            ->update([
+                                'item_name'=> $request->item_name,
+                                'item_brand'=> $request->item_brand,
+                                'item_price'=> $request->item_price, //
+                                'offer_price'=> $offer_price, //
+                                'category_id'=> $request->category_id, //
+                                'item_stock'=> $request->item_stock,
+                                'item_description'=> $request->item_description, //
+                                'item_size'=> $request->item_size, //
+                                'updated_at'=> $todayDate
+                            ]);
+                            if($query){
+                                return redirect()->route('item.index')->with('success','Successfully updated item');
+                            }else{
+                                return back()->with('error','Something went wrong');
+                            }
+                    }
+                    else{
+                        $todayDate = date('Y-m-d H:i:s');
+                        $query = DB::table('shop_items')
+                                ->where('id', $id)
+                                ->update([
+                                    'item_name'=> $request->item_name,
+                                    'item_brand'=> $request->item_brand,
+                                    'item_price'=> $request->item_price, //
+                                    'category_id'=> $request->category_id, //
+                                    'item_stock'=> $request->item_stock,
+                                    'item_description'=> $request->item_description, //
+                                    'item_size'=> $request->item_size, //
+                                    'updated_at'=> $todayDate
+                                ]);
+                                if($query){
+                                    return redirect()->route('item.index')->with('success','Successfully updated item');
+                                }else{
+                                    return back()->with('error','Something went wrong');
+                                }
+                    }
 
             }
         
@@ -286,6 +279,7 @@ class ShopItemController extends Controller
         if($item){
             $status = $item->delete();
             if($status){
+                Storage::delete('/public/'.$item->item_image); 
                 return redirect()->route('item.index')->with('success','Successfully delete the item');
             }
             else{
