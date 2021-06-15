@@ -8,6 +8,7 @@ use App\Models\ShopItem;
 use App\Models\Customer;
 use App\Models\GroceryCart;
 use App\Models\GroceryList;
+use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 
 
@@ -24,16 +25,15 @@ class GroceryCartController extends Controller
     }
     public function cart(Request $request,$itemID)
     {
+        $item = ShopItem::where('id',$itemID)->first();
+        $qty=$item->item_stock;
         $this->validate($request,[
-            'item_quantity'=>'required',
+            'item_quantity'=>'required|numeric|max:'.$qty,
         ]);
 
         if(session()->has('LoggedCustomer')){
             $customer = customer::where('id', session('LoggedCustomer'))
             ->first();}
-
-        $item = ShopItem::where('id', $itemID)
-        ->first();
         
 
         if (GroceryCart::where('item_id', $item->id)->where('customer_id', $customer->id)->exists()) {
@@ -56,7 +56,11 @@ class GroceryCartController extends Controller
 
     public function cart2($itemID)
     {
-        
+        // $item = ShopItem::where('id',$itemID)->first();
+        // $qty=$item->item_stock;
+        // $this->validate($request,[
+        //     'item_quantity'=>'required|numeric|max:'.$qty,
+        // ]);
 
         if(session()->has('LoggedCustomer')){
             $customer = customer::where('id', session('LoggedCustomer'))
@@ -64,10 +68,13 @@ class GroceryCartController extends Controller
 
         $item = ShopItem::where('id', $itemID)
         ->first();
+        $qty=$item->item_stock;
         $list = GroceryList::where('item_id', $itemID)
         ->first();
         
-
+        if(($list->item_quantity)>$qty){
+            return back()->with('error','Item quantity is over item stock');
+        }
         if (GroceryCart::where('item_id', $item->id)->where('customer_id', $customer->id)->exists()) {
             
               return back()->with('error','already exits in your Grocery Cart');
@@ -162,10 +169,29 @@ class GroceryCartController extends Controller
     }
     
     public function checkout(Request $request){
+        $customer = customer::where('id', session('LoggedCustomer'))
+        ->first();
+
+        $createOrder = new Order;
+        $createOrder->payment =$request->payment;
+        $createOrder->customer_id=$customer->id;
+        $createOrder->shop_id=$customer->fav_shop;
+        $createOrder->total_price = $request->totalPrice;
+        $createOrder->status = 'pending delivery';
+        if($request->delivery ==='deliveryLater'){
+            $createOrder->checkOutDelivery = $request->deliveryDT;
+            
+        }else{
+            $createOrder->checkOutDelivery = now(); 
+        }
+        
+        $createOrder->save();
+
          $update = GroceryCart::where('customer_id',session('LoggedCustomer'))
         ->update([
             'checkout' => 'true',
             'payment' => $request->payment,
+            'order_id'=> $createOrder->id,
             ]);
             
             if($update){

@@ -55,6 +55,11 @@
                         {{Session::get('error')}}
                     </div>
                     @endif
+                    @error('item_quantity')
+                    <span class="invalid-feedback" role="alert">
+                     <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
                     @foreach($items as $item)
                     <div class="col-md-4">
                         <div class="profile-img">
@@ -88,11 +93,12 @@
 
                         </div>
                     </div>
-                    
+                    <br>
                     <div class="col-md-8">
 
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <br>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Item Id</label>
@@ -114,17 +120,17 @@
                                         <label>Price</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>{{$item->item_price}} </p>
+                                        <p><s>{{$item->item_price}}</s>&nbsp&nbsp{{$item->offer_price}}</p>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-md-6">
                                         <label>Promo price</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>{{$item->offer_price}}</p>
+                                      
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Description</label>

@@ -113,8 +113,31 @@
                                             </div>
                                             <!-- <div id="googleMap" style="width:100%;height:400px;"></div> -->
                                         </div><br>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-info btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Fave
+</button>
 
-                                        <button type="submit" class="btn btn-info btn-lg">Fave</button>
+<!-- Modal -->
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Change Favorite Shop</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                If you change your favourite shop, you will lose your grocery cart items :(<br>
+                                                Are you sure?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-info btn-lg">Fave</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <!-- <button type="submit" class="btn btn-info btn-lg">Fave</button> -->
                                     </div>
                                 </div>
                             </div>

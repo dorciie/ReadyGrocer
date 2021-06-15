@@ -60,7 +60,7 @@
                             <button type="submit" class="btn btn-block btn-primary">Login</button>
                         </div>
                         <br>
-                        <a href="{{route('register')}}">Create a new Account</a>
+                        <a href="{{route('registerShop')}}">Create a new Account</a>
                     </form>
                 </div>
             </div>

@@ -19,9 +19,7 @@ class RegisterController extends Controller
      */
     public function index(Request $request)
     {
-        
-        if(Str::contains($request->status,'shop')){
-            $request->validate([
+                $request->validate([
                 'name'=>'required',
                 'email'=>'required|email|unique:shop_owners',
                 'shopName'=>'required',
@@ -40,41 +38,16 @@ class RegisterController extends Controller
             $newShop->address_longitude=$request->address_longitude;
 
             $query = $newShop->save();
-
-           
-            // return redirect('profile');
-            // return("shop");
-            $this->sendEmailShop($newShop);
-            return view('shop/auth/verification')->with('success','You have been successfully registered');
-        
-        }
-        else{
-            $request->validate([
-                'name'=>'required',
-                'email'=>'required|email|unique:shop_owners',
-                'address'=>'required',
-                'password'=>'required|min:5|max:12'
-                
-            ]);
-            $newCust = new customer;
-            $newCust->name=$request->name;
-            $newCust->email=$request->email;
-            $newCust->address=$request->address;
-            $newCust->password=Hash::make($request->password);
-            $newCust->address_latitude=$request->address_latitude;
-            $newCust->address_longitude=$request->address_longitude;
-            $query = $newCust->save();
-    
             
-            $this->sendEmail($newCust);
-            return view('customer/auth/verification')->with('success','Please Verify Email before Proceeding');
+            $this->sendEmailShop($newShop);
+            return view('shop/auth/verification')->with('success','Please Verify Email before Proceeding');
+      
 
         }
 
-        return ;
-    }
 
     public function sendEmail($customer){
+
         Mail::send(
             'customer.auth.verifyEmail',
             ['customer'=> $customer],
@@ -83,6 +56,23 @@ class RegisterController extends Controller
                 $message->subject("$customer->name, Verify Your Email");
             }
         );
+    }
+    public function resendEmail($custID){
+        $customer = customer::where('id',$custID)
+        ->first();
+        Mail::send(
+            'customer.auth.verifyEmail',
+            ['customer'=> $customer],
+            function($message) use ($customer){
+                $message->to($customer->email);
+                $message->subject("$customer->name, Verify Your Email");
+            }
+        );
+        $data = [
+            'LoggedCustomerInfo'=> $customer
+        ];
+        return view('customer/auth/verification')->with('success','Please Verify Email before Proceeding')->with('cust',$data);
+
     }
 
     public function sendEmailShop($shop){
@@ -95,6 +85,24 @@ class RegisterController extends Controller
             }
         );
     }
+
+    public function resendEmailShop($shopID){
+        $shopOwner = shopOwner::where('id',$custID)
+        ->first();
+        Mail::send(
+            'customer.auth.verifyEmail',
+            ['customer'=> $customer],
+            function($message) use ($customer){
+                $message->to($customer->email);
+                $message->subject("$customer->name, Verify Your Email");
+            }
+        );
+        $data = [
+            'LoggedShopInfo'=> $shopOwner
+        ];
+        return view('customer/auth/verification')->with('success','Please Verify Email before Proceeding')->with('shop',$data);
+
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -102,26 +110,35 @@ class RegisterController extends Controller
      */
     public function create()
     {
-        //
+       
+        return view('customer.auth.registerCust');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'=>'required',
+            'email'=>'required|email|unique:shop_owners',
+            'address'=>'required',
+            'password'=>'required|min:5|max:12'
+            
+        ]);
+        $newCust = new customer;
+        $newCust->name=$request->name;
+        $newCust->email=$request->email;
+        $newCust->address=$request->address;
+        $newCust->password=Hash::make($request->password);
+        $newCust->address_latitude=$request->address_latitude;
+        $newCust->address_longitude=$request->address_longitude;
+        $query = $newCust->save();
+
+        
+        $this->sendEmail($newCust);
+        $info =customer::where('email',$request->email)->get();
+        return view('customer/auth/verification')->with('success','Please Verify Email before Proceeding')->with('cust',$info);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         $update = shopOwner::where('id',$id)
@@ -143,7 +160,7 @@ class RegisterController extends Controller
         ->update([
             'is_verified' => 'true'
             ]);
-     return redirect('customer/custLogin')->with('success','You have been successfully registered');
+        return redirect('customer/custLogin')->with('success','You have been successfully registered');
 
     }
 

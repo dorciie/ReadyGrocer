@@ -39,7 +39,12 @@ Route::get('/test', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::post('RegisterController','App\Http\Controllers\RegisterController@index');
+// Route::post('RegisterController','App\Http\Controllers\RegisterController@index');
+Route::resource('register', 'App\Http\Controllers\RegisterController');
+Route::get('/registerShop', function () {return view('shop.auth.registerShop');})->name('registerShop');
+Route::get('resendEmailCust/{custID}', [RegisterController::class, 'resendEmail'])->name('resendEmailCust');
+Route::get('resendEmailShop/{shopID}', [RegisterController::class, 'resendEmailShop'])->name('resendEmailShop');
+
 Route::get('verified/{custID}', [RegisterController::class, 'edit'])->name('verified');
 Route::post('verified/{custID}', [RegisterController::class, 'edit'])->name('verified');
 
@@ -73,6 +78,8 @@ Route::get('updateList2/{itemID}', [GroceryListController::class,'update'])->nam
 Route::get('addItemList/{itemID}', [GroceryListController::class,'index'])->name('addItemList');
 
 Route::resource('custProfile', 'App\Http\Controllers\custProfileController')->middleware('isLogged');
+
+Route::resource('custOrder', 'App\Http\Controllers\CustOrderController')->middleware('isLogged');
 
 
 

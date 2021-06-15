@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Order;
 
 use Illuminate\Http\Request;
-use App\Models\customer;
 
-class custProfileController extends Controller
+class CustOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class custProfileController extends Controller
      */
     public function index()
     {
-        $info = customer::all()->where('id',session('LoggedCustomer'));
-        return view('customer.profile.custProfile')->with('info',$info);
+        $order = order::where('customer_id', session('LoggedCustomer'))->get();
+        return view('customer.order.orders')->with('order',$order);
     }
 
     /**
@@ -25,9 +25,7 @@ class custProfileController extends Controller
      */
     public function create()
     {
-        $info = customer::all()->where('id',session('LoggedCustomer'));
-
-        return view('customer.profile.editProfile')->with('info',$info);
+        //
     }
 
     /**
@@ -38,18 +36,7 @@ class custProfileController extends Controller
      */
     public function store(Request $request)
     {
-        $update = customer::where('id',session('LoggedCustomer'))
-        ->update([
-            'email' => $request->email,
-            'address' => $request->address,
-            'address_latitude' => $request->address_latitude,
-            'address_longitude' => $request->address_longitude,
-            'dtdelivery' => $request->dtdelivery,
-            'autoDelivery' =>$request->autoDelivery
-            ]);
-            $info = customer::all()->where('id',session('LoggedCustomer'));
-         return view('customer.profile.custProfile')->with('success','Profile Successfully Updated!')->with('info',$info);
-
+        //
     }
 
     /**

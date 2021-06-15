@@ -1,14 +1,18 @@
 @extends('customer.layouts.master')
 
 
-@section('title')
-@endsection
 
 @section('content')
 
 <div class="row">
     <div class="col-12">
         <div class="card">
+        @if(!empty($success))
+                                    <div class="alert alert-success">
+                                        {{$success}}
+                                    </div>
+                                   
+                                    @endif
             <div class="card-body">
             @foreach($info as $info)
                 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -19,7 +23,6 @@
                     
                     <div class="col-md-4">
                         <div class="profile-img">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -29,7 +32,7 @@
                             </h5>                           
 
                             <p class="proile-rating">Fav Shop : <span> {{\App\Models\shopOwner::where('id',$info->fav_shop)->value('shopName')}}</span></p>
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                           <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <p class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</p>
                                 </li>
@@ -44,7 +47,7 @@
                         
                     </div>
                     <div class="col-md-8">
-
+<br> 
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="col-md-8">
                                 <div class="card mb-3">
@@ -95,17 +98,26 @@
                                         <hr>
                                         <div class="row">
                                             <div class="col-sm-3">
+                                                <h6 class="mb-0">Automated Delivery</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                            {{$info->autoDelivery}}
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
                                                 <h6 class="mb-0">Date & Time Automated Checkout</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
-                                                friday , 5pm
+                                            {{$info->dtdelivery}}
                                             </div>
                                         </div>
                                        
                                         <hr>
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <button type="button" class="btn btn-outline-primary">Edit</button>
+                                                <a type="button" class="btn btn-outline-primary" href="{{route('custProfile.create')}}">Edit</a>
                                                 <a class="btn btn-outline-danger" href="" role="button">Delete</a>
                                             </div>
 

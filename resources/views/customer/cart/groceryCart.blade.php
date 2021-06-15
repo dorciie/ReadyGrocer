@@ -45,11 +45,11 @@
 
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Item ID</th>
+                        <th scope="col">Item Name</th>
                         <th scope="col">Item Price(RM)</th>
                         <th scope="col">Item Quantity</th>
-                        <th scope="col">Total Price(RM)</th>
                         <th scope="col">Item Brand</th>
+                        <th scope="col">Total Price(RM)</th>
                         <th scope="col"></th>
                     </tr>
 
@@ -60,11 +60,11 @@
 
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
-                        <td>{{$info->id}}</td>
-                        <td>{{number_format((float)$info->item_price, 2, '.', '')}}</td>
+                        <td>{{$info->item_name}}</td>
+                        <td><s>{{number_format((float)$info->item_price, 2, '.', '')}}</s>&nbsp&nbsp&nbsp{{number_format((float)$info->offer_price, 2, '.', '')}}</td>
                         <td>{{$info->item_quantity}}</td>
-                        <td>{{number_format((float)$info->total_price, 2, '.', '')}}</td>
                         <td>{{$info->item_brand}}</td>
+                        <td>{{number_format((float)$info->total_price, 2, '.', '')}}</td>
                         <div style="display: none">{{$total += $info->total_price}}</div>
                         <td><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#updateItem{{$info->id}}">Edit Item</a></td>
 
@@ -113,12 +113,22 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>{{number_format((float)$total, 2, '.', '')}}</td>
-                        <td> <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkoutcart">Check Out Now</button></td>
+                        <td>6% SST : </td>
+                        <td>{{number_format((float)$total *0.06, 2, '.', '')}}</td>
+                        <div style="display: none">{{$total = $total + $total *0.06}}</div>
+                        <td></td>
                     </tr>
                     @endif
                     @endforeach
-
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Automated Checkout At :</td>
+                        <td>{{\App\Models\customer::where('id',35)->value('dtdelivery')}}</td>
+                        <td>{{number_format((float)$total, 2, '.', '')}}</td>
+                        <td> <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkoutcart">Check Out Now</button></td>
+                    </tr>
                 </tbody>
             </table>
             <div class="modal fade" id="checkoutcart" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -130,13 +140,23 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
+                                    @if($total==0)
 
+                                        <div class="row">
+                                    <div class="col-md-6">
+                                    There is no item in your cart :(
+                                    </div>
+                                    </div>
+                                    
+                                    @else
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Total Price(RM)</label>
                                     </div>
                                     <div class="col-md-6">
                                         <p>{{number_format((float)$total, 2, '.', '')}}</p>
+                                        <input type="hidden" name="totalPrice" id="totalPrice" value="{{$total}}" />
+
                                     </div>
                                 </div>
                                 <div class="row">
@@ -144,14 +164,29 @@
                                         <label>Delivery Time</label>
                                     </div>
                                     <div class="col-md-6">
-                                   <p> 
-                                   <?php
+                                        <div class="form-group">
+                                       
+                                        <input type="radio" name="delivery"  value="deliveryNow"/>&nbspDeliveryNow<br>
+                                        <?php
                                         date_default_timezone_set("Asia/Kuala_Lumpur");
                                         echo  date(('Y-m-d H:i:s') );
-                                        ?>
-                                        </p>
+                                        ?><br><br>
+                                        <input type="radio" name="delivery" value="deliveryLater"/>&nbspDeliveryLater
+                                        <input type="datetime-local" class="form-control"  name="deliveryDT" >
+                                        
+                                     
+                                        </div>
+                                        <!-- <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="delivery" id="flexRadioDefault2" >
+                                        <label class="form-check-label" for="flexRadioDefault2" value="deliveryLater">
+                                            Delivery Later
+                                        </label>
+                                        <input type="datetime-local" class="form-control"  name="deliveryDT" >
+
+                                        </div> -->
+                                    
                                     </div>
-                                </div>
+                                </div><br>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Payment via</label>
@@ -170,7 +205,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                     <button type="submit" class="btn btn-info btn-lg">Confirm</button>
-                                </div>
+                                </div>@endif
                         </form>
                     </div>
                 </div>

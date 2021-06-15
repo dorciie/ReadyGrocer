@@ -20,11 +20,11 @@ class CreateShopItemsTable extends Migration
             $table->dateTime('item_startPromo')->nullable();
             $table->dateTime('item_endPromo')->nullable();
             $table->float('item_price')->default(0);
-            $table->float('offer_price')->default(0)->nullable();
-            $table->float('item_discount')->default(0)->nullable();
+            $table->float('offer_price')->default(0);
+            $table->float('item_discount')->default(0);
             $table->integer('item_stock');
             $table->string('item_image');
-            $table->longText('item_description')->nullable();
+            $table->longText('item_description');
             $table->string('item_size');
             $table->enum('item_status',['active','inactive'])->default('active');
             $table->unsignedBigInteger('category_id');

@@ -78,18 +78,22 @@ class custDashboardController extends Controller
         ->where('customer_id', session('LoggedCustomer'))
         ->select('grocery_lists.id AS id','shop_items.id AS item_id','grocery_lists.item_quantity AS item_quantity','grocery_lists.item_frequency AS item_frequency', 'grocery_lists.shop_id AS shop_id','shop_items.item_name AS item_name','shop_items.item_brand AS item_brand','shop_items.item_price AS item_price','shop_items.item_description AS item_description','shop_items.category_id AS category_id')
         ->get();
+       
 
         return view('customer.GroceryList.GroceryList')->with('list',$list);
     }
 
     public function cart()
     {
-      
+        $customer = customer::where('id', session('LoggedCustomer'))->first();
+        
+        
         $info = DB::table('grocery_carts')
         ->join('shop_items','grocery_carts.item_id','=','shop_items.id')
         ->where('customer_id', session('LoggedCustomer'))
         ->where('checkout','false')
-        ->select('grocery_carts.id AS id','grocery_carts.item_quantity AS item_quantity', 'grocery_carts.shop_id AS shop_id','grocery_carts.total_price AS total_price','shop_items.item_brand AS item_brand','shop_items.item_price AS item_price','shop_items.item_name AS item_name')
+        ->where('grocery_carts.shop_id',$customer->fav_shop)
+        ->select('grocery_carts.id AS id','grocery_carts.item_quantity AS item_quantity', 'grocery_carts.shop_id AS shop_id','grocery_carts.total_price AS total_price','shop_items.item_brand AS item_brand','shop_items.item_price AS item_price','shop_items.offer_price AS offer_price','shop_items.item_name AS item_name')
         ->get();
         return view('customer.cart.groceryCart')->with('info',$info);
     }
