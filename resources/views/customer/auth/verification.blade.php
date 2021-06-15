@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Verify Email</title>
+        <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/logoRG.png')}}">
+
         <link rel="stylesheet" href="{{asset('bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css')}}">
     </head>
     <body>
@@ -28,7 +30,9 @@
                                         </div>
                             @endif
                             <div>
-                            <a href="">Resend Verification email</a>
+                            @foreach($cust as $cust)
+                            <a href="{{ route('resendEmailCust',['custID' => $cust->id]) }}">Resend Verification email</a>
+                             @endforeach
                             </div>
                                 
                         </div>

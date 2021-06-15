@@ -17,13 +17,14 @@ class custShopController extends Controller
      */
     public function index()
     {
-        if(session()->has('LoggedCustomer')){
-        $customer = customer::where('id', session('LoggedCustomer'))
-        ->first();}
         
-        $shops = shopOwner::all()->toArray();
+        $customer = customer::where('id', session('LoggedCustomer'))->first();
+        $data = [
+            'LoggedCustomerInfo'=> $customer
+        ];
+        $shops = shopOwner::all();
 
-        return view('customer.shop.tables',compact('shops'))->with('custID',$customer);
+        return view('customer.shop.tables')->with('shops',$shops)->with('cust',$data);
     }
 
     public function shopdetails($shopID)
