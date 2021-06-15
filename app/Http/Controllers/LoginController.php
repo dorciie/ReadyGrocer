@@ -40,7 +40,7 @@ class LoginController extends Controller
                     $request->session()->put('LoggedShop', $shopOwner->id);
                     return redirect('shop/dashboard');
                 }else{
-                    return back()->with('fail', 'Your account is not verified yet. Click <a href="">here</a> to resend verification email')->withInput();
+                    return back()->with('fail', 'Your account is not verified yet. Click <a href="'.route('resendEmailShop',['shopID' => $shopOwner->id]).'">here</a> to resend verification email')->withInput();
                 }
             } else {
                 return back()->with('fail', 'Invalid password')->withInput();
@@ -77,7 +77,7 @@ class LoginController extends Controller
                     $request->session()->put('LoggedCustomer', $customer->id);
                     return redirect('dashboard');
                 }else{
-                    return back()->with('fail', 'Your account is not verified yet. Click <a href="">here</a> to resend verification email')->withInput();
+                    return back()->with('fail', 'Your account is not verified yet. Click <a href="'.route('resendEmailCust',['custID' => $customer->id]).'">here</a> to resend verification email')->withInput();
                 }
             } else {
                 return back()->with('fail', 'Invalid password')->withInput();;
