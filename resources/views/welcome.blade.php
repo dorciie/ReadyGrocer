@@ -143,12 +143,6 @@
             );
         });
         </script>
-        <script>
-            // setTimeout(function(){
-            // window.location.href = '/';
-            // }, 50);
-        </script>
-            
         </body>
 </html>
 

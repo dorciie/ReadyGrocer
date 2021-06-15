@@ -29,17 +29,24 @@ class LoginController extends Controller
             ->where('email', $request->email)
             ->first();
 
+        $is_verified = DB::table('shop_owners')
+            ->where('is_verified', 'true')
+            ->where('email', $request->email)
+            ->first();
+
         if ($shopOwner) {
             if (Hash::check($request->password, $shopOwner->password)) {
-                $request->session()->put('LoggedShop', $shopOwner->id);
-                return redirect('shop/dashboard');
+                if($is_verified){
+                    $request->session()->put('LoggedShop', $shopOwner->id);
+                    return redirect('shop/dashboard');
+                }else{
+                    return back()->with('fail', 'Your account is not verified yet. Click <a href="">here</a> to resend verification email')->withInput();
+                }
             } else {
-                return back()->with('fail', 'Invalid email and/or password')->withInput();;
-
- 
+                return back()->with('fail', 'Invalid password')->withInput();
             }
         } else {
-            return back()->with('fail', 'Invalid email and/or password')->withInput();;
+            return back()->with('fail', 'No account found for this email')->withInput();
         }
     }
 
@@ -60,10 +67,18 @@ class LoginController extends Controller
         $customer = DB::table('customers')
             ->where('email', $request->email)
             ->first();
+        $is_verified = DB::table('customers')
+            ->where('is_verified', 'true')
+            ->where('email', $request->email)
+            ->first();
         if ($customer) {
             if (Hash::check($request->password, $customer->password)) {
-                $request->session()->put('LoggedCustomer', $customer->id);
-                return redirect('dashboard');
+                if($is_verified){
+                    $request->session()->put('LoggedCustomer', $customer->id);
+                    return redirect('dashboard');
+                }else{
+                    return back()->with('fail', 'Your account is not verified yet. Click <a href="">here</a> to resend verification email')->withInput();
+                }
             } else {
                 return back()->with('fail', 'Invalid password')->withInput();;
             }

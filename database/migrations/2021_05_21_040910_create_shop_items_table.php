@@ -26,7 +26,6 @@ class CreateShopItemsTable extends Migration
             $table->string('item_image');
             $table->longText('item_description');
             $table->string('item_size');
-            $table->enum('item_status',['active','inactive'])->default('active');
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('shop_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade'); //cascade -> delete category akan delete item

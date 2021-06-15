@@ -46,22 +46,6 @@
                         <span class="text-danger">@error('item_brand'){{ $message }} @enderror</span>
                     </div>
                 </div>
-                {{-- <div class="form-group row">
-                    <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Start Promotion</label>
-                    <div class="col-sm-9">
-                        <input type="datetime-local" class="form-control"  name="item_startPromo" value="{{old('item_startPromo')}}">
-                        <span class="text-danger">@error('item_startPromo'){{ $message }} @enderror</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">End Promotion</label>
-                    <div class="col-sm-9">
-                        <input type="datetime-local" class="form-control" name="item_endPromo" value="{{old('item_endPromo')}}">
-                        <span class="text-danger">@error('item_endPromo'){{ $message }} @enderror</span>
-                    </div>
-                </div> --}}
                 <div class="form-group row">
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Item Price <span class="text-danger">*</span></label>
@@ -75,32 +59,6 @@
                         <span class="text-danger">@error('item_price'){{ $message }} @enderror</span>
                     </div>
                 </div>
-                {{-- <div class="form-group row">
-                    <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Offer Price</label>
-                    <div class="col-sm-9">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">RM</span>
-                            </div>
-                            <input type="number" step="any" class="form-control" name="offer_price" value="{{old('offer_price')}}">
-                            <span class="text-danger">@error('offer_price'){{ $message }} @enderror</span>
-                        </div>
-                    </div>
-                </div> --}}
-                {{-- <div class="form-group row">
-                    <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Discount</label>
-                    <div class="col-sm-9">
-                        <div class="input-group">
-                            <input type="number" step="any" min="0" max="100" class="form-control" name="item_discount" value="{{old('item_discount')}}">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">%</span>
-                            </div>
-                        </div>
-                        <span class="text-danger">@error('item_discount'){{ $message }} @enderror</span>
-                    </div>
-                </div> --}}
                 <div class="form-group row">
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Category <span class="text-danger">*</span></label>
@@ -150,18 +108,6 @@
                         <input type="text" class="form-control" name="item_size" value="{{old('item_size')}}">
                         <span class="text-danger">@error('item_size'){{ $message }} @enderror</span>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Status <span class="text-danger">*</span></label>
-                        <div class="col-sm-9">
-                            <select name="item_status" class="form-select shadow-none">
-                                <option value="">----status----</option>
-                                <option value="active" {{old('value')=='active'?'selected':''}}>Active</option>
-                                <option value="inactive"{{old('value')=='inactive'?'selected':''}}>Inactive</option>
-                            </select>
-                            <span class="text-danger">@error('item_status'){{ $message }} @enderror</span>
-                        </div>
                 </div>
                 <br><br>
             </div>

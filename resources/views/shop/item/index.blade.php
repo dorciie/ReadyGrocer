@@ -48,11 +48,14 @@
                             <td><img src="{{ Storage::url($item->item_image) }}" width="100px"></td>
                             <td>{{$item->item_brand}}</td>
                             <td>{{$item->item_stock}}</td>
-                            @if($item->item_status=='active')
-                            <td><span class="label label-success">{{$item->item_status}}</span></td>
+                            @if($item->item_stock <='10' && $item->item_stock >'0')
+                            <td><span class="label label-warning">Low in stock</span></td>
                             @endif
-                            @if($item->item_status=='inactive')
-                            <td><span class="label label-danger">{{$item->item_status}}</span></td>
+                            @if($item->item_stock>'10')
+                            <td><span class="label label-success">Active</span></td>
+                            @endif
+                            @if($item->item_stock=='0')
+                            <td><span class="label label-danger">Out of stock</span></td>
                             @endif
                             <td>
                                 <a style="float: left;" href="javascript:void(0);" data-toggle="modal" data-target="#productID{{$item->id}}" class="btn btn-sm btn-secondary" data-placement="bottom"><i class="fas fa-eye"></i></a>
@@ -124,11 +127,14 @@
                                         </div>
                                         <div class="col-md-6">
                                             <strong>Status: </strong>
-                                            @if($product->item_status=="active")
-                                            <p> <span class="label label-success">{{$product->item_status}}</span></p>
+                                            @if($product->item_stock<="10" && $product->item_stock>"0")
+                                            <p> <span class="label label-warning">Low in stock</span></p>
                                             @endif
-                                            @if($product->item_status=="inactive")
-                                            <p> <span class="label label-danger">{{$product->item_status}}</span></p>
+                                            @if($product->item_stock>"10")
+                                            <p> <span class="label label-success">Active</span></p>
+                                            @endif
+                                            @if($product->item_stock=="0")
+                                            <p> <span class="label label-danger">Out of stock</span></p>
                                             @endif
                                         </div>
                                     </div>
@@ -143,17 +149,6 @@
                         {{-- end Modal --}}
                         @endforeach
                     </tbody>
-                    {{-- <tfoot>
-                        <tr>
-                            <th>No</th>
-                            <th>Name</th>
-                            <th>Image</th> 
-                            <th>Brand</th>
-                            <th>Stock</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot> --}}
                 </table>
             </div>
         </div>

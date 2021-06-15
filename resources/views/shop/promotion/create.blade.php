@@ -40,7 +40,7 @@
                                 <label class="col-md-3 mt-3">{{$category->category_name}}</label>
                                 <div class="col-md-9">
                                     <select class="select2 form-select shadow-none mt-3" name="items_id[]" multiple="multiple" style="height: 36px;width: 100%;">
-                                        @foreach(\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('category_id',$category->id )->get() as $items)    
+                                        @foreach(\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('category_id',$category->id )->where('item_stock','!=','0')->get() as $items)    
                                         <option value="{{$items->id}}" {{old('items_id')==$items->id?'selected':''}}>{{$items->item_name}}</option>
                                         @endforeach
                                     </select>
@@ -54,29 +54,17 @@
                                 <div class="form-group row">
                                     <label for="fname" class="col-md-3 control-label col-form-label">Start Promotion <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
-                                        <input type="date" class="form-control" name="item_startPromo" value="{{old('item_startPromo')}}">
+                                        <input type="date" class="min-today form-control" id="min" name="item_startPromo" value="{{old('item_startPromo')}}">
                                         <span class="text-danger">@error('item_startPromo'){{ $message }} @enderror</span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="fname" class="col-md-3 control-label col-form-label">Start Promotion <span class="text-danger">*</span></label>
+                                    <label for="fname" class="col-md-3 control-label col-form-label">End Promotion <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
-                                        <input type="date" class="form-control" name="item_endPromo" value="{{old('item_endPromo')}}">
+                                        <input type="date" class="min-today form-control" id="min" name="item_endPromo" value="{{old('item_endPromo')}}">
                                         <span class="text-danger">@error('item_endPromo'){{ $message }} @enderror</span>
                                     </div>
                                 </div>
-                                {{-- <div class="form-group row">
-                                    <label for="fname" class="col-md-3 control-label col-form-label">End Promotion <span class="text-danger">*</span></label>
-                                    <div class="col-md-9">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="datepicker-autoclose2" name="item_endPromo" value="{{old('item_endPromo')}}">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text h-100"><i class="fa fa-calendar"></i></span>
-                                            </div>
-                                        </div>
-                                        <span class="text-danger">@error('item_endPromo'){{ $message }} @enderror</span>
-                                    </div>
-                                </div> --}}
                                 <div class="form-group row">
                                     <label for="fname"
                                         class="col-md-3 control-label col-form-label">Discount <span class="text-danger">*</span></label>
@@ -109,4 +97,21 @@
     <script src="{{asset('assets/libs/select2/dist/js/select2.full.min.js')}}"></script>
     <script src="{{asset('assets/libs/select2/dist/js/select2.min.js')}}"></script>
     <script> $(".select2").select2();</script>
+    <script>
+        $(function () {
+                $(document).ready(function () {
+
+                    var todaysDate = new Date(); // Gets today's date
+                    var year = todaysDate.getFullYear(); // YYYY
+                    var month = ("0" + (todaysDate.getMonth() + 1)).slice(-2); // MM
+                    var day = ("0" + (todaysDate.getDate()+1)).slice(-2); // DD
+
+                    var minDate = (year + "-" + month + "-" + day); // Results in "YYYY-MM-DD" for today's date 
+
+                    // Now to set the max date value for the calendar to be today's date
+                    $('[type="date"].min-today').attr('min', minDate);
+
+                });
+            });
+    </script>
 @endsection
