@@ -29,7 +29,7 @@
                             @endif
                             <div>
                             @foreach($shop as $shop)
-                            <a href="{{ route('resendEmailCust',['shopID' => $shop->id]) }}">Resend Verification email</a>
+                            <a href="{{ route('resendEmailShop',['shopID' => $shop->id]) }}">Resend Verification email</a>
                              @endforeach
                             </div>
                                 

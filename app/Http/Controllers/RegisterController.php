@@ -87,20 +87,20 @@ class RegisterController extends Controller
     }
 
     public function resendEmailShop($shopID){
-        $shopOwner = shopOwner::where('id',$custID)
+        $shopOwner = shopOwner::where('id',$shopID)
         ->first();
         Mail::send(
-            'customer.auth.verifyEmail',
-            ['customer'=> $customer],
-            function($message) use ($customer){
-                $message->to($customer->email);
-                $message->subject("$customer->name, Verify Your Email");
+            'shop.auth.verifyEmail',
+            ['shop'=> $shopOwner],
+            function($message) use ($shopOwner){
+                $message->to($shopOwner->email);
+                $message->subject("$shopOwner->name, Verify Your Email");
             }
         );
         $data = [
             'LoggedShopInfo'=> $shopOwner
         ];
-        return view('customer/auth/verification')->with('success','Please Verify Email before Proceeding')->with('shop',$data);
+        return view('shop/auth/verification')->with('success','Please Verify Email before Proceeding')->with('shop',$data);
 
     }
     /**
