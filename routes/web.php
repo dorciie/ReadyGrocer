@@ -15,7 +15,6 @@ use App\Http\Controllers\ShopItemController;
 use App\Http\Controllers\AnalysisController;
 use App\Http\Controllers\ViewOrderController;
 use App\Http\Controllers\ShopProfileController;
-use App\Http\Controllers\PromotionController;
 use App\Models\customer;
 use Illuminate\Support\Facades\Route;
 
@@ -43,14 +42,16 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Route::post('RegisterController','App\Http\Controllers\RegisterController@index');
 Route::resource('register', 'App\Http\Controllers\RegisterController');
 Route::get('/registerShop', function () {return view('shop.auth.registerShop');})->name('registerShop');
+Route::post('registerShopsubmit', [RegisterController::class, 'index'])->name('registerShopSubmit');
+
 Route::get('resendEmailCust/{custID}', [RegisterController::class, 'resendEmail'])->name('resendEmailCust');
 Route::get('resendEmailShop/{shopID}', [RegisterController::class, 'resendEmailShop'])->name('resendEmailShop');
 
 Route::get('verified/{custID}', [RegisterController::class, 'edit'])->name('verified');
 Route::post('verified/{custID}', [RegisterController::class, 'edit'])->name('verified');
 
-Route::get('verifiedShop/{shopID}', [RegisterController::class, 'show'])->name('verified');
-Route::post('verifiedShop/{shopID}', [RegisterController::class, 'show'])->name('verified');
+Route::get('verifiedShop/{shopID}', [RegisterController::class, 'show'])->name('verifiedShop');
+Route::post('verifiedShop/{shopID}', [RegisterController::class, 'show'])->name('verifiedShop');
 
 // customer........................................
 Route::get('customer/custLogin',[LoginController::class,'login'])->middleware('AlreadyLoggedIn');
@@ -72,6 +73,7 @@ Route::get('checkout', [GroceryCartController::class,'checkout'])->name('checkou
 
 Route::get('updateCart/{itemID}', [GroceryCartController::class,'cart'])->name('updateCart')->middleware('isLogged');
 Route::get('updateCart2/{itemID}', [GroceryCartController::class,'cart2'])->name('updateCart2')->middleware('isLogged');
+Route::get('deleteCart/{itemID}', [GroceryCartController::class,'destroy'])->name('deleteCart')->middleware('isLogged');
 Route::get('editCartItem/{cartItemID}', [GroceryCartController::class,'update'])->name('editCartItem')->middleware('isLogged');
 
 Route::get('updateList/{itemID}', [GroceryListController::class,'destroy'])->name('updateList')->middleware('isLogged');
@@ -106,8 +108,6 @@ Route::resource('category', 'App\Http\Controllers\CategoryController')->middlewa
 
 //Item Section
 Route::resource('item', 'App\Http\Controllers\ShopItemController')->middleware('ShopisLogged');
-Route::get('stock', [ShopItemController::class,'stock'])->middleware('ShopisLogged');
-Route::get('updateStock/{itemID}', [ShopItemController::class,'editStock'])->name('updateStock')->middleware('ShopisLogged');
 
 //Analysis Section
 Route::resource('analysis', 'App\Http\Controllers\AnalysisController')->middleware('ShopisLogged');
@@ -121,8 +121,6 @@ Route::post('deliver_order',[ViewOrderController::class,'deliverOrder'])->name('
 Route::resource('profile', 'App\Http\Controllers\ShopProfileController')->middleware('ShopisLogged');
 Route::post('password_change',[ShopProfileController::class,'updatePassword'])->middleware('ShopisLogged');
 
-//Promotion section
-Route::resource('promotion', 'App\Http\Controllers\PromotionController')->middleware('ShopisLogged');
-//every page lepas login kena letak middleware('ShopisLogged') so bila login as customer tkleh masuk dekat shop
 
-// \PWA::routes();
+//every page lepas login kena letak middleware('ShopisLogged') so bila login as customer tkleh masuk dekat shop
+//\PWA::routes();

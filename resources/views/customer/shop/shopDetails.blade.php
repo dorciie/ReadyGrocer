@@ -8,8 +8,6 @@
             <div class="ms-auto text-end">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Library</li>
                     </ol>
                 </nav>
             </div>
@@ -39,7 +37,8 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="profile-img">
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+                                    <img src="{{asset('assets/images/image.jpg')}}" alt="user" width="250px" height="250px"/>
+                                        <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" /> -->
 
                                     </div>
                                 </div>

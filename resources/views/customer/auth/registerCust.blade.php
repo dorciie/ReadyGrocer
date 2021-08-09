@@ -132,10 +132,10 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('current address') }}</label>
+                                        <label for="address" class="col-md-4 col-form-label text-md-right"></label>
 
                                         <div class="col-md-6">
-                                            <input id="caddress" type="string" class="form-control " name="caddress" value="" readonly><br>
+                                            <input id="caddress" type="hidden" class="form-control " name="caddress" value="" readonly><br>
 
                                             <button type="button" onclick="getLocation()">Show On Map</button>
 

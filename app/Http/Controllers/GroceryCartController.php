@@ -44,7 +44,7 @@ class GroceryCartController extends Controller
             $newCart->customer_id=$customer->id;
             $newCart->shop_id=$customer->fav_shop;
             $newCart->item_id=$itemID;
-            $newCart->total_price=($item->offer_price)*($request->item_quantity);
+            $newCart->total_price=($item->item_price)*($request->item_quantity);
             $newCart->item_quantity=$request->input('item_quantity');
 
             $newCart->save();
@@ -83,7 +83,7 @@ class GroceryCartController extends Controller
             $newCart->customer_id=$customer->id;
             $newCart->shop_id=$customer->fav_shop;
             $newCart->item_id=$itemID;
-            $newCart->total_price=($item->offer_price)*($list->item_quantity);
+            $newCart->total_price=($item->item_price)*($list->item_quantity);
             $newCart->item_quantity=$list->item_quantity;
 
             $newCart->save();
@@ -208,6 +208,9 @@ class GroceryCartController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item =  GroceryCart::where('id',$id);
+        $item->delete();
+
+        return back();
     }
 }

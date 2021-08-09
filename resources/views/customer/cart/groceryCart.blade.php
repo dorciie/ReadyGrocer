@@ -8,8 +8,6 @@
         <div class="ms-auto text-end">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Library</li>
                 </ol>
             </nav>
         </div>
@@ -61,7 +59,7 @@
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
                         <td>{{$info->item_name}}</td>
-                        <td><s>{{number_format((float)$info->item_price, 2, '.', '')}}</s>&nbsp&nbsp&nbsp{{number_format((float)$info->offer_price, 2, '.', '')}}</td>
+                        <td>{{number_format((float)$info->item_price, 2, '.', '')}}</td>
                         <td>{{$info->item_quantity}}</td>
                         <td>{{$info->item_brand}}</td>
                         <td>{{number_format((float)$info->total_price, 2, '.', '')}}</td>
@@ -99,7 +97,7 @@
                                         </div>
 
                                         <div class="modal-footer">
-                                            <a class="btn btn-outline-danger" href="" role="button">Delete</a>
+                                            <a class="btn btn-outline-danger" href="{{route('deleteCart',['itemID'=>$info->id])}}" role="button">Delete</a>
                                             <button type="submit" class="btn btn-primary">Save changes</button>
                                         </div>
                                     </div>
@@ -171,6 +169,7 @@
                                         date_default_timezone_set("Asia/Kuala_Lumpur");
                                         echo  date(('Y-m-d H:i:s') );
                                         ?><br><br>
+                                       <!-- {{ $now = \Carbon\Carbon::now()}} -->
                                         <input type="radio" name="delivery" value="deliveryLater"/>&nbspDeliveryLater
                                         <input type="datetime-local" class="form-control"  name="deliveryDT" >
                                         
