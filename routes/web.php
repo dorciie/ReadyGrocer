@@ -106,6 +106,8 @@ Route::resource('category', 'App\Http\Controllers\CategoryController')->middlewa
 
 //Item Section
 Route::resource('item', 'App\Http\Controllers\ShopItemController')->middleware('ShopisLogged');
+Route::get('stock', [ShopItemController::class,'stock'])->middleware('ShopisLogged');
+Route::get('updateStock/{itemID}', [ShopItemController::class,'editStock'])->name('updateStock')->middleware('ShopisLogged');
 
 //Analysis Section
 Route::resource('analysis', 'App\Http\Controllers\AnalysisController')->middleware('ShopisLogged');

@@ -41,7 +41,7 @@
                                 <div class="col-md-9">
                                     <select class="select2 form-select shadow-none mt-3" name="items_id[]" multiple="multiple" style="height: 36px;width: 100%;">
                                         @foreach(\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('category_id',$category->id )->where('item_stock','!=','0')->get() as $items)    
-                                        <option value="{{$items->id}}" {{old('items_id')==$items->id?'selected':''}}>{{$items->item_name}}</option>
+                                        <option value="{{$items->id}}" {{old('items_id')==$items->id?'selected':''}}>{{$items->item_name}}, {{$items->item_brand}}</option>
                                         @endforeach
                                     </select>
                                     <span class="text-danger">@error('items_id'){{ $message }} @enderror</span>

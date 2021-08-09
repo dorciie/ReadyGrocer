@@ -36,6 +36,9 @@
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="{{route('promotion.index')}}" aria-expanded="false"><i class="mdi mdi-calendar-clock"></i><span
                             class="hide-menu">Schedule Promotion</span></a></li>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                        href="{{url('stock')}}" aria-expanded="false"><i class="mdi mdi-clipboard-check"></i><span
+                            class="hide-menu">Update stock</span></a></li>
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

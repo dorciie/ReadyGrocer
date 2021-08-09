@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 //untuk password nanti
 use Illuminate\Support\Facades\DB;
 use App\Models\shopOwner;
+use App\Models\ShopItem;
 
 class shopOwnerController extends Controller
 {
@@ -19,7 +20,21 @@ class shopOwnerController extends Controller
                 'LoggedShopInfo'=> $shopOwner
             ];
         }
-        return view('shop.index', $data);
+        
+        $lowStock=DB::table('shop_items')
+        ->join('categories','shop_items.category_id','=','categories.id')
+        ->where('shop_items.shop_id',$shopOwner->id)
+        ->where('item_stock','<=','10')
+        ->where('item_stock','>','0')
+        ->get();
+
+        $noStock=DB::table('shop_items')
+        ->join('categories','shop_items.category_id','=','categories.id')
+        ->where('shop_items.shop_id',$shopOwner->id)
+        ->where('item_stock','==','0')
+        ->get();
+
+        return view('shop.index', $data, compact('lowStock','noStock'));
     }
     /**
      * Display a listing of the resource.
