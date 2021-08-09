@@ -28,13 +28,15 @@
                 <a class="btn btn-sm btn-info" href="{{route('promotion.create')}}"><i class="fa fa-plus"></i> Schedule new promotion</a>
                 <br><br>
                 <div class="table-responsive">
-                    <table id="myTable" class="table table-striped table-bordered">
+                    <table id="myTable" class="table table-striped table-bordered table-sm">
                         <thead>
                             <tr>
                                 <th style="width:100px;">No</th>
                                 <th style="width:100px;">Items</th>{{-- boleh tick banyak item kat sini --}}
+                                <th style="width:100px;">Brand</th>
                                 <th style="width:100px;">Start Promotion</th>{{-- bila tekan view "icon mata", show table semua item+price before and after promotion --}}
                                 <th style="width:100px;">End Promotion</th>
+                                <th style="width:100px;">Days</th>
                                 <th style="width:100px;">Price</th>
                                 <th style="width:100px;">Discount</th>
                                 <th style="width:100px;">Offer Price</th>
@@ -42,18 +44,23 @@
                             </tr>
                         </thead>
                         <tbody style="text-align:center;">
-                            @foreach($shopItem as $item)
+                            @foreach($shopItem as $item)</td>
+                            <input type="hidden" value="{{$start_date = \Carbon\Carbon::parse($item->item_startPromo)}}">
+                            <input type="hidden" value="{{$end_date = \Carbon\Carbon::parse($item->item_endPromo)}}">
+                            <input type="hidden" value="{{$different_days = $start_date->diffInDays($end_date)}}">
                             <tr>
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$item->item_name}}</td>
+                                <td>{{$item->item_brand}}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->item_startPromo)->format('d/m/Y')}}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->item_endPromo)->format('d/m/Y')}}</td>
+                                <td>{{$different_days}}</td>
                                 <td>RM{{$item->item_price}}</td>
                                 <td>{{$item->item_discount}}%</td>
                                 <td>RM{{$item->offer_price}}</td>
                                 <td>
-                                    <a style="float: left; margin-left: 5px;" href="{{route('promotion.edit',$item->id)}}" data-toggle="tooltip" class="btn btn-sm btn-info" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                                    <form style="float: left; margin-left: 5px;" action="{{route('promotion.destroy',$item->id)}}" method="post">
+                                    <a href="{{route('promotion.edit',$item->id)}}" data-toggle="tooltip" class="btn btn-sm btn-info" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                                    <form action="{{route('promotion.destroy',$item->id)}}" method="post">
                                         @csrf
                                         @method('delete')
                                         <a href="" data-toggle="tooltip" data-id="{{$item->id}}" class="dltBtn btn btn-sm btn-danger" data-placement="bottom"><i style="color: white" class="fas fa-trash-alt"></i></a>

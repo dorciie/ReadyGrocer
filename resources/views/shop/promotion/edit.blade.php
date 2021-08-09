@@ -33,7 +33,7 @@
                         @csrf
                         @method('patch')
                         <div class="card-body">
-                        <h4>List of items {{$item->item_name}}</h4>
+                        <h4>Promotion for {{$item->item_name}} brand {{$item->item_brand}}</h4>
                         <div class="border-top">
                                 <div class="form-group row">
                                     <label for="fname" class="col-md-3 control-label col-form-label">Start Promotion <span class="text-danger">*</span></label>

@@ -289,5 +289,43 @@ class ShopItemController extends Controller
             return back()->with('error','Data not found');
         }
     }
+
+    public function stock()
+    {
+        if(session()->has('LoggedShop')){
+            $shopOwner = DB::table('shop_owners')
+            ->where('id', session('LoggedShop'))
+            ->first();
+
+            $data = [
+                'LoggedShopInfo'=> $shopOwner
+            ];
+        }
+        $Itemstock=DB::table('shop_items')
+        ->join('categories','shop_items.category_id','=','categories.id')
+        ->where('shop_items.shop_id',$shopOwner->id)
+        ->get();
+        return view('shop.item.stock',$data, compact('Itemstock'));
+    }
+
+    function editStock(Request $request, $id)
+    {
+    	$this->validate($request,[
+            'item_stock'=>'required'
+        ]);
+        $todayDate = date('Y-m-d H:i:s');
+        $query = DB::table('shop_items')
+            ->where('id', $id)
+            ->update([
+                'item_stock'=> $request->item_stock,
+                'updated_at'=> $todayDate
+                ]);
+    
+            if($query){
+                return back()->with('success','Successfully updated category');
+            }else{
+                return back()->with('error','Something went wrong');
+            }
+    }
     
 }

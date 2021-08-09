@@ -33,6 +33,19 @@ class PromotionController extends Controller
         ->whereNotNull('item_endPromo')
         ->whereNotNull('item_startPromo')
         ->get();
+
+        // $uw=ShopItem::orderBy('id','DESC')
+        // ->where('shop_id',$shopOwner->id)
+        // ->whereNotNull('item_discount')
+        // ->whereNotNull('item_endPromo')
+        // ->whereNotNull('item_startPromo')
+        // ->first();
+
+        // $start_date = \Carbon\Carbon::parse($uw->item_startPromo);
+        // $end_date = \Carbon\Carbon::parse($uw->item_endPromo);
+        // $different_days = $start_date->diffInDays($end_date);
+
+        // $diff = $shopItem->item_endPromo->diffInDays($shopItem->item_startPromo);
         return view('shop.promotion.index',$data, compact('shopItem'));
     }
 
