@@ -23,6 +23,13 @@ class CreateGroceryCartsTable extends Migration
             $table->foreign('shop_id')->references('id')->on('shop_owners')->onDelete('cascade'); //cascade -> delete shop akan delete item
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade'); //cascade -> delete shop akan delete item
 
+            $table->unsignedBigInteger('item_id');
+            $table->unsignedBigInteger('order_id');
+            $table->foreign('item_id')->references('id')->on('shop_items')->onDelete('cascade'); //cascade -> delete shop akan delete item
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade'); //cascade -> delete shop akan delete item
+
+            $table->enum('checkout', ['true', 'false'])->default('false');
+
             $table->timestamps();
         });
     }

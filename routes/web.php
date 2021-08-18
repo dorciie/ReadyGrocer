@@ -114,8 +114,9 @@ Route::resource('analysis', 'App\Http\Controllers\AnalysisController')->middlewa
 
 //Order Section
 Route::resource('order', 'App\Http\Controllers\ViewOrderController')->middleware('ShopisLogged');
-Route::get('order_customer',[ViewOrderController::class,'customer'])->middleware('ShopisLogged'); //show customer
-Route::post('deliver_order',[ViewOrderController::class,'deliverOrder'])->name('deliver.order')->middleware('ShopisLogged'); //send email to deliver
+Route::get('orderCustomer/{orderID}',[ViewOrderController::class,'customer'])->name('orderCustomer')->middleware('ShopisLogged'); //show customer
+Route::get('deliveryOrder/{orderID}',[ViewOrderController::class,'deliverOrder'])->name('deliveryOrder')->middleware('ShopisLogged'); //send email to deliver
+Route::get('confirmPurchase/{orderID}',[ViewOrderController::class,'confirmPurchase'])->name('confirmPurchase')->middleware('ShopisLogged'); //send email after deliver
 
 //Shop profile Section
 Route::resource('profile', 'App\Http\Controllers\ShopProfileController')->middleware('ShopisLogged');

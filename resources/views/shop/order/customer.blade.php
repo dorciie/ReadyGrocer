@@ -12,35 +12,40 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Order per Customer</h5>
+                <h5 class="card-title">Order details per Customer</h5>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body" style="line-height: 0.7;">
+                            
                             {{-- <h3 class="card-title">Customer's order details</h3> --}}
                             <br>
                             <div class="form-group row">
-                                <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Name:</p>
-                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">Customer1</p>
+                                <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Customer Name:</p>
+                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{$custOrders->name}}</p>
                             </div>
                             <div class="form-group row">
-                                <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Address:</p>
-                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">Kota Bharu</p>
+                                <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Customer Address:</p>
+                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{$custOrders->address}}</p>
                             </div>
                             <div class="form-group row">
-                                <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Delivery date and time: </p>
-                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">20/08/2021, 15:30:00</p>
+                                <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Delivery time: </p>
+                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{ \Carbon\Carbon::parse($custOrders->checkoutDelivery)->format('H:i')}}</p>
                             </div>
                             <div class="form-group row">
-                                <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Contact Number: </p>
-                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">0131111111</p>
+                                <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Delivery date: </p>
+                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{ \Carbon\Carbon::parse($custOrders->checkoutDelivery)->format('d/m/Y')}}</p>
+                            </div>
+                            <div class="form-group row">
+                                <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Customer Contact: </p>
+                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{$custOrders->email}}</p>
                             </div>
                             <div class="form-group row">
                                 <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Payment method: </p>
-                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">Cash</p>
+                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{$custOrders->payment}}</p>
                             </div>
                             <div class="form-group row">
                                 <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Total amount of payment: </p>
-                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">RM500.00</p>
+                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">RM{{$custOrders->total_payment}}</p>
                             </div>
                             <div class="form-group row">
                                 <p style="font-size: 14px;" class="col-sm-4" style="font-size: 18px;">List of item bought: </p>
@@ -52,33 +57,31 @@
                                                     <th>No</th>
                                                     <th>Item</th>{{-- boleh tick banyak item kat sini --}}
                                                     <th>Quantity</th>{{-- bila tekan view "icon mata", show table semua item+price before and after promotion --}}
-                                                    <th>Price per unit,RM</th>
+                                                    <th>Price per unit</th>
+                                                    <th>Total price</th>
                                                 </tr>
                                             </thead>
                                             <tbody style="text-align:center;">
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Susu Cair</td>
-                                                    <td>5</td>
-                                                    <td>3.50</td>
-                                                </tr>    
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Sardine</td>
-                                                    <td>3</td>
-                                                    <td>5.00</td>
-                                                </tr>  
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>Toblerone</td>
-                                                    <td>2</td>
-                                                    <td>7.00</td>
-                                                </tr>          
+                                                @foreach($custOrder as $order)
+                                                    <tr>
+                                                        <td>{{$loop->iteration}}</td>
+                                                        <td>{{$order->item_name}}</td>
+                                                        <td>{{$order->item_quantity}}</td>
+                                                        @if($order->item_endPromo == NULL)
+                                                            <td>RM{{$order->item_price}}</td>
+                                                        @endif
+                                                        @if($order->item_endPromo != NULL)
+                                                            <td>RM{{$order->offer_price}}</td>
+                                                        @endif
+                                                        <td>RM{{$order->total_price}}</td>
+                                                    </tr>    
+                                                @endforeach        
                                             </tbody>
                                         </table>
                                     </div>
                                 </p>
                             </div>
+                            
                         </div>
                     </div>
                 </div>

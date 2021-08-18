@@ -38,6 +38,31 @@ class LoginController extends Controller
             if (Hash::check($request->password, $shopOwner->password)) {
                 if($is_verified){
                     $request->session()->put('LoggedShop', $shopOwner->id);
+                     //delete promotion after end date of the promotion
+                    $shopItems = DB::table('shop_items')
+                    ->where('shop_id',$shopOwner->id)
+                    ->whereNotNull('item_discount')
+                    ->whereNotNull('item_endPromo')
+                    ->whereNotNull('item_startPromo')
+                    ->get();
+                    foreach ($shopItems as $items) {
+                        $todayDate = date('Y-m-d');
+                        $item_endPromo = $items->item_endPromo;
+                        if($todayDate > $item_endPromo){
+                            $query = DB::table('shop_items')
+                                ->where('shop_id',$shopOwner->id)
+                                ->whereNotNull('item_discount')
+                                ->whereNotNull('item_endPromo')
+                                ->whereNotNull('item_startPromo')
+                                ->where('item_endPromo',$item_endPromo)
+                                ->update([
+                                    'item_startPromo'=> NULL, //
+                                    'item_endPromo'=> NULL, //
+                                    'offer_price'=> "0.00", //
+                                    'item_discount'=> "0.00", //
+                                ]);
+                        }
+                    }
                     return redirect('shop/dashboard');
                 }else{
                     return back()->with('fail', 'Your account is not verified yet. Click <a href="'.route('resendEmailShop',['shopID' => $shopOwner->id]).'">here</a> to resend verification email')->withInput();

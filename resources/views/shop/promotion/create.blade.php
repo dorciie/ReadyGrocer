@@ -40,7 +40,7 @@
                                 <label class="col-md-3 mt-3">{{$category->category_name}}</label>
                                 <div class="col-md-9">
                                     <select class="select2 form-select shadow-none mt-3" name="items_id[]" multiple="multiple" style="height: 36px;width: 100%;">
-                                        @foreach(\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('category_id',$category->id )->where('item_stock','!=','0')->get() as $items)    
+                                        @foreach(\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('category_id',$category->id )->where('item_stock','!=','0')->where('item_endPromo',NULL)->get() as $items)    
                                         <option value="{{$items->id}}" {{old('items_id')==$items->id?'selected':''}}>{{$items->item_name}}, {{$items->item_brand}}</option>
                                         @endforeach
                                     </select>
