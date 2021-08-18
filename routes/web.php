@@ -122,6 +122,7 @@ Route::get('confirmPurchase/{orderID}',[ViewOrderController::class,'confirmPurch
 Route::resource('profile', 'App\Http\Controllers\ShopProfileController')->middleware('ShopisLogged');
 Route::post('password_change',[ShopProfileController::class,'updatePassword'])->middleware('ShopisLogged');
 
-
+//Promotion section
+Route::resource('promotion', 'App\Http\Controllers\PromotionController')->middleware('ShopisLogged');
 //every page lepas login kena letak middleware('ShopisLogged') so bila login as customer tkleh masuk dekat shop
 //\PWA::routes();
