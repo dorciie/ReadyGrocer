@@ -21,6 +21,9 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('shop_id');
             $table->foreign('shop_id')->references('id')->on('shop_owners')->onDelete('cascade'); //cascade -> delete shop akan delete item
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade'); //cascade -> delete shop akan delete item
+            $table->float('total_payment')->default(0);
+            $table->timestamps();
+            $table->enum('status', ['preparing', 'delivering', 'delivered'])->default('preparing');
 
     
         });

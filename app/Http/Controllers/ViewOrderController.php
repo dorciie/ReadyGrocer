@@ -26,7 +26,25 @@ class ViewOrderController extends Controller
                 'LoggedShopInfo'=> $shopOwner
             ];
         }
-        return view('shop.order.index',$data);
+
+        $custOrder=DB::table('orders')
+        ->join('customers','orders.customer_id','=','customers.id')
+        // ->join('grocery_carts','grocery_carts.order_id','=','orders.id')
+        ->where('orders.shop_id',$shopOwner->id)
+        ->orderBy('orders.status','ASC')
+        ->get([
+            'orders.id',
+            'orders.total_payment',
+            'orders.payment',
+            'orders.status',
+            'customers.name',
+            'orders.checkoutDelivery'
+        ]);
+
+        $countOrder=DB::table('orders')
+        ->get();
+
+        return view('shop.order.index',$data, compact('custOrder','countOrder'));
     }
 
     
@@ -35,18 +53,36 @@ class ViewOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function customer()
+    public function customer($order_id)
     {
         if(session()->has('LoggedShop')){
             $shopOwner = DB::table('shop_owners')
             ->where('id', session('LoggedShop'))
             ->first();
 
+            $custOrders=DB::table('grocery_carts')
+            ->join('customers','grocery_carts.customer_id','=','customers.id')
+            ->join('orders','grocery_carts.order_id','=','orders.id')
+            ->join('shop_items','grocery_carts.item_id','=','shop_items.id')
+            ->where('grocery_carts.shop_id',$shopOwner->id)
+            ->where('grocery_carts.order_id',$order_id)
+            ->first();
+
             $data = [
-                'LoggedShopInfo'=> $shopOwner
+                'LoggedShopInfo'=> $shopOwner,
+                'custOrders'    => $custOrders
             ];
         }
-        return view('shop.order.customer',$data);
+
+        $custOrder=DB::table('grocery_carts')
+        ->join('customers','grocery_carts.customer_id','=','customers.id')
+        ->join('orders','grocery_carts.order_id','=','orders.id')
+        ->join('shop_items','grocery_carts.item_id','=','shop_items.id')
+        ->where('grocery_carts.shop_id',$shopOwner->id)
+        ->where('grocery_carts.order_id',$order_id)
+        ->get();
+
+        return view('shop.order.customer',$data, compact('custOrder'));
     }
     // public function create()
     // {
@@ -109,28 +145,98 @@ class ViewOrderController extends Controller
         //
     }
 
-    public function deliverOrder(Request $request)
+    //email untuk delivery
+    public function deliverOrder($deliveryOrder)
     {
         //dd($request->all());
-        $customer = DB::table('customers')
-            ->where('email', $request->custEmail)
-            ->first();
+        $custOrder=DB::table('orders')
+        ->join('customers','orders.customer_id','=','customers.id')
+        ->join('shop_owners','orders.shop_id','=','shop_owners.id')
+        ->where('orders.id',$deliveryOrder)
+        ->first([
+            'orders.id',
+            'orders.total_payment',
+            'orders.payment',
+            'orders.status',
+            'customers.name',
+            'orders.checkoutDelivery',
+            'customers.email',
+            'shop_owners.shopName'
+        ]);
 
-        // if($customer == null){
-        //     return redirect()->back()->with(['error' => 'Unsuccesfull, please try again']);
-        // }
+        $ItemcustOrder=DB::table('grocery_carts')
+        ->join('customers','grocery_carts.customer_id','=','customers.id')
+        ->join('orders','grocery_carts.order_id','=','orders.id')
+        ->join('shop_items','grocery_carts.item_id','=','shop_items.id')
+        ->where('grocery_carts.order_id',$deliveryOrder)
+        ->get();
 
-        $this->deliveryEmail($customer);
-        // return redirect()->back()->with(['success' => 'Succesfully notify customer about delivery info']);
+        $this->deliveryEmail($custOrder, $ItemcustOrder);
+        
+        $query = DB::table('orders')
+                ->where('id', $deliveryOrder)
+                ->update([
+                    'status'=> 'delivering'
+                ]);
+        if($query){
+            return back()->with('success','An email has been send to customer to inform about the delivery');
+        }else{
+            return back()->with('error','Something was not right, please try again');
+        }
     }
 
-    public function deliveryEmail($customer){
+    public function deliveryEmail($custOrder, $ItemcustOrder){
         Mail::send(
             'shop.order.deliverEmail',
-            ['customer'=> $customer],
-            function($message) use ($customer){
-                $message->to($customer->email);
-                $message->subject("$customer->name, uwu your order are on the way");
+            ['custOrder'=> $custOrder,
+            'listItem'=>$ItemcustOrder],
+            function($message) use ($custOrder){
+                $message->to($custOrder->email);
+                $message->subject("Delivery Information of ReadyGrocer");
+            }
+        );
+    }
+
+    //email untuk confirm item dah deliver
+    public function confirmPurchase($confirmPurchase)
+    {
+        //dd($request->all());
+        $custOrder=DB::table('orders')
+        ->join('customers','orders.customer_id','=','customers.id')
+        ->join('shop_owners','orders.shop_id','=','shop_owners.id')
+        ->where('orders.id',$confirmPurchase)
+        ->first([
+            'orders.id',
+            'orders.total_payment',
+            'orders.payment',
+            'orders.status',
+            'customers.name',
+            'orders.checkoutDelivery',
+            'customers.email',
+            'shop_owners.shopName'
+        ]);
+
+        $this->confirmPurchaseEmail($custOrder);
+        
+        $query = DB::table('orders')
+                ->where('id', $confirmPurchase)
+                ->update([
+                    'status'=> 'delivered'
+                ]);
+        if($query){
+            return back()->with('success','Good Job!, you successfully completed this order.');
+        }else{
+            return back()->with('error','Something was not right, please try again');
+        }
+    }
+
+    public function confirmPurchaseEmail($custOrder){
+        Mail::send(
+            'shop.order.confirmPurchaseEmail',
+            ['custOrder'=> $custOrder],
+            function($message) use ($custOrder){
+                $message->to($custOrder->email);
+                $message->subject("ReadyGrocer, Thank you for choosing us!");
             }
         );
     }

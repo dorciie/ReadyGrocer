@@ -30,6 +30,6 @@
     <script>
         setTimeout(function(){
             $('#alert').slideUp();
-        },4000) //4000 milisecond
+        },6000) //4000 milisecond
     </script>
     

@@ -112,13 +112,13 @@
                                         @if($product->item_startPromo != "")
                                         <div class="col-md-6">
                                             <strong>Promotion start: </strong>
-                                            <p>{{$product->item_startPromo}}</p>
+                                            <p>{{ \Carbon\Carbon::parse($product->item_startPromo)->format('d/m/Y')}}</p>
                                         </div>
                                         @endif
                                         @if($product->item_endPromo != "")
                                         <div class="col-md-6">
                                             <strong>Promotion end: </strong>
-                                            <p>{{$product->item_endPromo}}</p>
+                                            <p>{{ \Carbon\Carbon::parse($product->item_endPromo)->format('d/m/Y')}}</p>
                                         </div>
                                         @endif
                                         <div class="col-md-6">

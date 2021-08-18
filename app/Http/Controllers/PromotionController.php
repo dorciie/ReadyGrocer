@@ -27,25 +27,39 @@ class PromotionController extends Controller
                 'LoggedShopInfo'=> $shopOwner
             ];
         }
-        $shopItem=ShopItem::orderBy('id','DESC')
+        $shopItem=ShopItem::orderBy('item_startPromo','ASC')
         ->where('shop_id',$shopOwner->id)
         ->whereNotNull('item_discount')
         ->whereNotNull('item_endPromo')
         ->whereNotNull('item_startPromo')
         ->get();
 
-        // $uw=ShopItem::orderBy('id','DESC')
-        // ->where('shop_id',$shopOwner->id)
-        // ->whereNotNull('item_discount')
-        // ->whereNotNull('item_endPromo')
-        // ->whereNotNull('item_startPromo')
-        // ->first();
+        //delete promotion after end date of the promotion
+        $shopItems = DB::table('shop_items')
+        ->where('shop_id',$shopOwner->id)
+        ->whereNotNull('item_discount')
+        ->whereNotNull('item_endPromo')
+        ->whereNotNull('item_startPromo')
+        ->get();
+        foreach ($shopItems as $items) {
+            $todayDate = date('Y-m-d');
+            $item_endPromo = $items->item_endPromo;
+            if($todayDate > $item_endPromo){
+                $query = DB::table('shop_items')
+                    ->where('shop_id',$shopOwner->id)
+                    ->whereNotNull('item_discount')
+                    ->whereNotNull('item_endPromo')
+                    ->whereNotNull('item_startPromo')
+                    ->where('item_endPromo',$item_endPromo)
+                    ->update([
+                        'item_startPromo'=> NULL, //
+                        'item_endPromo'=> NULL, //
+                        'offer_price'=> "0.00", //
+                        'item_discount'=> "0.00", //
+                    ]);
+            }
+        }
 
-        // $start_date = \Carbon\Carbon::parse($uw->item_startPromo);
-        // $end_date = \Carbon\Carbon::parse($uw->item_endPromo);
-        // $different_days = $start_date->diffInDays($end_date);
-
-        // $diff = $shopItem->item_endPromo->diffInDays($shopItem->item_startPromo);
         return view('shop.promotion.index',$data, compact('shopItem'));
     }
 
@@ -78,8 +92,8 @@ class PromotionController extends Controller
     {
         // return $request->all();
         $this->validate($request,[
-            'item_startPromo'=>'required|before:item_endPromo',
-            'item_endPromo'=>'required|after:item_startPromo',
+            'item_startPromo'=>'required',
+            'item_endPromo'=>'required|after_or_equal:item_startPromo',
             'item_discount'=>'required|numeric',
         ]);
 
@@ -105,11 +119,9 @@ class PromotionController extends Controller
                     'item_discount'=> $request->item_discount, //
                     'updated_at'=> $todayDate
                 ]);
-        // $allItem[] = $shopItems;
-        // $i++;
         }
         if($query){
-            return redirect()->route('promotion.index')->with('success','Successfully updated item');
+            return redirect()->route('promotion.index')->with('success','Successfully schedule the promotion to the item(s)');
         }else{
             return back()->with('error','Something went wrong');
         }
@@ -165,8 +177,8 @@ class PromotionController extends Controller
         $item=ShopItem::find($id);
         if($item){
             $this->validate($request,[
-                'item_startPromo'=>'required|before:item_endPromo',
-                'item_endPromo'=>'required|after:item_startPromo',
+                'item_startPromo'=>'required',
+                'item_endPromo'=>'required|after_or_equal:item_startPromo',
                 'item_discount'=>'required|numeric'
             ]);
                 $todayDate = date('Y-m-d H:i:s');

@@ -32,6 +32,32 @@ class ShopItemController extends Controller
         $shopItem=ShopItem::orderBy('id','DESC')
         ->where('shop_id',$shopOwner->id)
         ->get();
+
+        //delete promotion after end date of the promotion
+        $shopItems = DB::table('shop_items')
+        ->where('shop_id',$shopOwner->id)
+        ->whereNotNull('item_discount')
+        ->whereNotNull('item_endPromo')
+        ->whereNotNull('item_startPromo')
+        ->get();
+        foreach ($shopItems as $items) {
+            $todayDate = date('Y-m-d');
+            $item_endPromo = $items->item_endPromo;
+            if($todayDate > $item_endPromo){
+                $query = DB::table('shop_items')
+                    ->where('shop_id',$shopOwner->id)
+                    ->whereNotNull('item_discount')
+                    ->whereNotNull('item_endPromo')
+                    ->whereNotNull('item_startPromo')
+                    ->where('item_endPromo',$item_endPromo)
+                    ->update([
+                        'item_startPromo'=> NULL, //
+                        'item_endPromo'=> NULL, //
+                        'offer_price'=> "0.00", //
+                        'item_discount'=> "0.00", //
+                    ]);
+            }
+        }
         return view('shop.item.index',$data, compact('shopItem'));
     }
 
@@ -304,6 +330,7 @@ class ShopItemController extends Controller
         $Itemstock=DB::table('shop_items')
         ->join('categories','shop_items.category_id','=','categories.id')
         ->where('shop_items.shop_id',$shopOwner->id)
+        ->orderBy('item_stock','ASC')
         ->get();
         return view('shop.item.stock',$data, compact('Itemstock'));
     }

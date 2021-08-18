@@ -18,8 +18,8 @@
                 <div class="card card-hover">
                     <div class="box bg-success text-center">
                         <h1 class="font-light text-white"><i class="mdi mdi-chart-bubble"></i></h1>
-                        <h6 class="text-white">Total category of the item</h6>
-                        <h6 class="text-white">{{\App\Models\Category::where('shop_id',$LoggedShopInfo->id)->count()}}</h6>
+                        <h6 class="text-white">Total orders</h6>
+                        <h6 class="text-white">{{\App\Models\Order::where('shop_id',$LoggedShopInfo->id)->count()}}</h6>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="card card-hover">
                     <div class="box bg-info text-center">
                         <h1 class="font-light text-white"><i class="mdi mdi-chart-bar"></i></h1>
-                        <h6 class="text-white">Total sales on current month</h6>
+                        <h6 class="text-white">Total sales</h6>
                         <h6 class="text-white">RM 100.00</h6>
                     </div>
                 </div>

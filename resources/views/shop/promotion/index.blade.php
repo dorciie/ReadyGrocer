@@ -36,7 +36,7 @@
                                 <th style="width:100px;">Brand</th>
                                 <th style="width:100px;">Start Promotion</th>{{-- bila tekan view "icon mata", show table semua item+price before and after promotion --}}
                                 <th style="width:100px;">End Promotion</th>
-                                <th style="width:100px;">Days</th>
+                                <th style="width:100px;">Day(s)</th>
                                 <th style="width:100px;">Price</th>
                                 <th style="width:100px;">Discount</th>
                                 <th style="width:100px;">Offer Price</th>
@@ -54,7 +54,7 @@
                                 <td>{{$item->item_brand}}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->item_startPromo)->format('d/m/Y')}}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->item_endPromo)->format('d/m/Y')}}</td>
-                                <td>{{$different_days}}</td>
+                                <td>{{$different_days+1}}</td>
                                 <td>RM{{$item->item_price}}</td>
                                 <td>{{$item->item_discount}}%</td>
                                 <td>RM{{$item->offer_price}}</td>
