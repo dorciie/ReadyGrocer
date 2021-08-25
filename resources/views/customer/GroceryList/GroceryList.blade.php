@@ -7,11 +7,12 @@
 <div class="row">
     <div class="col-12 d-flex no-block align-items-center">
         <h4 class="page-title">Your Grocery List</h4>
+        <div class="icon">
+                <i class="me-2 mdi mdi-flag-triangle"></i> (Grocery List according to your fav shop)
+            </div>
         <div class="ms-auto text-end">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Library</li>
                 </ol>
             </nav>
         </div>
@@ -58,7 +59,7 @@
                                 <td>{{$list->item_brand}}</td>
                                 <td>{{\App\Models\Category::where('id',$list->category_id)->value('category_name')}}</td>
                                 <td>{{$list->item_quantity}}</td>
-                                <td>{{$list->item_frequency}}</td>
+                                <td>{{$list->item_id}}</td>
                                 <td><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#productID{{$list->item_id}}">Update List</button></td>
 
                                 <td><a class="btn btn-outline-primary" href="{{route('updateCart2',['itemID' => $list->item_id])}}" role="button">Add to Cart</a></td>

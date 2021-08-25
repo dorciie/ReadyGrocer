@@ -27,8 +27,8 @@
                     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
                     <div class="container emp-profile">
-                        @foreach($shopdetail as $s)
-                        <form method="get" action="{{route('shops.edit', $s->id)}}">
+                       
+                        <form method="get" action="{{route('shops.edit', $shopdetail->id)}}">
                             @if(Session::get('success'))
                             <div class="alert alert-success">
                                 {{Session::get('success')}}
@@ -45,12 +45,12 @@
                                 <div class="col-md-6">
                                     <div class="profile-head">
                                         <h5>
-                                            {{$s->id}}
+                                            {{$shopdetail->id}}
                                         </h5>
                                         <h6>
-                                            {{$s->shopName}}
+                                            {{$shopdetail->shopName}}
                                         </h6>
-                                        <p class="proile-rating">RANKINGS : <span>{{$s->rating}}</span></p>
+                                        <p class="proile-rating">RANKINGS : <span>{{$shopdetail->rating}}</span></p>
                                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                                             <li class="nav-item">
                                                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
@@ -75,7 +75,7 @@
                                                     <label>Shop Id</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <p>{{$s->id}}</p>
+                                                    <p>{{$shopdetail->id}}</p>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -83,7 +83,7 @@
                                                     <label>Shop Name</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <p>{{$s->shopName}}</p>
+                                                    <p>{{$shopdetail->shopName}}</p>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -91,7 +91,7 @@
                                                     <label>Email</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <p>{{$s->email}}</p>
+                                                    <p>{{$shopdetail->email}}</p>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -99,7 +99,7 @@
                                                     <label>Address</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <p>{{$s->address}}</p>
+                                                    <p>{{$shopdetail->address}}</p>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -107,17 +107,16 @@
                                                     <label>Date Joined</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <p>{{$s->created_at}}</p>
+                                                    <p>{{$shopdetail->created_at}}</p>
                                                 </div>
                                             </div>
                                             <!-- <div id="googleMap" style="width:100%;height:400px;"></div> -->
                                         </div><br>
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-info btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Fave
-</button>
 
-<!-- Modal -->
+                                        <button type="button" class="btn btn-info btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        Fave
+                                        </button>
+
                                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
@@ -141,7 +140,7 @@
                                 </div>
                             </div>
                         </form>
-                        @endforeach
+                     
 
                     </div>
                 </div>

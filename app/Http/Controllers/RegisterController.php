@@ -40,7 +40,9 @@ class RegisterController extends Controller
             $query = $newShop->save();
             
             $this->sendEmailShop($newShop);
-            return view('shop/auth/verification')->with('success','Please Verify Email before Proceeding');
+            $info =shopOwner::where('email',$request->email)->get();
+
+            return view('shop/auth/verification')->with('success','Please Verify Email before Proceeding')->with('shop',$info);
       
 
         }
@@ -81,26 +83,26 @@ class RegisterController extends Controller
             ['shop'=> $shop],
             function($message) use ($shop){
                 $message->to($shop->email);
-                $message->subject("$shop->name, Verify Your Email");
+                $message->subject("$shop->name, Verify Your Email Shop Owner");
             }
         );
     }
 
     public function resendEmailShop($shopID){
-        $shopOwner = shopOwner::where('id',$shopID)
+        $shopOwner = shopOwner::where('id',$custID)
         ->first();
         Mail::send(
-            'shop.auth.verifyEmail',
-            ['shop'=> $shopOwner],
-            function($message) use ($shopOwner){
-                $message->to($shopOwner->email);
-                $message->subject("$shopOwner->name, Verify Your Email");
+            'customer.auth.verifyEmail',
+            ['customer'=> $customer],
+            function($message) use ($customer){
+                $message->to($customer->email);
+                $message->subject("$customer->name, Verify Your Email");
             }
         );
         $data = [
             'LoggedShopInfo'=> $shopOwner
         ];
-        return view('shop/auth/verification')->with('success','Please Verify Email before Proceeding')->with('shop',$data);
+        return view('customer/auth/verification')->with('success','Please Verify Email before Proceeding')->with('shop',$data);
 
     }
     /**
