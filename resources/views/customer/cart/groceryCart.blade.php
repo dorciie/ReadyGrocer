@@ -25,6 +25,15 @@
     {{Session::get('error')}}
 </div>
 @endif
+@if ($errors->any())
+                    <div class="alert alert-danger">
+                           <ul>
+                            @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                          @endforeach
+                            </ul>
+                            </div>
+                    @endif
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -46,6 +55,7 @@
                         <th scope="col">Item Name</th>
                         <th scope="col">Item Price(RM)</th>
                         <th scope="col">Item Quantity</th>
+                        <th scope="col">Item Max Quantity</th>
                         <th scope="col">Item Brand</th>
                         <th scope="col">Total Price(RM)</th>
                         <th scope="col"></th>
@@ -61,6 +71,8 @@
                         <td>{{$info->item_name}}</td>
                         <td>{{number_format((float)$info->item_price, 2, '.', '')}}</td>
                         <td>{{$info->item_quantity}}</td>
+                        <td>{{\App\Models\ShopItem::where('shop_id',$info->shop_id)->value('item_stock')}}</td>
+                        
                         <td>{{$info->item_brand}}</td>
                         <td>{{number_format((float)$info->total_price, 2, '.', '')}}</td>
                         <div style="display: none">{{$total += $info->total_price}}</div>
@@ -81,7 +93,7 @@
                                                     <label>Item Name</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <p>{{$info->id}}</p>
+                                                    <p>{{$info->item_name}}</p>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -90,7 +102,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="input-group mb-3">
-                                                        <input type="number" class="form-control" name="item_quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$info->item_quantity}}" placeholder="{{$info->item_quantity}}">
+                                                        <input type="number" class="form-control" name="item_quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$info->item_quantity}}" placeholder="{{$info->item_quantity}}"max="{{\App\Models\ShopItem::where('shop_id',$info->shop_id)->value('item_stock')}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -111,6 +123,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                         <td>6% SST : </td>
                         <td>{{number_format((float)$total *0.06, 2, '.', '')}}</td>
                         <div style="display: none">{{$total = $total + $total *0.06}}</div>
@@ -119,6 +132,7 @@
                     @endif
                     @endforeach
                     <tr>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -172,8 +186,7 @@
                                        <!-- {{ $now = \Carbon\Carbon::now()}} -->
                                         <input type="radio" name="delivery" value="deliveryLater"/>&nbspDeliveryLater
                                         <input type="datetime-local" class="form-control"  name="deliveryDT" >
-                                        
-                                     
+                
                                         </div>
                                         <!-- <div class="form-check">
                                         <input class="form-check-input" type="radio" name="delivery" id="flexRadioDefault2" >

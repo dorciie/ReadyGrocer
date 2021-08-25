@@ -71,11 +71,13 @@ class custDashboardController extends Controller
      */
     public function list()
     {
-      
+        $customer = customer::where('id', session('LoggedCustomer'))
+        ->first();
         
         $list = DB::table('grocery_lists')
         ->join('shop_items','grocery_lists.item_id','=','shop_items.id')
         ->where('customer_id', session('LoggedCustomer'))
+        ->where('grocery_lists.shop_id', $customer->fav_shop)
         ->select('grocery_lists.id AS id','shop_items.id AS item_id','grocery_lists.item_quantity AS item_quantity','grocery_lists.item_frequency AS item_frequency', 'grocery_lists.shop_id AS shop_id','shop_items.item_name AS item_name','shop_items.item_brand AS item_brand','shop_items.item_price AS item_price','shop_items.item_description AS item_description','shop_items.category_id AS category_id')
         ->get();
        

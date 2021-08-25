@@ -2,11 +2,10 @@
 
 
 @section('title')
-@foreach($shop as $favshop)
 <div class="row">
     <div class="col-12 d-flex no-block align-items-center">
 
-        <h4 class="page-title">{{$favshop->shopName}}</h4>
+        <h4 class="page-title">{{$shop->shopName}}</h4>
         <div class="ms-auto text-end">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -17,7 +16,6 @@
         </div>
     </div>
 </div>
-@endforeach
 @endsection
 @section('content')
 <div class="row">
