@@ -2,10 +2,11 @@
 
 namespace App\Console;
 
+
 use App\Console\Commands\sendCheckOutReminderEmails;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-
+date_default_timezone_set("Asia/Kuala_Lumpur");
 class Kernel extends ConsoleKernel
 {
     /**
@@ -14,6 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+       Commands\DeletePromotion::class,
        Commands\cronEmail::class,
     ];
 
@@ -26,6 +28,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
+    $schedule->command('Promotion:delete')
+                 ->dailyAt('00:00')
+                 ->timezone('Asia/Kuala_Lumpur');
+
         $schedule->command('Checkout:email')
                 ->everyMinute()->withoutOverlapping();
     }

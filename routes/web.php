@@ -110,6 +110,8 @@ Route::resource('category', 'App\Http\Controllers\CategoryController')->middlewa
 Route::resource('item', 'App\Http\Controllers\ShopItemController')->middleware('ShopisLogged');
 Route::get('stock', [ShopItemController::class,'stock'])->middleware('ShopisLogged');
 Route::get('updateStock/{itemID}', [ShopItemController::class,'editStock'])->name('updateStock')->middleware('ShopisLogged');
+Route::post('/import',[ShopItemController::class,'import'])->name('shop.import');
+
 
 //Analysis Section
 Route::resource('analysis', 'App\Http\Controllers\AnalysisController')->middleware('ShopisLogged');

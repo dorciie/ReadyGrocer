@@ -83,7 +83,7 @@
                 </div>
                 <div class="form-group row">
                     <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label" >Image</label>
+                        class="col-sm-2 text-end control-label col-form-label" >Image <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" name="item_image" value="{{$item->item_image}}" accept="image/*">

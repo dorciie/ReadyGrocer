@@ -45,7 +45,7 @@
                             </div>
                             <div class="form-group row">
                                 <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Total amount of payment: </p>
-                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">RM{{$custOrders->total_payment}}</p>
+                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">RM{{$custOrders->total_payment}} (Including 6% sst)</p>
                             </div>
                             <div class="form-group row">
                                 <p style="font-size: 14px;" class="col-sm-4" style="font-size: 18px;">List of item bought: </p>
