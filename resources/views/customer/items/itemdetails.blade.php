@@ -1,10 +1,10 @@
 @extends('customer.layouts.master')
 
 @section('title')
-@foreach($shop as $favshop)
+
 <div class="row">
     <div class="col-12 d-flex no-block align-items-center">
-        <h4 class="page-title">{{$favshop->shopName}}</h4>
+        <h4 class="page-title">{{$shop->shopName}}</h4>
         <div class="ms-auto text-end">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -15,7 +15,7 @@
         </div>
     </div>
 </div>
-@endforeach
+
 @endsection
 
 <!-- ============================================================== -->
@@ -43,7 +43,7 @@
 
 
                 </div>
-                @foreach($shop as $shop)
+                
                 <div class="row">
                     @if(Session::get('success'))
                     <div class="alert alert-success">
@@ -55,11 +55,16 @@
                         {{Session::get('error')}}
                     </div>
                     @endif
-                    @error('item_quantity')
-                    <span class="invalid-feedback" role="alert">
-                     <strong>{{ $message }}</strong>
-                      </span>
-                    @enderror
+                  
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                           <ul>
+                            @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                          @endforeach
+                            </ul>
+                            </div>
+                    @endif
                     @foreach($items as $item)
                     <div class="col-md-4">
                         <div class="profile-img">
@@ -86,7 +91,7 @@
                     </div>
 
                 </div>
-                @endforeach
+             
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-work">
@@ -120,7 +125,12 @@
                                         <label>Price</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p><s>{{$item->item_price}}</s>&nbsp&nbsp{{$item->offer_price}}</p>
+                                        <p><s>{{$item->item_price}}</s>
+                                        @if($item->offer_price!=0){
+                                           <b>&nbsp&nbsp{{$item->offer_price}} <b>
+                                        }
+                                        @endif
+                                        </p>
                                     </div>
                                 </div>
                                 <!-- <div class="row">
@@ -185,7 +195,7 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="input-group mb-3">
-                                                                    <input type="number" class="form-control" name="item_quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                                                    <input type="number" class="form-control" name="item_quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" min="1">
                                                                 </div>
 
                                                             </div>
@@ -240,7 +250,7 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="input-group mb-3">
-                                                                    <input type="number" class="quantity" name="item_quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                                                    <input type="number" class="quantity" name="item_quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" min="1">
                                                                 </div>
 
                                                             </div>

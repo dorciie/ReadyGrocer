@@ -112,6 +112,7 @@ Route::get('stock', [ShopItemController::class,'stock'])->middleware('ShopisLogg
 Route::get('updateStock/{itemID}', [ShopItemController::class,'editStock'])->name('updateStock')->middleware('ShopisLogged');
 Route::post('/import',[ShopItemController::class,'import'])->name('shop.import');
 
+
 //Analysis Section
 Route::resource('analysis', 'App\Http\Controllers\AnalysisController')->middleware('ShopisLogged');
 
@@ -127,7 +128,5 @@ Route::post('password_change',[ShopProfileController::class,'updatePassword'])->
 
 //Promotion section
 Route::resource('promotion', 'App\Http\Controllers\PromotionController')->middleware('ShopisLogged');
-
-
 //every page lepas login kena letak middleware('ShopisLogged') so bila login as customer tkleh masuk dekat shop
 //\PWA::routes();

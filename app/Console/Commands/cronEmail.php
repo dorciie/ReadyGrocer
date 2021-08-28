@@ -41,10 +41,7 @@ class cronEmail extends Command
     {
         $now =\Carbon\Carbon::now()->addHours(1);
         $now2=\Carbon\Carbon::now()->addHours(1)->addMinutes(1);
-        // $checkout = customer::where('dtdelivery', '<=', $now)
-        // '2021-06-20 22:30:00'
-        $checkout = customer::whereBetween('dtdelivery', [$now,$now2])
-        ->get();
+        $checkout = customer::whereBetween('dtdelivery', [$now,$now2])->get();
        
         foreach($checkout as $checkout){
             Mail::send(
@@ -56,6 +53,25 @@ class cronEmail extends Command
                 }
             );
         }
+        
+        //renew dtdelivery based on autodelivery after dtdelivery pass
+        $dtnow = \Carbon\Carbon::now();
+        $dtnow2 =\Carbon\Carbon::now()->addMinutes(1);
+        $dtdelivery = customer::whereBetween('dtdelivery', [$dtnow,$dtnow2])->get();
+
+        foreach($dtdelivery as $dtdelivery){
+            if(($dtdelivery->autoDelivery)==='Daily'){
+                customer::where('id',$dtdelivery->id)->update(['dtdelivery' => $dtnow->addDays(1)]);}
+            elseif(($dtdelivery->autoDelivery)==='Weekly'){
+                customer::where('id',$dtdelivery->id)->update(['dtdelivery' => $dtnow->addWeeks(1)]);}
+            elseif(($dtdelivery->autoDelivery)==='Fortnight'){
+                    customer::where('id',$dtdelivery->id)->update(['dtdelivery' => $dtnow->addWeeks(2)]);}
+            elseif(($dtdelivery->autoDelivery)==='Monthly'){
+                        customer::where('id',$dtdelivery->id)->update(['dtdelivery' => $dtnow->addMonths(1)]);}   
+        }
+
+       
+
     }
 
 }
