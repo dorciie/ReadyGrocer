@@ -9,6 +9,8 @@ use App\Models\Category;
 use App\Models\ShopItem; 
 use File;
 use Illuminate\Support\Facades\Storage;
+use App\Imports\ShopItemImport;
+use Excel;
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
 class ShopItemController extends Controller
@@ -34,30 +36,30 @@ class ShopItemController extends Controller
         ->get();
 
         //delete promotion after end date of the promotion
-        $shopItems = DB::table('shop_items')
-        ->where('shop_id',$shopOwner->id)
-        ->whereNotNull('item_discount')
-        ->whereNotNull('item_endPromo')
-        ->whereNotNull('item_startPromo')
-        ->get();
-        foreach ($shopItems as $items) {
-            $todayDate = date('Y-m-d');
-            $item_endPromo = $items->item_endPromo;
-            if($todayDate > $item_endPromo){
-                $query = DB::table('shop_items')
-                    ->where('shop_id',$shopOwner->id)
-                    ->whereNotNull('item_discount')
-                    ->whereNotNull('item_endPromo')
-                    ->whereNotNull('item_startPromo')
-                    ->where('item_endPromo',$item_endPromo)
-                    ->update([
-                        'item_startPromo'=> NULL, //
-                        'item_endPromo'=> NULL, //
-                        'offer_price'=> "0.00", //
-                        'item_discount'=> "0.00", //
-                    ]);
-            }
-        }
+        // $shopItems = DB::table('shop_items')
+        // ->where('shop_id',$shopOwner->id)
+        // ->whereNotNull('item_discount')
+        // ->whereNotNull('item_endPromo')
+        // ->whereNotNull('item_startPromo')
+        // ->get();
+        // foreach ($shopItems as $items) {
+        //     $todayDate = date('Y-m-d');
+        //     $item_endPromo = $items->item_endPromo;
+        //     if($todayDate > $item_endPromo){
+        //         $query = DB::table('shop_items')
+        //             ->where('shop_id',$shopOwner->id)
+        //             ->whereNotNull('item_discount')
+        //             ->whereNotNull('item_endPromo')
+        //             ->whereNotNull('item_startPromo')
+        //             ->where('item_endPromo',$item_endPromo)
+        //             ->update([
+        //                 'item_startPromo'=> NULL, //
+        //                 'item_endPromo'=> NULL, //
+        //                 'offer_price'=> "0.00", //
+        //                 'item_discount'=> "0.00", //
+        //             ]);
+        //     }
+        // }
         return view('shop.item.index',$data, compact('shopItem'));
     }
 
@@ -187,17 +189,14 @@ class ShopItemController extends Controller
                 'item_price'=>'required|numeric',
                 'category_id'=>'required|exists:categories,id',
                 'item_stock'=>'required|numeric',
-                'item_image'=>'image|mimes:jpeg,png,jpg,gif,svg',
+                'item_image'=>'required|image|mimes:jpeg,png,jpg,gif,svg',
                 'item_description'=>'nullable|string',
                 'item_size'=>'required',
             ]);
 
             if ($request->hasFile('item_image')) {
-                if($item->item_discount !=NULL){
                     Storage::delete('/public/'.$item->item_image);       
                     $path = $request->item_image->store('item', 'public');
-
-                    $offer_price=($request->item_price-(($request->item_price*$item->item_discount)/100));
 
                     $todayDate = date('Y-m-d H:i:s');
                     $query = DB::table('shop_items')
@@ -206,7 +205,6 @@ class ShopItemController extends Controller
                                 'item_name'=> $request->item_name,
                                 'item_brand'=> $request->item_brand,
                                 'item_price'=> $request->item_price, //
-                                'offer_price'=> $offer_price, //
                                 'category_id'=> $request->category_id, //
                                 'item_stock'=> $request->item_stock,
                                 'item_image'=> $path,
@@ -220,39 +218,15 @@ class ShopItemController extends Controller
                     }else{
                         return back()->with('error','Something went wrong');
                     }
-                }
-                else{
-                    $todayDate = date('Y-m-d H:i:s');
-                    $query = DB::table('shop_items')
-                            ->where('id', $id)
-                            ->update([
-                                'item_name'=> $request->item_name,
-                                'item_brand'=> $request->item_brand,
-                                'item_price'=> $request->item_price, //
-                                'category_id'=> $request->category_id, //
-                                'item_stock'=> $request->item_stock,
-                                'item_description'=> $request->item_description, //
-                                'item_size'=> $request->item_size, //
-                                'updated_at'=> $todayDate
-                            ]);
-                            if($query){
-                                return redirect()->route('item.index')->with('success','Successfully updated item');
-                            }else{
-                                return back()->with('error','Something went wrong');
-                            }
-                }
 
             }else{
-                if($item->item_discount !=NULL){
                     $todayDate = date('Y-m-d H:i:s');
-                    $offer_price=($request->item_price-(($request->item_price*$item->item_discount)/100));
                     $query = DB::table('shop_items')
                             ->where('id', $id)
                             ->update([
                                 'item_name'=> $request->item_name,
                                 'item_brand'=> $request->item_brand,
                                 'item_price'=> $request->item_price, //
-                                'offer_price'=> $offer_price, //
                                 'category_id'=> $request->category_id, //
                                 'item_stock'=> $request->item_stock,
                                 'item_description'=> $request->item_description, //
@@ -264,27 +238,6 @@ class ShopItemController extends Controller
                             }else{
                                 return back()->with('error','Something went wrong');
                             }
-                    }
-                    else{
-                        $todayDate = date('Y-m-d H:i:s');
-                        $query = DB::table('shop_items')
-                                ->where('id', $id)
-                                ->update([
-                                    'item_name'=> $request->item_name,
-                                    'item_brand'=> $request->item_brand,
-                                    'item_price'=> $request->item_price, //
-                                    'category_id'=> $request->category_id, //
-                                    'item_stock'=> $request->item_stock,
-                                    'item_description'=> $request->item_description, //
-                                    'item_size'=> $request->item_size, //
-                                    'updated_at'=> $todayDate
-                                ]);
-                                if($query){
-                                    return redirect()->route('item.index')->with('success','Successfully updated item');
-                                }else{
-                                    return back()->with('error','Something went wrong');
-                                }
-                    }
 
             }
         
@@ -353,6 +306,14 @@ class ShopItemController extends Controller
             }else{
                 return back()->with('error','Something went wrong');
             }
+    }
+
+    public function import(Request $request){
+        $this->validate($request,[
+            'file'=>'required'
+        ]);
+        Excel::import(new ShopItemImport, $request->file);
+        return back()->with('success','Successfully import items data from excel file.');
     }
     
 }

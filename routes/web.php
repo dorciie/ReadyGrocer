@@ -108,6 +108,9 @@ Route::resource('category', 'App\Http\Controllers\CategoryController')->middlewa
 
 //Item Section
 Route::resource('item', 'App\Http\Controllers\ShopItemController')->middleware('ShopisLogged');
+Route::get('stock', [ShopItemController::class,'stock'])->middleware('ShopisLogged');
+Route::get('updateStock/{itemID}', [ShopItemController::class,'editStock'])->name('updateStock')->middleware('ShopisLogged');
+Route::post('/import',[ShopItemController::class,'import'])->name('shop.import');
 
 //Analysis Section
 Route::resource('analysis', 'App\Http\Controllers\AnalysisController')->middleware('ShopisLogged');
@@ -121,6 +124,9 @@ Route::get('confirmPurchase/{orderID}',[ViewOrderController::class,'confirmPurch
 //Shop profile Section
 Route::resource('profile', 'App\Http\Controllers\ShopProfileController')->middleware('ShopisLogged');
 Route::post('password_change',[ShopProfileController::class,'updatePassword'])->middleware('ShopisLogged');
+
+//Promotion section
+Route::resource('promotion', 'App\Http\Controllers\PromotionController')->middleware('ShopisLogged');
 
 
 //every page lepas login kena letak middleware('ShopisLogged') so bila login as customer tkleh masuk dekat shop

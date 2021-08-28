@@ -20,35 +20,71 @@
                 {{Session::get('error')}}
             </div>
         @endif
+        @if(count($errors)>0)
+            <div class="alert alert-danger" id="alert">
+                Upload Validation Error
+                <ul>
+                    @foreach($errors->all() as $error)
+                    <li>{{$error}}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </div>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Item</h5>
+            <h3 class="card-title">All Items</h3>
             <p>Total item: {{\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->count()}}</p>
-            <a class="btn btn-sm btn-info" href="{{route('item.create')}}"><i class="fa fa-plus"></i> New Item</a>
+            <a class="btn btn-sm btn-info" href="{{route('item.create')}}"><i class="fa fa-plus"></i> Add New Item</a>
             <br><br>
+            <div class="alert alert-info" role="alert">
+                <h4 class="alert-heading">Important note before import the item!</h4>
+                <p>Make sure data from excel file follow this sequence.</p>
+                <p><strong>[ Item name, Item brand, Item price, Item Stock, Item Volume/Weight ]</strong></p>
+                <hr>
+                <form method="post" enctype="multipart/form-data" action="{{route('shop.import')}}">
+                    @csrf
+                    <div class="form-group">
+                        <label for="file">Import item: </label>
+                        {{-- <label class="file"> --}}
+                            <input type="file" id="file" name="file" aria-label="File browser example" accept=".xls, .xlsx">
+                            <span class="file-custom"></span>
+                            <button type="submit" class="btn btn-primary">Import</button>
+                        {{-- </label> --}}
+                        {{-- <input style="length: 50px" type="file" name="file" class="form-control" accept=".xls, .xlsx"/> --}}
+                    </div>
+                </form>
+                <p class="mb-0">Make sure to assign the category for each items after imported the item.</p>
+            </div>
             <div class="table-responsive">
                 <table id="myTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>No</th>
+                            {{-- <th>No</th> --}}
                             <th>Name</th>
                             <th>Image</th> {{-- multiple image (video 12, mins 1826) --}}
                             <th>Brand</th>
                             <th>Stock</th>
-                            <th>Status</th>
+                            {{-- <th>Status</th> --}}
+                            <th>Category</th>
                             <th>Action</th> 
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($shopItem as $item)
                         <tr>
-                            <td>{{$loop->iteration}}</td>
+                            {{-- <td>{{$loop->iteration}}</td> --}}
                             <td>{{$item->item_name}}</td>
+                            @if($item->item_image != NULL)
                             <td><img src="{{ Storage::url($item->item_image) }}" width="100px"></td>
+                            @endif
+                            @if($item->item_image == NULL)
+                            <td>No image yet</td>
+                            @endif
                             <td>{{$item->item_brand}}</td>
                             <td>{{$item->item_stock}}</td>
-                            @if($item->item_stock <='10' && $item->item_stock >'0')
+
+                            {{-- @if($item->item_stock <='10' && $item->item_stock >'0')
                             <td><span class="label label-warning">Low in stock</span></td>
                             @endif
                             @if($item->item_stock>'10')
@@ -56,7 +92,15 @@
                             @endif
                             @if($item->item_stock=='0')
                             <td><span class="label label-danger">Out of stock</span></td>
+                            @endif --}}
+
+                            @if($item->category_id != NULL)
+                            <td>{{\App\Models\Category::where('id',$item->category_id)->where('shop_id',$LoggedShopInfo->id)->value('category_name')}}</td>
                             @endif
+                            @if($item->category_id == NULL)
+                            <td><span class="label label-danger">Not assign yet</span></td>
+                            @endif
+
                             <td>
                                 <a style="float: left;" href="javascript:void(0);" data-toggle="modal" data-target="#productID{{$item->id}}" class="btn btn-sm btn-secondary" data-placement="bottom"><i class="fas fa-eye"></i></a>
                                 <a style="float: left; margin-left: 5px;" href="{{route('item.edit',$item->id)}}" data-toggle="tooltip" class="btn btn-sm btn-info" data-placement="bottom"><i class="fas fa-edit"></i></a>
@@ -123,7 +167,12 @@
                                         @endif
                                         <div class="col-md-6">
                                             <strong>Category: </strong>
+                                            @if($product->category_id != NULL)
                                             <p>{{\App\Models\Category::where('id',$product->category_id)->where('shop_id',$LoggedShopInfo->id)->value('category_name')}}</p>
+                                            @endif
+                                            @if($product->category_id == NULL)
+                                            <p><span class="label label-danger">Not assign yet</span></p>
+                                            @endif
                                         </div>
                                         <div class="col-md-6">
                                             <strong>Status: </strong>
