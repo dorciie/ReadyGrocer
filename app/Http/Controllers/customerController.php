@@ -20,28 +20,29 @@ class customerController extends Controller
 
     public function shopdetails($shopID)
     {
-        if(session()->has('LoggedCustomer')){
-            $customer = DB::table('customers')
-            ->where('id', session('LoggedCustomer'))
-            ->first();}
+        // if(session()->has('LoggedCustomer')){
+        //     $customer = DB::table('customers')
+        //     ->where('id', session('LoggedCustomer'))
+        //     ->first();}
             
-        $shopdetail = DB::table('shop_owners')->get()->where('id', $shopID)->toArray();
+        // // $shopdetail = DB::table('shop_owners')->get()->where('id', $shopID)->toArray();
+        // $shopdetail = shopOwner::find($shopID)->get()->toArray();
 
-        return view('customer.shop.shopDetails',compact('shopdetail'))->with('custID',$customer);
+        // return view('customer.shop.shopDetails',compact('shopdetail'))->with('custID',$customer);
     }
     
     public function favShop($shopID)
     {
-        if(session()->has('LoggedCustomer')){
-            $customer = DB::table('customers')
-            ->where('id', session('LoggedCustomer'))
-            ->first();}
+        // if(session()->has('LoggedCustomer')){
+        //     $customer = DB::table('customers')
+        //     ->where('id', session('LoggedCustomer'))
+        //     ->first();}
             
-         DB::table('customers')
-              ->where('id', $customer->id) //letak cust id
-              ->update(['fav_shop' => $shopID]);
+        //  DB::table('customers')
+        //       ->where('id', $customer->id) //letak cust id
+        //       ->update(['fav_shop' => $shopID]);
     
-        return back()->with('success','Favourite shop is updated!');
+        // return back()->with('success','Favourite shop is updated!');
     }
 
     /**
