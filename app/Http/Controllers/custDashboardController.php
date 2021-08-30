@@ -37,12 +37,12 @@ class custDashboardController extends Controller
             ->first();}
             
       
-        $shop = shopOwner::get()->where('id', $customer->fav_shop);
+        $shop = shopOwner::find($customer->fav_shop);
         $items = shopItem::all()->where('shop_id', $customer->fav_shop)->where('category_id', $categoryID);
         $data = [
             'LoggedCustomerInfo'=> $customer
         ];
-        return view('customer.items.category')->with('name',$data)->with('customer',$customer)->with('items',$items)->with('shop',$shop);
+        return view('customer.items.category',compact('shop'))->with('name',$data)->with('customer',$customer)->with('items',$items);
     }
 
     public function itemDetails($itemID)
@@ -51,10 +51,8 @@ class custDashboardController extends Controller
             $customer = customer::where('id', session('LoggedCustomer'))
             ->first();}
             
-        $shop = DB::table('shop_owners')
-        ->get()
-        ->where('id', $customer->fav_shop);
-
+        $shop = shopOwner::find($customer->fav_shop);
+       
         $items = shopItem::all()
         ->where('shop_id', $customer->fav_shop)
         ->where('id', $itemID);
@@ -62,7 +60,7 @@ class custDashboardController extends Controller
         $data = [
             'LoggedCustomerInfo'=> $customer
         ];
-        return view('customer.items.itemdetails')->with('name',$data)->with('customer',$customer)->with('shop',$shop)->with('items',$items);
+        return view('customer.items.itemdetails',compact('shop'))->with('name',$data)->with('customer',$customer)->with('items',$items);
     }
     /**
      * Show the form for creating a new resource.
@@ -95,16 +93,12 @@ class custDashboardController extends Controller
         ->where('customer_id', session('LoggedCustomer'))
         ->where('checkout','false')
         ->where('grocery_carts.shop_id',$customer->fav_shop)
-        ->select('grocery_carts.id AS id','grocery_carts.item_quantity AS item_quantity', 'grocery_carts.shop_id AS shop_id','grocery_carts.total_price AS total_price','shop_items.item_brand AS item_brand','shop_items.item_price AS item_price','shop_items.offer_price AS offer_price','shop_items.item_name AS item_name')
+        ->select('grocery_carts.id AS id','grocery_carts.item_quantity AS item_quantity', 'grocery_carts.shop_id AS shop_id','grocery_carts.total_price AS total_price','shop_items.item_brand AS item_brand','shop_items.item_price AS item_price','shop_items.offer_price AS offer_price','shop_items.item_name AS item_name','shop_items.id AS item_id')
         ->get();
         return view('customer.cart.groceryCart')->with('info',$info);
     }
 
-    public function checkout()
-    {
-        $checkout = GroceryCart::where('customer_id',session('LoggedCustomer'))->delete();
-        return view('customer.cart.checkout')->with('success','Cart successfully check out');
-    }
+  
 
     public function create()
     {
