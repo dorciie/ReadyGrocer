@@ -8,6 +8,7 @@ use App\Models\shopOwner;
 use App\Models\customer;
 use Mail;
 
+date_default_timezone_set("Asia/Kuala_Lumpur");
 class ViewOrderController extends Controller
 {
     /**
@@ -173,10 +174,12 @@ class ViewOrderController extends Controller
 
         $this->deliveryEmail($custOrder, $ItemcustOrder);
         
+        $todayDate = date('Y-m-d H:i:s');
         $query = DB::table('orders')
                 ->where('id', $deliveryOrder)
                 ->update([
-                    'status'=> 'delivering'
+                    'status'=> 'delivering',
+                    'updated_at'=> $todayDate
                 ]);
         if($query){
             return back()->with('success','An email has been send to customer to inform about the delivery');
@@ -218,10 +221,12 @@ class ViewOrderController extends Controller
 
         $this->confirmPurchaseEmail($custOrder);
         
+        $todayDate = date('Y-m-d H:i:s');
         $query = DB::table('orders')
                 ->where('id', $confirmPurchase)
                 ->update([
-                    'status'=> 'delivered'
+                    'status'=> 'delivered',
+                    'updated_at'=> $todayDate
                 ]);
         if($query){
             return back()->with('success','Good Job!, you successfully completed this order.');
