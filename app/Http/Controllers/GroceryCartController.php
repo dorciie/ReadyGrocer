@@ -25,7 +25,7 @@ class GroceryCartController extends Controller
     }
     public function cart(Request $request,$itemID)
     {
-        $item = ShopItem::where('id',$itemID)->first();
+        $item = ShopItem::find($itemID);
         $qty=$item->item_stock;
         $this->validate($request,[
             'item_quantity'=>'required|numeric|max:'.$qty,
@@ -33,10 +33,12 @@ class GroceryCartController extends Controller
 
         if(session()->has('LoggedCustomer')){
             $customer = customer::where('id', session('LoggedCustomer'))
-            ->first();}
+            ->first();
+        }
+        
         
 
-        if (GroceryCart::where('item_id', $item->id)->where('customer_id', $customer->id)->exists()) {
+        if (GroceryCart::where('item_id', $item->id)->where('customer_id', $customer->id)->where('checkout','false')->exists()) {
             
               return back()->with('error','already exits in your Grocery Cart');
     }
@@ -56,30 +58,21 @@ class GroceryCartController extends Controller
 
     public function cart2($itemID)
     {
-        // $item = ShopItem::where('id',$itemID)->first();
-        // $qty=$item->item_stock;
-        // $this->validate($request,[
-        //     'item_quantity'=>'required|numeric|max:'.$qty,
-        // ]);
-
-        if(session()->has('LoggedCustomer')){
-            $customer = customer::where('id', session('LoggedCustomer'))
-            ->first();}
-
-        $item = ShopItem::where('id', $itemID)
-        ->first();
+        $customer = customer::find(session('LoggedCustomer'));
+            
+        $item = ShopItem::find($itemID);
         $qty=$item->item_stock;
-        $list = GroceryList::where('item_id', $itemID)
+        $list = GroceryList::where('item_id', $itemID)->where('customer_id',session('LoggedCustomer'))
         ->first();
         
         if(($list->item_quantity)>$qty){
             return back()->with('error','Item quantity is over item stock');
         }
-        if (GroceryCart::where('item_id', $item->id)->where('customer_id', $customer->id)->exists()) {
-            
+        if (GroceryCart::where('item_id', $item->id)->where('customer_id', $customer->id)->where('checkout','false')->exists()) {
               return back()->with('error','already exits in your Grocery Cart');
-    }
-       $newCart = new GroceryCart;
+        }
+
+        $newCart = new GroceryCart;
             $newCart->customer_id=$customer->id;
             $newCart->shop_id=$customer->fav_shop;
             $newCart->item_id=$itemID;
@@ -88,8 +81,6 @@ class GroceryCartController extends Controller
 
             $newCart->save();
          return back()->with('success','successful');
-
-        
 
     }
 
@@ -153,8 +144,12 @@ class GroceryCartController extends Controller
         ->join('shop_items','grocery_carts.item_id','=','shop_items.id')
         ->first();
 
-        $request->validate([
-            'item_quantity' => 'max:'.$item->item_stock
+        $itemID = GroceryCart::where('id',$id)->value('item_id');
+       
+        $qty = ShopItem::where('id',$itemID)->value('item_stock');
+        
+        $this->validate($request,[
+            'item_quantity'=>'required|numeric|max:'.$qty,
         ]);
 
         $update = GroceryCart::where('id',$id)
@@ -172,34 +167,58 @@ class GroceryCartController extends Controller
         $customer = customer::where('id', session('LoggedCustomer'))
         ->first();
 
+        $order = GroceryCart::where('customer_id',session('LoggedCustomer'))
+        ->where('checkout','false')->where('shop_id',$customer->fav_shop)->get();
+
+// validate can be use for $request only kot
+    //     $this->validate($request,[
+    //         'item_quantity'=>'required|numeric|max:'.$stock,
+    //     ]);
+
+    // find() kena declare dulu
+        foreach($order as $order){
+            if($order->item_quantity>(ShopItem::where('id',$order->item_id)->value('item_stock'))){
+                return back()->with('error','item more than stock');
+            }
+        }
+
         $createOrder = new Order;
         $createOrder->payment =$request->payment;
         $createOrder->customer_id=$customer->id;
         $createOrder->shop_id=$customer->fav_shop;
-        // $createOrder->total_price = $request->totalPrice;//
-        // $createOrder->status = 'pending delivery';//
-        $createOrder->total_payment = $request->totalPrice;
-        $createOrder->status = 'preparing';
+        $createOrder->total_price = $request->totalPrice;
+        $createOrder->status = 'pending delivery';
+
         if($request->delivery ==='deliveryLater'){
             $createOrder->checkOutDelivery = $request->deliveryDT;
-            
         }else{
             $createOrder->checkOutDelivery = now(); 
         }
         
         $createOrder->save();
 
-         $update = GroceryCart::where('customer_id',session('LoggedCustomer'))
-        ->update([
-            'checkout' => 'true',
-            // 'payment' => $request->payment,
-            'order_id'=> $createOrder->id,
-            ]);
+        $order2 = GroceryCart::where('customer_id',session('LoggedCustomer'))
+        ->where('checkout','false')->where('shop_id',$customer->fav_shop)->get(); //why kena fetch data again eh
+
+        foreach($order2 as $order){
+            $update = GroceryCart::where('customer_id',session('LoggedCustomer'))->where('item_id',$order->item_id)
+            ->update([
+                'checkout' => 'true',
+                'payment' => $request->payment,
+                'order_id'=> $createOrder->id,
+                ]);
+
+            $updateitem = ShopItem::where('id',$order->item_id)
+            ->update([
+                'item_stock' => (ShopItem::where('id',$order->item_id)->value('item_stock'))-($order->item_quantity),
+                
+                ]);
+        }
             
             if($update){
                         return view('customer.cart.checkout')->with('success','Cart has been checkout');
             }
-            return back()->with('error','Cart cannot be check out');;
+            return back()->with('error','Cart cannot be check out');
     }
 
     /**
@@ -210,7 +229,7 @@ class GroceryCartController extends Controller
      */
     public function destroy($id)
     {
-        $item =  GroceryCart::where('id',$id);
+        $item =  GroceryCart::find($id);
         $item->delete();
 
         return back();
