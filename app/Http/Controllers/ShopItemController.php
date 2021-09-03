@@ -284,7 +284,13 @@ class ShopItemController extends Controller
         ->join('categories','shop_items.category_id','=','categories.id')
         ->where('shop_items.shop_id',$shopOwner->id)
         ->orderBy('item_stock','ASC')
-        ->get();
+        ->get([
+            'shop_items.id',
+            'shop_items.item_name',
+            'shop_items.item_brand',
+            'shop_items.item_stock',
+            'categories.category_name'
+        ]);
         return view('shop.item.stock',$data, compact('Itemstock'));
     }
 

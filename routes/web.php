@@ -12,7 +12,7 @@ use App\Http\Controllers\custShopController;
 use App\Http\Controllers\GroceryCartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShopItemController;
-use App\Http\Controllers\AnalysisController;
+// use App\Http\Controllers\AnalysisController;
 use App\Http\Controllers\ViewOrderController;
 use App\Http\Controllers\ShopProfileController;
 use App\Models\customer;
@@ -102,6 +102,7 @@ Route::post('shop/shopreset_password/{email}',[ForgotPasswordController::class,'
 
 //Shop Dashboard
 Route::get('shop/dashboard',[shopOwnerController::class,'shopDashboard'])->middleware('ShopisLogged');
+Route::get('year_change',[shopOwnerController::class,'updateYear'])->middleware('ShopisLogged');
 
 //Category section
 Route::resource('category', 'App\Http\Controllers\CategoryController')->middleware('ShopisLogged');
@@ -114,7 +115,7 @@ Route::post('/import',[ShopItemController::class,'import'])->name('shop.import')
 
 
 //Analysis Section
-Route::resource('analysis', 'App\Http\Controllers\AnalysisController')->middleware('ShopisLogged');
+// Route::resource('analysis', 'App\Http\Controllers\AnalysisController')->middleware('ShopisLogged');
 
 //Order Section
 Route::resource('order', 'App\Http\Controllers\ViewOrderController')->middleware('ShopisLogged');

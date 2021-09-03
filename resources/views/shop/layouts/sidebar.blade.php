@@ -29,8 +29,10 @@
                 </li>
 
                 @php
+                date_default_timezone_set("Asia/Kuala_Lumpur");
                 $todayDate = date("Y-m-d");
-                $count = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','preparing')->where(DB::raw("(DATE_FORMAT(checkoutDelivery,'%Y-%m-%d'))"),'=',$todayDate)->count();
+                $count = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','preparing')->count();
+                // $count = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','preparing')->where(DB::raw("(DATE_FORMAT(checkoutDelivery,'%Y-%m-%d'))"),'=',$todayDate)->count();
                 @endphp
 
                 @if($count==0)
@@ -46,9 +48,9 @@
                             {{$count}}<span class="visually-hidden">new order</span></span></span></a></li>
                 @endif
                 
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                {{-- <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="{{route('analysis.index')}}" aria-expanded="false"><i class="mdi mdi-chart-bar"></i><span
-                            class="hide-menu">Sales Analysis</span></a></li>
+                            class="hide-menu">Sales Analysis</span></a></li> --}}
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="{{route('promotion.index')}}" aria-expanded="false"><i class="mdi mdi-calendar-clock"></i><span
                             class="hide-menu">Schedule Promotion</span></a></li>
