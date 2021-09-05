@@ -65,11 +65,17 @@ class shopOwnerController extends Controller
               ->where('status','delivered')
               ->get();
 
-         $Oneyear = Order::select(DB::raw("YEAR(created_at) as years"))->distinct()
-                  ->whereYear('created_at', date('Y'))
-                  ->where('shop_id',$shopOwner->id)
-                  ->where('status','delivered')
-                  ->first();
+        if(empty(DB::table('orders')->where('orders.status','delivered')->whereYear('created_at', date('Y'))->count())){
+            $Oneyear = shopOwner::select(DB::raw("YEAR(created_at) as years"))->distinct()
+                    ->whereYear('created_at', date('Y'))
+                    ->first();
+        }else{
+            $Oneyear = Order::select(DB::raw("YEAR(created_at) as years"))->distinct()
+                    ->whereYear('created_at', date('Y'))
+                    ->where('shop_id',$shopOwner->id)
+                    ->where('status','delivered')
+                    ->first();
+        }
 
         $datas = array(0,0,0,0,0,0,0,0,0,0,0,0);
         foreach($months as $index => $month){
@@ -85,7 +91,7 @@ class shopOwnerController extends Controller
                  ->where('orders.status','delivered')
                  ->first();
 
-        $record = GroceryCart::select('category_name',DB::raw("(sum(item_quantity)) as totalItems"))
+        $record = GroceryCart::select('categories.category_name',DB::raw("(sum(grocery_carts.item_quantity)) as totalItems"))
                  ->join('shop_items','grocery_carts.item_id','=','shop_items.id')
                  ->join('categories','shop_items.category_id','=','categories.id')
                  ->join('orders','grocery_carts.order_id','=','orders.id')
@@ -102,7 +108,20 @@ class shopOwnerController extends Controller
             $dataPoints['label'][] = $row->category_name;
             $dataPoints['data'][] = (int) $row->totalItems;
         }
-        return view('shop.index', $data, compact('lowStock','noStock', 'datas','totalSales', 'year', 'Oneyear', 'totalItemSold','dataPoints'));
+
+        $itemSold = GroceryCart::select('categories.category_name',DB::raw("(sum(grocery_carts.item_quantity)) as totalItems"),'shop_items.id')
+                ->join('shop_items','grocery_carts.item_id','=','shop_items.id')
+                ->join('categories','shop_items.category_id','=','categories.id')
+                ->join('orders','grocery_carts.order_id','=','orders.id')
+                ->groupBy('shop_items.id','categories.category_name')
+                ->whereYear('grocery_carts.created_at', date('Y'))
+                ->where('grocery_carts.checkout','true')
+                ->where('grocery_carts.shop_id',$shopOwner->id)
+                ->where('orders.status','delivered')
+                ->orderBy('categories.category_name')
+                ->get();
+
+        return view('shop.index', $data, compact('lowStock','noStock', 'datas','totalSales', 'year', 'Oneyear', 'totalItemSold','dataPoints','itemSold'));
 
     }
 
@@ -158,11 +177,17 @@ class shopOwnerController extends Controller
                 ->where('status','delivered')
                 ->get();
 
-        $Oneyear = Order::select(DB::raw("YEAR(created_at) as years"))->distinct()
-                ->whereYear('created_at',$request->year)
-                ->where('shop_id',$shopOwner->id)
-                ->where('status','delivered')
-                ->first();
+        if(empty(DB::table('orders')->where('orders.status','delivered')->whereYear('created_at', $request->year)->count())){
+            $Oneyear = shopOwner::select(DB::raw("YEAR(created_at) as years"))->distinct()
+                    ->whereYear('created_at', $request->year)
+                    ->first();
+        }else{
+            $Oneyear = Order::select(DB::raw("YEAR(created_at) as years"))->distinct()
+                    ->whereYear('created_at', $request->year)
+                    ->where('shop_id',$shopOwner->id)
+                    ->where('status','delivered')
+                    ->first();
+            }
 
         $datas = array(0,0,0,0,0,0,0,0,0,0,0,0);
             foreach($months as $index => $month){
@@ -195,7 +220,20 @@ class shopOwnerController extends Controller
         $dataPoints['label'][] = $row->category_name;
         $dataPoints['data'][] = (int) $row->totalItems;
         }
-        return view('shop.index', $data, compact('lowStock','noStock', 'datas','totalSales', 'year', 'Oneyear', 'totalItemSold','dataPoints'));
+
+        $itemSold = GroceryCart::select('categories.category_name',DB::raw("(sum(grocery_carts.item_quantity)) as totalItems"),'shop_items.id')
+                ->join('shop_items','grocery_carts.item_id','=','shop_items.id')
+                ->join('categories','shop_items.category_id','=','categories.id')
+                ->join('orders','grocery_carts.order_id','=','orders.id')
+                ->groupBy('shop_items.id','categories.category_name')
+                ->whereYear('grocery_carts.created_at', $request->year)
+                ->where('grocery_carts.checkout','true')
+                ->where('grocery_carts.shop_id',$shopOwner->id)
+                ->where('orders.status','delivered')
+                ->orderBy('categories.category_name')
+                ->get();
+
+        return view('shop.index', $data, compact('lowStock','noStock', 'datas','totalSales', 'year', 'Oneyear', 'totalItemSold','dataPoints','itemSold'));
     }
     /**
      * Display a listing of the resource.

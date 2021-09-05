@@ -23,110 +23,306 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">All Order</h5>
+            {{-- <h5 class="card-title">All Order</h5> --}}
             
-            <div class="alert alert-primary">
-                @php
+            @php
                 date_default_timezone_set("Asia/Kuala_Lumpur");
                 $todayDate = date("Y-m-d");
-                $count = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','preparing')->count();
+                $countPreparing = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','preparing')->count();
+                $countDelivering = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','delivering')->count();
                 // $count = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','preparing')->where(DB::raw("(DATE_FORMAT(checkoutDelivery,'%Y-%m-%d'))"),'=',$todayDate)->count();
-                @endphp
-                You need to deliver <strong>{{$count}} </strong>order today.
-            </div>
+            @endphp
 
-            <div class="table-responsive">
-                <table id="myTable" class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Name</th>
-                            <th>Delivery date</th>
-                            <th>Delivery time</th>
-                            <th>Total amount</th>
-                            <th>Payment method</th>
-                            <th>Deliver grocery</th>
-                            <th>Done Deliver</th> 
-                            <th>Status</th> 
-                        </tr>
-                    </thead>
-                    <tbody style="text-align:center;">
-                        @foreach($custOrder as $order)
-                        <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td><div class="card card-hover"><a href="{{route('orderCustomer',['orderID' => $order->id])}}" data-toggle="tooltip" class="btn btn-sm btn-info" data-placement="bottom">{{$order->name}}</a></div></td>
-                            <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('d/m/Y')}}</td>
-                            <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('H:i:s')}}</td>
-                            <td>RM{{$order->total_payment}}</td>
-                            <td>{{$order->payment}}</td>
-                            @if($order->status == 'preparing')
-                            <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#deliverOrder{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom">No</a></div></td>
-                            <td>No</td>
-                            <td><h4><span class="label label-warning">Preparing</span></h4></td>
-                            @endif
-                            @if($order->status == 'delivering')
-                            <td>Yes</td>
-                            <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#confirmPurchase{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom">No</a></div></td>
-                            <td><h4><span class="label label-primary">Delivering</span></h4></td>
-                            @endif
-                            @if($order->status == 'delivered')
-                            <td>Yes</td>
-                            <td>Yes</td>
-                            {{-- <td><p><span class="label label-success">Yes</span></p></td> --}}
-                            <td><h4><span class="label label-success">Delivered</span></h4></td>
-                            @endif
-                            
-                        </tr> 
-                        <!-- Modal Deliver Order-->
-                            <div class="modal fade" id="deliverOrder{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="deliverOrderTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Deliver Order</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+            <ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="allOrder-tab" data-bs-toggle="tab" data-bs-target="#allOrder" type="button" role="tab" aria-controls="allOrder" aria-selected="true">All Order</button>
+                </li>
+                @if($countPreparing == 0)
+                    <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="newOrder-tab" data-bs-toggle="tab" data-bs-target="#newOrder" type="button" role="tab" aria-controls="newOrder" aria-selected="false">New Order</button>
+                    </li>
+                @endif
+                @if($countPreparing != 0)
+                    <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="newOrder-tab" data-bs-toggle="tab" data-bs-target="#newOrder" type="button" role="tab" aria-controls="newOrder" aria-selected="false">New Order <span class="badge rounded-pill bg-danger">
+                      {{$countPreparing}}</span></button>
+                  </li>
+                @endif
+                @if($countDelivering == 0)
+                    <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="delivering-tab" data-bs-toggle="tab" data-bs-target="#delivering" type="button" role="tab" aria-controls="delivering" aria-selected="false">Delivering</button>
+                    </li>
+                @endif
+                @if($countDelivering != 0)
+                    <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="delivering-tab" data-bs-toggle="tab" data-bs-target="#delivering" type="button" role="tab" aria-controls="delivering" aria-selected="false">Delivering <span class="badge rounded-pill bg-warning">
+                        {{$countDelivering}}</span></button>
+                    </li>
+                @endif
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false">Completed</button>
+                </li>
+            </ul>
+        {{-- START TAB --}}
+            <div class="tab-content" id="myTabContent">
+            {{-- VIEW ALL ORDER --}}
+                <div class="tab-pane fade show active" id="allOrder" role="tabpanel" aria-labelledby="allOrder-tab"><br>
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr class="table-info">
+                                    <th><strong>No</strong></th>
+                                    <th><strong>Name</strong></th>
+                                    <th><strong>Delivery date</strong></th>
+                                    <th><strong>Delivery time</strong></th>
+                                    <th><strong>Total amount</strong></th>
+                                    <th><strong>Payment method</strong></th>
+                                    <th><strong>Deliver grocery</strong></th>
+                                    <th><strong>Done Deliver</strong></th> 
+                                    <th><strong>Status</strong></th> 
+                                </tr>
+                            </thead>
+                            <tbody style="text-align:center;">
+                                @foreach($custOrder as $order)
+                                <tr>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td><div class="card card-hover"><a href="{{route('orderCustomer',['orderID' => $order->id])}}" data-toggle="tooltip" class="btn btn-sm btn-info" data-placement="bottom">{{$order->name}}</a></div></td>
+                                    <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('d/m/Y')}}</td>
+                                    <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('H:i:s')}}</td>
+                                    <td>RM{{$order->total_payment}}</td>
+                                    <td>{{$order->payment}}</td>
+                                    @if($order->status == 'preparing')
+                                    <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#deliverOrder{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom">No</a></div></td>
+                                    <td>No</td>
+                                    <td><h4><span class="label label-warning">Preparing</span></h4></td>
+                                    @endif
+                                    @if($order->status == 'delivering')
+                                    <td>Yes</td>
+                                    <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#confirmPurchase{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom">No</a></div></td>
+                                    <td><h4><span class="label label-primary">Delivering</span></h4></td>
+                                    @endif
+                                    @if($order->status == 'delivered')
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                    {{-- <td><p><span class="label label-success">Yes</span></p></td> --}}
+                                    <td><h4><span class="label label-success">Delivered</span></h4></td>
+                                    @endif
+                                    
+                                </tr> 
+                                <!-- Modal Deliver Order-->
+                                    <div class="modal fade" id="deliverOrder{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="deliverOrderTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Deliver Order</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            If you want to delivery the order, please click on <strong>"Deliver order"</strong> button and it will notify customer about their item are in delivering
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            {{-- <button id="deliveryOrder" type="submit" class="btn btn-primary" data-dismiss="modal">Deliver order</button> --}}
+                                            <a href="{{route('deliveryOrder',['orderID' => $order->id])}}" class="btn btn-info" >Deliver Order</a>
+                                            </div>
+                                        </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                    If you want to delivery the order, please click on <strong>"Deliver order"</strong> button and it will notify customer about their item are in delivering
+                                {{-- end Modal --}}
+        
+                                    <!-- Modal Confirm purchase-->
+                                    <div class="modal fade" id="confirmPurchase{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="confirmPurchaseTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Done deliver the groceries</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            If you done deliver the item, please click on <strong>"Done Deliver"</strong> button.
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            {{-- <button id="confirmPurchase" type="submit" class="btn btn-primary">Confirm Delivery</button> --}}
+                                            <a href="{{route('confirmPurchase',['orderID' => $order->id])}}" class="btn btn-info" >Done Deliver</a>
+                                            </div>
+                                        </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    {{-- <button id="deliveryOrder" type="submit" class="btn btn-primary" data-dismiss="modal">Deliver order</button> --}}
-                                    <a href="{{route('deliveryOrder',['orderID' => $order->id])}}" class="btn btn-info" >Deliver Order</a>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                        {{-- end Modal --}}
+                                    {{-- end Modal --}}
+                                @endforeach        
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {{--END VIEW ALL ORDER --}}
 
-                            <!-- Modal Confirm purchase-->
-                            <div class="modal fade" id="confirmPurchase{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="confirmPurchaseTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Done deliver the groceries</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+            {{-- VIEW NEW ORDER --}}
+                <div class="tab-pane fade" id="newOrder" role="tabpanel" aria-labelledby="newOrder-tab"><br>
+                    <div class="table-responsive">
+                        <table id="myTablePreparing" class="table table-striped table-bordered">
+                            <thead>
+                                <tr class="table-info">
+                                    <th><strong>No</strong></th>
+                                    <th><strong>Name</strong></th>
+                                    <th><strong>Delivery date</strong></th>
+                                    <th><strong>Delivery time</strong></th>
+                                    <th><strong>Total amount</strong></th>
+                                    <th><strong>Payment method</strong></th>
+                                    <th><strong>Deliver grocery</strong></th>
+                                    <th><strong>Done Deliver</strong></th> 
+                                    <th><strong>Status</strong></th> 
+                                </tr>
+                            </thead>
+                            <tbody style="text-align:center;">
+                                @foreach($custOrder as $order)
+                                    @if($order->status == 'preparing')
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td><div class="card card-hover"><a href="{{route('orderCustomer',['orderID' => $order->id])}}" data-toggle="tooltip" class="btn btn-sm btn-info" data-placement="bottom">{{$order->name}}</a></div></td>
+                                            <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('d/m/Y')}}</td>
+                                            <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('H:i:s')}}</td>
+                                            <td>RM{{$order->total_payment}}</td>
+                                            <td>{{$order->payment}}</td>
+                                            <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#deliverOrder1{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom">No</a></div></td>
+                                            <td>No</td>
+                                            <td><h4><span class="label label-warning">Preparing</span></h4></td>
+                                        </tr>
+                                    @endif
+                                <!-- Modal Deliver Order-->
+                                    <div class="modal fade" id="deliverOrder1{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="deliverOrderTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Deliver Order</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            If you want to delivery the order, please click on <strong>"Deliver order"</strong> button and it will notify customer about their item are in delivering
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            {{-- <button id="deliveryOrder" type="submit" class="btn btn-primary" data-dismiss="modal">Deliver order</button> --}}
+                                            <a href="{{route('deliveryOrder',['orderID' => $order->id])}}" class="btn btn-info" >Deliver Order</a>
+                                            </div>
+                                        </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                    If you done deliver the item, please click on <strong>"Done Deliver"</strong> button.
+                                {{-- end Modal --}}
+                                @endforeach        
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {{--END VIEW NEW ORDER --}}
+
+            {{-- VIEW DELIVERING ORDER --}}
+                <div class="tab-pane fade" id="delivering" role="tabpanel" aria-labelledby="delivering-tab"><br>
+                    <div class="table-responsive">
+                        <table id="myTableDelivering" class="table table-striped table-bordered">
+                            <thead>
+                                <tr class="table-info">
+                                    <th><strong>No</strong></th>
+                                    <th><strong>Name</strong></th>
+                                    <th><strong>Delivery date</strong></th>
+                                    <th><strong>Delivery time</strong></th>
+                                    <th><strong>Total amount</strong></th>
+                                    <th><strong>Payment method</strong></th>
+                                    <th><strong>Deliver grocery</strong></th>
+                                    <th><strong>Done Deliver</strong></th> 
+                                    <th><strong>Status</strong></th> 
+                                </tr>
+                            </thead>
+                            <tbody style="text-align:center;">
+                                @foreach($custOrder as $order)
+                                    @if($order->status == 'delivering')
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td><div class="card card-hover"><a href="{{route('orderCustomer',['orderID' => $order->id])}}" data-toggle="tooltip" class="btn btn-sm btn-info" data-placement="bottom">{{$order->name}}</a></div></td>
+                                            <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('d/m/Y')}}</td>
+                                            <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('H:i:s')}}</td>
+                                            <td>RM{{$order->total_payment}}</td>
+                                            <td>{{$order->payment}}</td>
+                                            <td>Yes</td>
+                                            <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#confirmPurchase1{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom">No</a></div></td>
+                                            <td><h4><span class="label label-primary">Delivering</span></h4></td>
+                                        </tr>
+                                    @endif
+                                    <!-- Modal Confirm purchase-->
+                                    <div class="modal fade" id="confirmPurchase1{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="confirmPurchaseTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Done deliver the groceries</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            If you done deliver the item, please click on <strong>"Done Deliver"</strong> button.
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            {{-- <button id="confirmPurchase" type="submit" class="btn btn-primary">Confirm Delivery</button> --}}
+                                            <a href="{{route('confirmPurchase',['orderID' => $order->id])}}" class="btn btn-info" >Done Deliver</a>
+                                            </div>
+                                        </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    {{-- <button id="confirmPurchase" type="submit" class="btn btn-primary">Confirm Delivery</button> --}}
-                                    <a href="{{route('confirmPurchase',['orderID' => $order->id])}}" class="btn btn-info" >Done Deliver</a>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            {{-- end Modal --}}
-                        @endforeach        
-                    </tbody>
-                </table>
-                 
+                                    {{-- end Modal --}}
+                                @endforeach        
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {{--END VIEW DELIVERING ORDER --}}
+
+            {{-- VIEW COMPLETED ORDER --}}
+                <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab"><br>
+                    <div class="table-responsive">
+                        <table id="myTableDelivered" class="table table-striped table-bordered">
+                            <thead>
+                                <tr class="table-info">
+                                    <th><strong>No</strong></th>
+                                    <th><strong>Name</strong></th>
+                                    <th><strong>Delivery date</strong></th>
+                                    <th><strong>Delivery time</strong></th>
+                                    <th><strong>Total amount</strong></th>
+                                    <th><strong>Payment method</strong></th>
+                                    <th><strong>Deliver grocery</strong></th>
+                                    <th><strong>Done Deliver</strong></th> 
+                                    <th><strong>Status</strong></th> 
+                                </tr>
+                            </thead>
+                            <tbody style="text-align:center;">
+                                @foreach($custOrder as $order)
+                                    @if($order->status == 'delivered')
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td><div class="card card-hover"><a href="{{route('orderCustomer',['orderID' => $order->id])}}" data-toggle="tooltip" class="btn btn-sm btn-info" data-placement="bottom">{{$order->name}}</a></div></td>
+                                            <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('d/m/Y')}}</td>
+                                            <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('H:i:s')}}</td>
+                                            <td>RM{{$order->total_payment}}</td>
+                                            <td>{{$order->payment}}</td>
+                                            <td>Yes</td>
+                                            <td>Yes</td>
+                                            <td><h4><span class="label label-success">Delivered</span></h4></td>
+                                        </tr>
+                                    @endif
+                                @endforeach        
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {{--END VIEW COMPLETED ORDER --}}
             </div>
+        {{-- END TAB --}}
         </div>
     </div>
 @endsection
@@ -138,6 +334,22 @@
     $('#myTable').DataTable(); //category table
     } );
 </script>
+<script>
+    $(document).ready( function () {
+    $('#myTablePreparing').DataTable(); //category table
+    } );
+</script>
+<script>
+    $(document).ready( function () {
+    $('#myTableDelivering').DataTable(); //category table
+    } );
+</script>
+<script>
+    $(document).ready( function () {
+    $('#myTableDelivered').DataTable(); //category table
+    } );
+</script>
+
 {{-- <script>
     $('#deliveryOrder').on('click',function(){
         var order_id       = $('#order_id').val();

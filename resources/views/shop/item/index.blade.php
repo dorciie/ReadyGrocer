@@ -36,38 +36,46 @@
             <h3 class="card-title">All Items</h3>
             <p>Total item: {{\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->count()}}</p>
             <a class="btn btn-sm btn-info" href="{{route('item.create')}}"><i class="fa fa-plus"></i> Add New Item</a>
-            <br><br>
-            <div class="alert alert-info" role="alert">
-                <h4 class="alert-heading">Important note before import the item!</h4>
-                <p>Make sure data from excel file follow this sequence.</p>
-                <p><strong>[ Item name, Item brand, Item price, Item Stock, Item Volume/Weight ]</strong></p>
-                <hr>
-                <form method="post" enctype="multipart/form-data" action="{{route('shop.import')}}">
-                    @csrf
-                    <div class="form-group">
-                        <label for="file">Import item: </label>
-                        {{-- <label class="file"> --}}
-                            <input type="file" id="file" name="file" aria-label="File browser example" accept=".xls, .xlsx">
-                            <span class="file-custom"></span>
-                            <button type="submit" class="btn btn-primary">Import</button>
-                        {{-- </label> --}}
-                        {{-- <input style="length: 50px" type="file" name="file" class="form-control" accept=".xls, .xlsx"/> --}}
+            <h6> </h6>
+            <p>
+                <button class="btn btn-sm btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-plus"></i> Import Items from excel</button>
+            </p>
+              <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <div class="alert alert-info" role="alert">
+                        <h4 class="alert-heading">Important note before import the item!</h4>
+                        <p>Make sure data from excel file follow this sequence.</p>
+                        <p><strong>[ Item name, Item brand, Item price, Item Stock, Item Volume/Weight ]</strong></p>
+                        <hr>
+                        <form method="post" enctype="multipart/form-data" action="{{route('shop.import')}}">
+                            @csrf
+                            <div class="form-group">
+                                <label for="file">Import item: </label>
+                                {{-- <label class="file"> --}}
+                                    <input type="file" id="file" name="file" aria-label="File browser example" accept=".xls, .xlsx">
+                                    <span class="file-custom"></span>
+                                    <button type="submit" class="btn btn-info">Import</button>
+                                {{-- </label> --}}
+                                {{-- <input style="length: 50px" type="file" name="file" class="form-control" accept=".xls, .xlsx"/> --}}
+                            </div>
+                        </form>
+                        <p class="mb-0">Make sure to assign the category for each items after imported the item.</p>
                     </div>
-                </form>
-                <p class="mb-0">Make sure to assign the category for each items after imported the item.</p>
-            </div>
+                </div>
+              </div>
+
             <div class="table-responsive">
                 <table id="myTable" class="table table-striped table-bordered">
                     <thead>
-                        <tr>
+                        <tr class="table-info">
                             {{-- <th>No</th> --}}
-                            <th>Name</th>
-                            <th>Image</th> {{-- multiple image (video 12, mins 1826) --}}
-                            <th>Brand</th>
-                            <th>Stock</th>
+                            <th><strong>Name</strong></th>
+                            <th><strong>Image</strong></th> {{-- multiple image (video 12, mins 1826) --}}
+                            <th><strong>Brand</strong></th>
+                            <th><strong>Stock</strong></th>
                             {{-- <th>Status</th> --}}
-                            <th>Category</th>
-                            <th>Action</th> 
+                            <th><strong>Category</strong></th>
+                            <th><strong>Action</strong></th> 
                         </tr>
                     </thead>
                     <tbody>

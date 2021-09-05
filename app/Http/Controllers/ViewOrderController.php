@@ -229,7 +229,7 @@ class ViewOrderController extends Controller
                     'updated_at'=> $todayDate
                 ]);
         if($query){
-            return back()->with('success','Good Job!, you successfully completed this order.');
+            return back()->with('success','Good Job! You have successfully completed this order.');
         }else{
             return back()->with('error','Something was not right, please try again');
         }
