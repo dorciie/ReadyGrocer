@@ -53,12 +53,13 @@
                                     <div class="table-responsive">
                                         <table id="myTable" class="table table-striped table-bordered">
                                             <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Item</th>{{-- boleh tick banyak item kat sini --}}
-                                                    <th>Quantity</th>{{-- bila tekan view "icon mata", show table semua item+price before and after promotion --}}
-                                                    <th>Price per unit</th>
-                                                    <th>Total price</th>
+                                                <tr class="table-info">
+                                                    <th><strong>No</strong></th>
+                                                    <th><strong>Item</strong></th>{{-- boleh tick banyak item kat sini --}}
+                                                    <th><strong>Brand</strong></th>
+                                                    <th><strong>Quantity</strong></th>{{-- bila tekan view "icon mata", show table semua item+price before and after promotion --}}
+                                                    <th><strong>Price per unit</strong></th>
+                                                    <th><strong>Total price</strong></th>
                                                 </tr>
                                             </thead>
                                             <tbody style="text-align:center;">
@@ -66,6 +67,7 @@
                                                     <tr>
                                                         <td>{{$loop->iteration}}</td>
                                                         <td>{{$order->item_name}}</td>
+                                                        <td>{{$order->item_brand}}</td>
                                                         <td>{{$order->item_quantity}}</td>
                                                         @if($order->item_endPromo == NULL)
                                                             <td>RM{{$order->item_price}}</td>

@@ -27,14 +27,14 @@
         <div class="table-responsive">
             <table id="myTable" class="table table-striped table-bordered">
                 <thead>
-                    <tr>
-                        <th>Number</th>
-                        <th>Item Name</th>
+                    <tr class="table-info">
+                        <th><strong>Number</strong></th>
+                        <th><strong>Item Name</strong></th>
                         {{-- <th>Item Category</th> --}}
-                        <th>Brand</th>
-                        <th>Current stock</th> 
-                        <th>Status</th> 
-                        <th>Update Stock</th> 
+                        <th><strong>Brand</strong></th>
+                        <th><strong>Current stock</strong></th> 
+                        <th><strong>Status</strong></th> 
+                        <th><strong>Update Stock</strong></th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +55,7 @@
                         <td><span class="label label-danger">Out of stock</span></td>
                             @endif
                         <td>
-                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#itemID{{$itemstock->id}}">Update Stock</button>
+                            <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#itemID{{$itemstock->id}}">Update Stock</button>
                         </td>
                     </tr>
 
@@ -84,7 +84,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                        <button type="submit" class="btn btn-info">Save changes</button>
                                     </div>
                                 </div>
                             </div>

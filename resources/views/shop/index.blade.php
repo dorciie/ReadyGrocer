@@ -6,7 +6,7 @@
             <!-- Column -->
             <div class="col-md-6 col-lg-4 col-xlg-3">
                 <div class="card card-hover">
-                    <div class="box bg-cyan text-center">
+                    <div class="box bg-cyan bg-gradient text-center shadow">
                         <h1 class="font-light text-white"><i class="mdi mdi-view-dashboard"></i></h1>
                         <h6 class="text-white">Total items</h6>
                         <h6 class="text-white">{{\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->count()}}</h6>
@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-6 col-lg-4 col-xlg-3">
                 <div class="card card-hover">
-                    <div class="box bg-success text-center">
+                    <div class="box bg-success bg-gradient text-center shadow">
                         <h1 class="font-light text-white"><i class="mdi mdi-chart-bubble"></i></h1>
                         <h6 class="text-white">Total orders</h6>
                         <h6 class="text-white">{{\App\Models\Order::where('shop_id',$LoggedShopInfo->id)->count()}}</h6>
@@ -24,7 +24,7 @@
             </div>
             <div class="col-md-6 col-lg-4 col-xlg-3">
                 <div class="card card-hover">
-                    <div class="box bg-info text-center">
+                    <div class="box bg-primary bg-gradient text-center shadow">
                         <h1 class="font-light text-white"><i class="mdi mdi-chart-bar"></i></h1>
                         <h6 class="text-white">Total customers</h6>
                         <h6 class="text-white">{{\App\Models\Order::distinct('customer_id')->count()}}</h6>
@@ -36,19 +36,19 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="card card-hover">
-                    <div class="box bg-warning text-center">
+                    <div class="box bg-warning bg-gradient text-center shadow">
                         <h1 class="font-light text-white"><i class="mdi mdi-alert-box"></i></h1>
                         <h6 class="text-white">Items low in stock: {{\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('item_stock','<=','10')->where('item_stock','>','0')->count()}}</h6>
-                        <button type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#lowStock">View items</button>
+                        <button type="button" class="btn btn-info btn-sm shadow" data-bs-toggle="modal" data-bs-target="#lowStock">View items</button>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="card card-hover">
-                    <div class="box bg-danger text-center">
+                    <div class="box bg-danger bg-gradient text-center shadow">
                         <h1 class="font-light text-white"><i class="mdi mdi-alert"></i></h1>
                         <h6 class="text-white">Items out of stock: {{\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('item_stock','==','0')->count()}}</h6>
-                        <button type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#noStock">View items</button>
+                        <button type="button" class="btn btn-info btn-sm shadow" data-bs-toggle="modal" data-bs-target="#noStock">View items</button>
                     </div>
                 </div>
             </div>
@@ -62,23 +62,70 @@
                     <form action="{{url('year_change')}}" method="get" enctype="multipart/form-data">
                         <label>Select Year:</label>
                         <select name="year">
-                            <option value="{{$Oneyear->years}}">{{$Oneyear->years}}</option>
+                                <option value="{{$Oneyear->years}}">{{$Oneyear->years}}</option>
                             @foreach($year as $tahun)
                                 <option value="{{$tahun->year}}">{{$tahun->year}}</option>
                             @endforeach 
                         </select>
-                        <button type="submit" class="btn btn-primary" style="padding: 3px 7px; font-size:14px">View</button>
+                        <button type="submit" class="btn btn-info" style="padding: 3px 7px; font-size:14px">View</button>
                     </form>
                 </div><br>
-                <h6 style="text-align: center;">Total sales: RM{{$totalSales->payment}} ({{$Oneyear->years}})</h6> 
+                @if((\App\Models\Order::where('orders.status','delivered')->whereYear('created_at', $Oneyear->years)->count()) != NULL)
+                <h6 style="text-align: center;">Total sales ({{$Oneyear->years}}): RM{{$totalSales->payment}} </h6> 
+                @endif
+                @if((\App\Models\Order::where('orders.status','delivered')->whereYear('created_at', $Oneyear->years)->count()) == NULL)
+                <h6 style="text-align: center;">Total sales ({{$Oneyear->years}}): None</h6> 
+
+                @endif
                 <div>
                     <canvas id="Total-Sales-Analysis" style="max-width:100%;"></canvas>
                 </div>
                 <br><br>
+                @if((\App\Models\Order::where('orders.status','delivered')->whereYear('created_at', $Oneyear->years)->count()) != NULL)
                 <h6 style="text-align: center;">Total item sold in {{$Oneyear->years}}:  {{$totalItemSold->totalItem}}</h6> 
+                @endif
+                @if((\App\Models\Order::where('orders.status','delivered')->whereYear('created_at', $Oneyear->years)->count()) == NULL)
+                <h6 style="text-align: center;">Total item sold in {{$Oneyear->years}}: None</h6> 
+                @endif
                 <div>
-                    <canvas id="pie-chart"></canvas>
-                </div>
+                    @if((\App\Models\Order::where('orders.status','delivered')->whereYear('created_at', $Oneyear->years)->count()) != NULL)
+                    <canvas id="pie-chart" style="max-width:100%;"></canvas>
+                    @endif
+                    @if((\App\Models\Order::where('orders.status','delivered')->whereYear('created_at', $Oneyear->years)->count()) == NULL)
+                    <p></p>
+                    @endif
+                </div><br><br>
+                @if((\App\Models\Order::where('orders.status','delivered')->whereYear('created_at', $Oneyear->years)->count()) != NULL)
+                    <div>
+                        <p><button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">View Item(s) sold <i class="fas fa-caret-down"></i></button></p>
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body">
+                                    <div class="table-responsive">
+                                        <table id="myTable" class="table table-striped table-bordered table-sm">
+                                            <thead class="table-info">
+                                                <tr>
+                                                    <th style="color: black"><strong>Item</strong></th>
+                                                    <th style="color: black"><strong>Brand</strong></th> 
+                                                    <th style="color: black"><strong>Category</strong></th>
+                                                    <th style="color: black"><strong>Sold</strong></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($itemSold as $items)
+                                                <tr>
+                                                    <td>{{\App\Models\ShopItem::where('id',$items->id)->where('shop_id',$LoggedShopInfo->id)->value('item_name')}}</td>
+                                                    <td>{{\App\Models\ShopItem::where('id',$items->id)->where('shop_id',$LoggedShopInfo->id)->value('item_brand')}}</td>
+                                                    <td>{{$items->category_name}}</td>
+                                                    <td>{{$items->totalItems}}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>
+                        </div>
+                    <div>
+                @endif
             </div>
         </div>
         
@@ -94,12 +141,12 @@
 
                         <div class="modal-body">
                             <div class="row">
-                                <table class="table table-bordered table-sm">
-                                    <thead>
-                                        <tr class="bg-warning">
-                                            <th>Items</th>
-                                            <th>Brand</th>
-                                            <th>Stock</th>
+                                <table class="table table-striped table-bordered table-sm">
+                                    <thead class="table-info">
+                                        <tr>
+                                            <th style="color: black"><strong>Items</strong></th>
+                                            <th style="color: black"><strong>Brand</strong></th>
+                                            <th style="color: black"><strong>Stock</strong></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -131,12 +178,12 @@
 
                         <div class="modal-body">
                             <div class="row">
-                                <table class="table table-bordered table-sm">
-                                    <thead>
-                                        <tr class="bg-danger">
-                                            <th class="text-white">Items</th>
-                                            <th class="text-white">Brand</th>
-                                            <th class="text-white">Stock</th>
+                                <table class="table table-striped table-bordered table-sm">
+                                    <thead class="table-info">
+                                        <tr>
+                                            <th style="color: black"><strong>Items</strong></th>
+                                            <th style="color: black"><strong>Brand</strong></th>
+                                            <th style="color: black"><strong>Stock</strong></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -286,7 +333,7 @@
         },
         legend: {
           display: true,
-          position: "bottom",
+          position: "right",
           labels: {
             fontColor: "#333",
             fontSize: 16
@@ -302,5 +349,10 @@
       });
 
   });
+</script>
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable(); //category table
+    } );
 </script>
 @endsection

@@ -4,8 +4,8 @@
 
 <div class="container-fluid">
     <div style="text-align: right;">
-        <a class="btn btn-primary" href="{{route('profile.show',$shopOwner->id)}}"><i class="fas fa-edit"></i> Change password</a>
-        <a class="btn btn-primary" href="{{route('profile.edit',$shopOwner->id)}}"><i class="fas fa-edit"></i> Edit profile</a>
+        <a class="btn btn-info" href="{{route('profile.show',$shopOwner->id)}}"><i class="fas fa-edit"></i> Change password</a>
+        <a class="btn btn-info" href="{{route('profile.edit',$shopOwner->id)}}"><i class="fas fa-edit"></i> Edit profile</a>
     </div>
     <br>
     <div class="results">

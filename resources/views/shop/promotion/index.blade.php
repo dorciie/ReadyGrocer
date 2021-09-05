@@ -30,17 +30,17 @@
                 <div class="table-responsive">
                     <table id="myTable" class="table table-striped table-bordered table-sm">
                         <thead>
-                            <tr>
-                                <th style="width:100px;">No</th>
-                                <th style="width:100px;">Items</th>{{-- boleh tick banyak item kat sini --}}
-                                <th style="width:100px;">Brand</th>
-                                <th style="width:100px;">Start Promotion</th>{{-- bila tekan view "icon mata", show table semua item+price before and after promotion --}}
-                                <th style="width:100px;">End Promotion</th>
-                                <th style="width:100px;">Day(s)</th>
-                                <th style="width:100px;">Price</th>
-                                <th style="width:100px;">Discount</th>
-                                <th style="width:100px;">Offer Price</th>
-                                <th style="width:100px;">Action</th>
+                            <tr class="table-info">
+                                <th style="width:100px;"><strong>No</strong></th>
+                                <th style="width:100px;"><strong>Items</strong></th>{{-- boleh tick banyak item kat sini --}}
+                                <th style="width:100px;"><strong>Brand</strong></th>
+                                <th style="width:100px;"><strong>Start Promotion</strong></th>{{-- bila tekan view "icon mata", show table semua item+price before and after promotion --}}
+                                <th style="width:100px;"><strong>End Promotion</strong></th>
+                                <th style="width:100px;"><strong>Day(s)</strong></th>
+                                <th style="width:100px;"><strong>Price</strong></th>
+                                <th style="width:100px;"><strong>Discount</strong></th>
+                                <th style="width:100px;"><strong>Offer Price</strong></th>
+                                <th style="width:100px;"><strong>Action</strong></th>
                             </tr>
                         </thead>
                         <tbody style="text-align:center;">

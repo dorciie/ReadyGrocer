@@ -16,6 +16,7 @@
                         <tr>
                             <th>No</th>
                             <th>Item</th>
+                            <th>Brand</th>
                             <th>Quantity</th>
                             <th>Price per unit</th>
                             <th>Total price</th>
@@ -26,6 +27,7 @@
                             <tr>
                                 <td> {{$loop->iteration}} </td>
                                 <td> {{$order->item_name}} </td>
+                                <td> {{$order->item_brand}} </td>
                                 <td> {{$order->item_quantity}} </td>
                                 @if($order->item_endPromo == NULL)
                                     <td> RM{{$order->item_price}} </td>

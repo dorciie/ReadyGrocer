@@ -113,7 +113,7 @@
             </div>
             <div class="border-top">
                 <div class="card-body" style="text-align:center;">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-info">Submit</button>
                 </div>
             </div>
         </form>

@@ -57,7 +57,7 @@
                     <br>
                     <div class="border-top">
                         <div class="card-body" style="text-align:center;">
-                            <button type="submit" class="btn btn-primary">Update password</button>
+                            <button type="submit" class="btn btn-info">Update password</button>
                         </div>
                     </div>
                 </div>

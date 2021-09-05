@@ -30,11 +30,11 @@
             <div class="table-responsive">
                 <table id="myTable" class="table table-striped table-bordered">
                     <thead>
-                        <tr>
-                            <th>Number</th>
-                            <th>Category Name</th>
+                        <tr class="table-info">
+                            <th><strong>Number</strong></th>
+                            <th><strong>Category Name</strong></th>
                             {{-- <th>Status</th>  --}}
-                            <th>Action</th>
+                            <th><strong>Action</strong></th>
                         </tr>
                     </thead>
                     <tbody>
