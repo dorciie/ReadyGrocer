@@ -283,7 +283,7 @@ class ShopItemController extends Controller
         $Itemstock=DB::table('shop_items')
         ->join('categories','shop_items.category_id','=','categories.id')
         ->where('shop_items.shop_id',$shopOwner->id)
-        ->orderBy('item_stock','ASC')
+        // ->orderBy('item_stock','ASC')
         ->get([
             'shop_items.id',
             'shop_items.item_name',
