@@ -83,7 +83,7 @@
                             <p class="proile-rating">RANKINGS : <span>rating</span></p>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">About</a>
                                 </li>
 
                             </ul>
@@ -122,13 +122,23 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Price</label>
+                                        <label>Price (RM)</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p><s>{{$item->item_price}}</s>
-                                        @if($item->offer_price!=0){
-                                           <b>&nbsp&nbsp{{$item->offer_price}} <b>
-                                        }
+                                        <p>{{$item->item_price}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Promo (RM)</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        @if($item->offer_price!=0)
+                                        <p>{{$item->offer_price}} <br>
+                                        <b>FROM {{date('Y-m-d', strtotime($item->item_startPromo))}} UNTIL {{date('Y-m-d', strtotime($item->item_endPromo))}}</b>
+                                        @else
+                                            <p>None</P>
+                                        
                                         @endif
                                         </p>
                                     </div>

@@ -29,8 +29,8 @@
                                        error
                                     </div>
                                     @endif
-                                  <button type="button" class="btn btn-primary">Order Received</button>
-
+                                  <button type="button" class="btn btn-primary" >Order Received</button>
+                                  
                         
                     </div>
                 </div>

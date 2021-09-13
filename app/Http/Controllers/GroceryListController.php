@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\GroceryList;
 use App\Models\customer;
 use App\Models\ShopItem;
+use App\Models\GroceryCart;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
@@ -22,32 +23,23 @@ class GroceryListController extends Controller
             'item_quantity'=>'required',
         ]);
 
-        if(session()->has('LoggedCustomer')){
-            $customer = customer::where('id', session('LoggedCustomer'))
-            ->first();}
+        $customer = customer::where('id', session('LoggedCustomer'))->first();
 
         if (GroceryList::where('item_id', $itemID)->where('customer_id', $customer->id)->exists()) {
-            
               return back()->with('error','already exits in your groceryList');
-    }
-       $newList = new GroceryList;
-            $newList->customer_id=$customer->id;
-            $newList->shop_id=$customer->fav_shop;
-            $newList->item_id= $itemID;
-            $newList->item_quantity=$request->input('item_quantity');
-            $newList->item_frequency=$request->input('item_frequency');
+            }
 
+        $newList = new GroceryList;
+            $newList->customer_id = $customer->id;
+            $newList->shop_id = $customer->fav_shop;
+            $newList->item_id = $itemID;
+            $newList->item_quantity = $request->input('item_quantity');
+            $newList->item_frequency = $request->input('item_frequency');
+            $newList->last_bought = NULL;
+            if($newList->last_bought = GroceryCart::where('customer_id',session('LoggedCustomer'))->where('item_id',$itemID)->where('checkout','true')->value('updated_at')){}
             $newList->save();
          return back()->with('success','successful');
-
-        
-
-        
-    }
-
-    public function addList($itemID)
-    {
-        
+  
     }
     
     /**

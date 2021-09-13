@@ -85,11 +85,11 @@ class custShopController extends Controller
      */
     public function edit($shopID)
     {
-        if(session()->has('LoggedCustomer')){
-            $customer = customer::where('id', session('LoggedCustomer'))
-            ->first();}
+        // if(session()->has('LoggedCustomer')){
+        //     $customer = customer::where('id', session('LoggedCustomer'))
+        //     ->first();}
             
-         customer::where('id', $customer->id) //letak cust id
+         customer::where('id', session('LoggedCustomer')) //letak cust id
               ->update(['fav_shop' => $shopID]);
     
         return back()->with('success','Favourite shop is updated!');
