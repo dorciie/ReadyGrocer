@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Order;
+use App\Models\GroceryCart;
 
 use Illuminate\Http\Request;
 
@@ -47,7 +48,10 @@ class CustOrderController extends Controller
      */
     public function show($id)
     {
-        //
+        $cart = GroceryCart::where('order_id',$id)->get();
+        $order = Order::find($id);
+        return view('customer.order.orderDetails',compact('cart','order'));
+
     }
 
     /**

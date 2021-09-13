@@ -69,9 +69,20 @@
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
                         <td>{{$info->item_name}}</td>
-                        <td>{{number_format((float)$info->item_price, 2, '.', '')}}</td>
+                         <td>
+                            <?php
+                            date_default_timezone_set("Asia/Kuala_Lumpur");
+                            $today = date(('Y-m-d H:i:s'));
+                            if($info->item_startPromo != NULL && $today>=($info->item_startPromo)){
+                                ?>{{number_format((float)$info->offer_price, 2, '.', '')}}
+                                <?php
+                            }else{
+                                ?>{{number_format((float)$info->item_price, 2, '.', '')}}
+                                <?php
+                            }
+                            ?></td> <!--  display price according to date -->
                         <td>{{$info->item_quantity}}</td>
-                        <td>{{\App\Models\ShopItem::where('shop_id',$info->shop_id)->value('item_stock')}}</td>
+                        <td>{{\App\Models\ShopItem::where('id',$info->item_id)->value('item_stock')}}</td>
                         
                         <td>{{$info->item_brand}}</td>
                         <td>{{number_format((float)$info->total_price, 2, '.', '')}}</td>
@@ -93,16 +104,16 @@
                                                     <label>Item Name</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <p>{{$info->item_name}}</p>
+                                                    <p>{{$info->item_id}}</p>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label>Item Quantity</label>
+                                                    <label>Item test</label>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="input-group mb-3">
-                                                        <input type="number" class="form-control" name="item_quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$info->item_quantity}}" placeholder="{{$info->item_quantity}}"max="{{\App\Models\ShopItem::where('shop_id',$info->shop_id)->value('item_stock')}}">
+                                                        <input type="number" class="form-control" name="item_quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$info->item_quantity}}" placeholder="{{$info->item_quantity}}"max="{{\App\Models\ShopItem::where('id',$info->item_id)->value('item_stock')}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -181,7 +192,7 @@
                                         <input type="radio" name="delivery"  value="deliveryNow"/>&nbspDeliveryNow<br>
                                         <?php
                                         date_default_timezone_set("Asia/Kuala_Lumpur");
-                                        echo  date(('Y-m-d H:i:s') );
+                                        echo  date(('Y-m-d H:i:s'));
                                         ?><br><br>
                                        <!-- {{ $now = \Carbon\Carbon::now()}} -->
                                         <input type="radio" name="delivery" value="deliveryLater"/>&nbspDeliveryLater

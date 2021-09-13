@@ -48,7 +48,7 @@
                    @foreach($order as $order)    
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
-                        <td>{{$order->id}}</td>
+                        <td><a href="{{route('custOrder.show',$order->id)}}">{{$order->id}}</a></td>
                         <td>{{\App\Models\shopOwner::where('id',$order->shop_id)->value('shopName')}}</td>
                         <td>{{$order->checkoutDelivery}}</td>
                         <td>{{$order->total_price}}</td>

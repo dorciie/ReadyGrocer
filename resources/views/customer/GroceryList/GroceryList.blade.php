@@ -59,7 +59,7 @@
                                 <td>{{$list->item_brand}}</td>
                                 <td>{{\App\Models\Category::where('id',$list->category_id)->value('category_name')}}</td>
                                 <td>{{$list->item_quantity}}</td>
-                                <td>{{$list->item_id}}</td>
+                                <td>{{$list->item_frequency}}</td>
                                 <td><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#productID{{$list->item_id}}">Update List</button></td>
 
                                 <td><a class="btn btn-outline-primary" href="{{route('updateCart2',['itemID' => $list->item_id])}}" role="button">Add to Cart</a></td>

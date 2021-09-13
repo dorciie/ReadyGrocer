@@ -36,17 +36,20 @@ class GroceryCartController extends Controller
             ->first();
         }
         
-        
-
         if (GroceryCart::where('item_id', $item->id)->where('customer_id', $customer->id)->where('checkout','false')->exists()) {
             
               return back()->with('error','already exits in your Grocery Cart');
     }
-       $newCart = new GroceryCart;
+        $dt = now();
+        $newCart = new GroceryCart;
             $newCart->customer_id=$customer->id;
             $newCart->shop_id=$customer->fav_shop;
             $newCart->item_id=$itemID;
-            $newCart->total_price=($item->item_price)*($request->item_quantity);
+            if (($dt >= $item->item_startPromo) && ($dt <= $item->item_endPromo)){                //check also if promo_date not null //check if date today is between item_startPromo & item_endPromo
+                $newCart->total_price=($item->offer_price)*($request->item_quantity);            //check
+            }else{
+                $newCart->total_price=($item->item_price)*($request->item_quantity);
+            }
             $newCart->item_quantity=$request->input('item_quantity');
 
             $newCart->save();
@@ -72,14 +75,19 @@ class GroceryCartController extends Controller
               return back()->with('error','already exits in your Grocery Cart');
         }
 
+        $dt = now();
+
         $newCart = new GroceryCart;
             $newCart->customer_id=$customer->id;
             $newCart->shop_id=$customer->fav_shop;
             $newCart->item_id=$itemID;
-            $newCart->total_price=($item->item_price)*($list->item_quantity);
             $newCart->item_quantity=$list->item_quantity;
-
-            $newCart->save();
+        if (($dt >= $item->item_startPromo) && ($dt <= $item->item_endPromo)){       //check if date today is between item_startPromo & item_endPromo
+            $newCart->total_price=($item->offer_price)*($list->item_quantity);            //check
+        }else{
+            $newCart->total_price=($item->item_price)*($list->item_quantity);
+        }
+         $newCart->save();
          return back()->with('success','successful');
 
     }
@@ -160,7 +168,6 @@ class GroceryCartController extends Controller
     
             return back();
        
-    
     }
     
     public function checkout(Request $request){
@@ -186,11 +193,8 @@ class GroceryCartController extends Controller
         $createOrder->payment =$request->payment;
         $createOrder->customer_id=$customer->id;
         $createOrder->shop_id=$customer->fav_shop;
-        $createOrder->total_price = $request->totalPrice;//
-        $createOrder->status = 'pending delivery';//
-        //$createOrder->total_payment = $request->totalPrice;
-        //$createOrder->status = 'preparing';
-
+        $createOrder->total_payment = $request->totalPrice;
+        $createOrder->status = 'pending delivery';
         if($request->delivery ==='deliveryLater'){
             $createOrder->checkOutDelivery = $request->deliveryDT;
         }else{
@@ -206,15 +210,19 @@ class GroceryCartController extends Controller
             $update = GroceryCart::where('customer_id',session('LoggedCustomer'))->where('item_id',$order->item_id)
             ->update([
                 'checkout' => 'true',
-                // 'payment' => $request->payment,
+                'payment' => $request->payment,
                 'order_id'=> $createOrder->id,
                 ]);
 
             $updateitem = ShopItem::where('id',$order->item_id)
             ->update([
                 'item_stock' => (ShopItem::where('id',$order->item_id)->value('item_stock'))-($order->item_quantity),
-                
                 ]);
+
+            $updatelist = GroceryList::where('item_id',$order->item_id)
+            ->update([
+                'last_bought' => now(),
+            ]); 
         }
             
             if($update){
