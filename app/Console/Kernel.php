@@ -33,11 +33,12 @@ class Kernel extends ConsoleKernel
                  ->dailyAt('00:00')
                  ->timezone('Asia/Kuala_Lumpur');
 
-        // $schedule->command('Checkout:email')
-        //         ->everyMinute()->withoutOverlapping();
+         $schedule->command('Checkout:email')
+                 ->everyMinute()->withoutOverlapping();
 
         $schedule->command('cart:update')
-                ->everyMinute();
+                ->dailyAt('00:00')
+                ->timezone('Asia/Kuala_Lumpur');
     }
 
     /**

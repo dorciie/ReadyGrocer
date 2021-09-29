@@ -47,24 +47,75 @@ class updateCart extends Command
         foreach($allList as $list){
             \Log::info("Test 1");
             if($list->last_bought!=NULL){
-                if(($list->item_frequency)==='Daily') {
-                    // (($list->last_bought)->diff($now)->d)>=7
-                    \Log::info($list->last_bought);
-                }elseif(($list->item_frequency)==='Weekly') {
-                    // (($list->last_bought)->diff($now)->d)>=7
-                    \Log::info($list->last_bought);
-                }elseif(($list->item_frequency)==='Fortnight') {
-                    // (($list->last_bought)->diff($now)->d)>=7
-                    \Log::info($list->last_bought);
-
-                }elseif(($list->item_frequency)==='Monthly' && (((new DateTime($list->last_bought))->diff($dtnow))->format('%d')>7)) {
-                    if((GroceryCart::where('customer_id',$list->customer_id)->where('item_id',$list->item_id)->get())->isEmpty()){
+                if(($list->item_frequency)==='Daily'&& (((new DateTime($list->last_bought))->diff($dtnow))->format('%a')>1)) {
+                     if((GroceryCart::where('customer_id',$list->customer_id)->where('item_id',$list->item_id)->where('checkout','false')->get())->isEmpty()){
                         $newCart = new GroceryCart;
                         $newCart->customer_id=$list->customer_id;
                         $newCart->shop_id=Customer::where('id',$list->customer_id)->value('fav_shop');
                         $newCart->item_id=$list->item_id;
                         $newCart->item_quantity=$list->item_quantity;
-                        $item = ShopItem::where('id',$list->item_id)->get();     //item_promo cannot be null
+
+                         $item = ShopItem::where('id',$list->item_id)->first();                 
+                            
+                    if ($item->item_startPromo!=NULL && $dtnow >= $item->item_startPromo){       
+                        $newCart->total_price=($item->offer_price)*($list->item_quantity);           
+                    }else{
+                        $newCart->total_price=($item->item_price)*($list->item_quantity);
+                    }
+                    $newCart->save();
+
+                    }
+                }elseif(($list->item_frequency)==='Weekly' && (((new DateTime($list->last_bought))->diff($dtnow))->format('%a')>7)) {
+
+                    if((GroceryCart::where('customer_id',$list->customer_id)->where('item_id',$list->item_id)->where('checkout','false')->get())->isEmpty()){
+                        $newCart = new GroceryCart;
+                        $newCart->customer_id=$list->customer_id;
+                        $newCart->shop_id=Customer::where('id',$list->customer_id)->value('fav_shop');
+                        $newCart->item_id=$list->item_id;
+                        $newCart->item_quantity=$list->item_quantity;
+
+                         $item = ShopItem::where('id',$list->item_id)->first();                  
+                            
+                    if ($item->item_startPromo!=NULL && $dtnow >= $item->item_startPromo){       
+                        $newCart->total_price=($item->offer_price)*($list->item_quantity);           
+                    }else{
+                        $newCart->total_price=($item->item_price)*($list->item_quantity);
+                    }
+                    $newCart->save();
+
+                    }
+                    
+                }elseif(($list->item_frequency)==='Fortnight' && (((new DateTime($list->last_bought))->diff($dtnow))->format('%a')>14)) {
+
+                    if((GroceryCart::where('customer_id',$list->customer_id)->where('item_id',$list->item_id)->where('checkout','false')->get())->isEmpty()){
+                        $newCart = new GroceryCart;
+                        $newCart->customer_id=$list->customer_id;
+                        $newCart->shop_id=Customer::where('id',$list->customer_id)->value('fav_shop');
+                        $newCart->item_id=$list->item_id;
+                        $newCart->item_quantity=$list->item_quantity;
+
+                         $item = ShopItem::where('id',$list->item_id)->first();                  
+                            
+                    if ($item->item_startPromo!=NULL && $dtnow >= $item->item_startPromo){       
+                        $newCart->total_price=($item->offer_price)*($list->item_quantity);           
+                    }else{
+                        $newCart->total_price=($item->item_price)*($list->item_quantity);
+                    }
+                    $newCart->save();
+
+                    }
+
+                }elseif(($list->item_frequency)==='Monthly' && (((new DateTime($list->last_bought))->diff($dtnow))->format('%m')>1)) { //need to change format from date time to days only
+                //either count %d months>1 or days>30
+                    if((GroceryCart::where('customer_id',$list->customer_id)->where('item_id',$list->item_id)->where('checkout','false')->get())->isEmpty()){
+                        $newCart = new GroceryCart;
+                        $newCart->customer_id=$list->customer_id;
+                        $newCart->shop_id=Customer::where('id',$list->customer_id)->value('fav_shop');
+                        $newCart->item_id=$list->item_id;
+                        $newCart->item_quantity=$list->item_quantity;
+
+                         $item = ShopItem::where('id',$list->item_id)->first();                  //item_promo cannot be null
+                            
                     if ($item->item_startPromo!=NULL && $dtnow >= $item->item_startPromo){       //check if date today is between item_startPromo & item_endPromo
                         $newCart->total_price=($item->offer_price)*($list->item_quantity);            //check
                     }else{
