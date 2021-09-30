@@ -207,7 +207,7 @@ class GroceryCartController extends Controller
         ->where('checkout','false')->where('shop_id',$customer->fav_shop)->get(); //why kena fetch data again eh
 
         foreach($order2 as $order){
-            $update = GroceryCart::where('customer_id',session('LoggedCustomer'))->where('item_id',$order->item_id)
+            $update = GroceryCart::where('customer_id',session('LoggedCustomer'))->where('item_id',$order->item_id)->where('checkout','false')
             ->update([
                 'checkout' => 'true',
                 'payment' => $request->payment,
@@ -226,7 +226,11 @@ class GroceryCartController extends Controller
         }
             
             if($update){
-                        return view('customer.cart.checkout')->with('success','Cart has been checkout');
+                $cart = $order2;
+                $order = $createOrder;
+                   return view('customer.order.orderDetails',compact('cart','order'))->with('success','Cart has been checkout');
+
+                // return view('customer.cart.checkout')->with('success','Cart has been checkout');
             }
             return back()->with('error','Cart cannot be check out');
     }
