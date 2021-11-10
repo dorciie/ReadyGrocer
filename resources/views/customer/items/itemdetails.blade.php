@@ -34,10 +34,10 @@
             <div class="card-body">
 
 
-                <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
-                <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-                <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-                <!------ Include the above in your HEAD tag ---------->
+                <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> 
+                 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+                <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+                <!------ Include the above in your HEAD tag -------- -->
 
                 <div class="container emp-profile">
 
@@ -74,13 +74,13 @@
                     </div>
                     <div class="col-md-6">
                         <div class="profile-head">
-                            <h5>
-                                {{$shop->id}}
-                            </h5>
-                            <h6>
+                            
+                            <h4>
                                 {{$shop->shopName}}
-                            </h6>
-                            <p class="proile-rating">RANKINGS : <span>rating</span></p>
+                            </h4>
+                            <h5>
+                                Category : {{\App\Models\Category::where('id',$item->category_id)->value('category_name')}}<br><br>
+                            </h5>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">About</a>
@@ -178,8 +178,8 @@
 
 
                                 <div>
-                                    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">List</button>
-                                    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal2">Cart</button>
+                                    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="me-2 mdi mdi-bell-ring-outline"></i>Add to List</button>
+                                    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i class="me-2 mdi mdi-cart-plus"></i>Add to Cart</button>
 
                                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
