@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\GroceryCart;
+use App\Models\ShopOwner;
 
 use Illuminate\Http\Request;
 
@@ -62,7 +63,12 @@ class CustOrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        $update = Order::where('id',$id)
+        ->update([
+            'status' => 'delivered'
+                 ]);
+        
+                 return back();
     }
 
     /**
@@ -74,7 +80,27 @@ class CustOrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $shop = ShopOwner::where('id',Order::where('id',$id)->value('shop_id'))->first();
+        $count = Order::where('shop_id',$shop->id)->whereNotNull('rate')->count();
+
+        $update = Order::where('id',$id)
+        ->update([
+            'rate' => $request->rating,
+            'comment' => $request->comment
+            ]);
+
+        
+        
+        $updateshop = ShopOwner::where('id',$shop->id)
+        ->update([
+            'rating'=> (($shop->rating)*($count)+($request->rating))/($count+1)
+        ]);
+            
+            if($update){
+                        return back()->with('success','Thank you for your feedback!');
+
+            }
+            return back()->with('error','Rating error');
     }
 
     /**
