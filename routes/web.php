@@ -121,11 +121,12 @@ Route::post('/import',[ShopItemController::class,'import'])->name('shop.import')
 Route::resource('order', 'App\Http\Controllers\ViewOrderController')->middleware('ShopisLogged');
 Route::get('orderCustomer/{orderID}',[ViewOrderController::class,'customer'])->name('orderCustomer')->middleware('ShopisLogged'); //show customer
 Route::get('deliveryOrder/{orderID}',[ViewOrderController::class,'deliverOrder'])->name('deliveryOrder')->middleware('ShopisLogged'); //send email to deliver
-Route::get('confirmPurchase/{orderID}',[ViewOrderController::class,'confirmPurchase'])->name('confirmPurchase')->middleware('ShopisLogged'); //send email after deliver
+// Route::get('confirmPurchase/{orderID}',[ViewOrderController::class,'confirmPurchase'])->name('confirmPurchase')->middleware('ShopisLogged'); //send email after deliver
 
 //Shop profile Section
 Route::resource('profile', 'App\Http\Controllers\ShopProfileController')->middleware('ShopisLogged');
 Route::post('password_change',[ShopProfileController::class,'updatePassword'])->middleware('ShopisLogged');
+Route::post('shop_image_update',[ShopProfileController::class,'updateImage'])->middleware('ShopisLogged');
 
 //Promotion section
 Route::resource('promotion', 'App\Http\Controllers\PromotionController')->middleware('ShopisLogged');

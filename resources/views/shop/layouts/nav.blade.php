@@ -4,21 +4,21 @@
         <!-- ============================================================== -->
         <!-- Logo -->
         <!-- ============================================================== -->
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="{{url('shop/dashboard')}}">
             <!-- Logo icon -->
             <b class="logo-icon ps-2">
                 <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                 <!-- Dark Logo icon -->
-                <img src="{{asset('assets/images/logo-icon.png')}}" alt="homepage" class="light-logo" />
+                <img src="{{asset('assets/images/default.png')}}" alt="homepage" class="light-logo" width="230" height="60" />
 
             </b>
             <!--End Logo icon -->
-            <!-- Logo text -->
+            {{-- <!-- Logo text -->
             <span class="logo-text">
                 <!-- dark Logo text -->
                 <img src="{{asset('assets/images/logo-text.png')}}" alt="homepage" class="light-logo" />
 
-            </span>
+            </span> --}}
             <!-- Logo icon -->
             <!-- <b class="logo-icon"> -->
             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
@@ -50,7 +50,7 @@
             <li class="nav-item dropdown">
                 @if($LoggedShopInfo->shop_image==NULL)
                 <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <strong>{{$LoggedShopInfo->name}}</strong>&nbsp;&nbsp;&nbsp;&nbsp;<img src="{{asset('assets/images/users/2.jpg')}}" alt="user" class="rounded-circle" width="40" height="40"> 
+                    <strong>{{$LoggedShopInfo->name}}</strong>&nbsp;&nbsp;&nbsp;&nbsp;<img src="{{asset('assets/images/logodef.png')}}" alt="user" class="rounded-circle" width="40" height="40"> 
                    </a> 
                 @endif
                 @if($LoggedShopInfo->shop_image!=NULL)

@@ -68,7 +68,7 @@
                 <table id="myTable" class="table table-striped table-bordered">
                     <thead>
                         <tr class="table-info">
-                            {{-- <th>No</th> --}}
+                            <th>No</th>
                             <th><strong>Name</strong></th>
                             <th><strong>Image</strong></th> {{-- multiple image (video 12, mins 1826) --}}
                             <th><strong>Brand</strong></th>
@@ -81,7 +81,7 @@
                     <tbody>
                         @foreach($shopItem as $item)
                         <tr>
-                            {{-- <td>{{$loop->iteration}}</td> --}}
+                            <td>{{$loop->iteration}}.</td>
                             <td>{{$item->item_name}}</td>
                             @if($item->item_image != NULL)
                             <td><img src="{{ Storage::url($item->item_image) }}" width="100px"></td>

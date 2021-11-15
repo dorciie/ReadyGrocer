@@ -49,7 +49,7 @@
                             <input type="hidden" value="{{$end_date = \Carbon\Carbon::parse($item->item_endPromo)}}">
                             <input type="hidden" value="{{$different_days = $start_date->diffInDays($end_date)}}">
                             <tr>
-                                <td>{{$loop->iteration}}</td>
+                                <td>{{$loop->iteration}}.</td>
                                 <td>{{$item->item_name}}</td>
                                 <td>{{$item->item_brand}}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->item_startPromo)->format('d/m/Y')}}</td>

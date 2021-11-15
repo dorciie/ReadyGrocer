@@ -64,10 +64,17 @@
                         class="col-sm-2 text-end control-label col-form-label">Category <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
                             <select name="category_id" class="form-select shadow-none">
-                                <option value="">----category----</option>
-                                @foreach(\App\Models\Category::where('shop_id',$LoggedShopInfo->id)->get() as $category)
-                                    <option value="{{$category->id}}" {{old('category_id')==$category->id?'selected':''}}>{{$category->category_name}}</option>
-                                @endforeach
+                                <?php
+                                $countCategory = (\App\Models\Category::where('shop_id',$LoggedShopInfo->id)->get());
+                                ?>
+                                @if(!$countCategory->isEmpty())
+                                    <option value="">----category----</option>
+                                    @foreach(\App\Models\Category::where('shop_id',$LoggedShopInfo->id)->get() as $category)
+                                        <option value="{{$category->id}}" {{old('category_id')==$category->id?'selected':''}}>{{$category->category_name}}</option>
+                                    @endforeach
+                                @else
+                                    <option value="">Please add category first</option>
+                                @endif
                             </select>
                             <span class="text-danger">@error('category_id'){{ $message }} @enderror</span>
                         </div>
