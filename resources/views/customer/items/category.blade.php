@@ -45,8 +45,10 @@
                         <td><a href="{{route('itemDetails',['itemID' => $item->id])}}">{{$item->item_name}}</a></td>
                         <td>{{$item->item_brand}}</td>
                         <td>{{$item->item_price}}</td>
-                        <td><button type="button" class="btn btn-primary">List</button></td>
-                        <td><button type="button" class="btn btn-primary">Cart</button></td>
+                        <td>
+                            <button type="button" class="btn btn-outline-primary"><i class="me-2 mdi mdi-bell-ring-outline"></i>Add to List</button>
+                        </td>
+                        <td><button type="button" class="btn btn-outline-info"><i class="me-2 mdi mdi-cart-plus"></i>Add to Cart</button></td>
                     </tr>
                     @endforeach
                     @endforeach
