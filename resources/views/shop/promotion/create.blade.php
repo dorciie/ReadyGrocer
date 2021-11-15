@@ -24,13 +24,13 @@
         </div>
     @endif
 </div>
-    <div class="container-fluid">
-        <div class="card">
-            <div class="card-body">
-                <h3 class="card-title">Schedule New promotion</h3>
-                <div class="card">
-                    <form class="form-horizontal" action="{{route('promotion.store')}}" method="post" enctype="multipart/form-data">
-                    @csrf
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Schedule New promotion</h3>
+            <div class="card">
+                <form class="form-horizontal" action="{{route('promotion.store')}}" method="post" enctype="multipart/form-data">
+                @csrf
                     <div class="card-body">
                         <h4>List of items</h4>
                         <p>Please select the item that you want to schedule promotion.</p>
@@ -41,7 +41,7 @@
                                 <div class="col-md-9">
                                     <select class="select2 form-select shadow-none mt-3" name="items_id[]" multiple="multiple" style="height: 36px;width: 100%;">
                                         @foreach(\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('category_id',$category->id )->where('item_stock','!=','0')->where('item_endPromo',NULL)->get() as $items)    
-                                        <option value="{{$items->id}}" {{old('items_id')==$items->id?'selected':''}}>{{$items->item_name}}, {{$items->item_brand}}</option>
+                                        <option value="{{$items->id}}" {{old('items_id')==$items->id?'selected':''}}> {{$items->item_name}}, {{$items->item_brand}}</option>
                                         @endforeach
                                     </select>
                                     <span class="text-danger">@error('items_id'){{ $message }} @enderror</span>
@@ -78,7 +78,6 @@
                                         <span class="text-danger">@error('item_discount'){{ $message }} @enderror</span>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                         <div class="border-top">
                             <div class="card-body" style="text-align:center;">
@@ -86,16 +85,17 @@
                             </div>
                         </div>
                     </div>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @section('script')
-    <script src="{{asset('assets/libs/select2/dist/js/select2.full.min.js')}}"></script>
     <script src="{{asset('assets/libs/select2/dist/js/select2.min.js')}}"></script>
+    <script src="{{asset('assets/libs/select2/dist/js/select2.full.min.js')}}"></script>
+
     <script> $(".select2").select2();</script>
     <script>
         $(function () {

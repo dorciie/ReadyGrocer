@@ -42,10 +42,52 @@ class ViewOrderController extends Controller
             'orders.checkoutDelivery'
         ]);
 
+        $PreparingOrder=DB::table('orders')
+        ->join('customers','orders.customer_id','=','customers.id')
+        ->where('orders.shop_id',$shopOwner->id)
+        ->where('orders.status','=','preparing')
+        ->orderBy('orders.status','ASC')
+        ->get([
+            'orders.id',
+            'orders.total_payment',
+            'orders.payment',
+            'orders.status',
+            'customers.name',
+            'orders.checkoutDelivery'
+        ]);
+
+        $DeliveringOrder=DB::table('orders')
+        ->join('customers','orders.customer_id','=','customers.id')
+        ->where('orders.shop_id',$shopOwner->id)
+        ->where('orders.status','=','delivering')
+        ->orderBy('orders.status','ASC')
+        ->get([
+            'orders.id',
+            'orders.total_payment',
+            'orders.payment',
+            'orders.status',
+            'customers.name',
+            'orders.checkoutDelivery'
+        ]);
+
+        $DeliveredOrder=DB::table('orders')
+        ->join('customers','orders.customer_id','=','customers.id')
+        ->where('orders.shop_id',$shopOwner->id)
+        ->where('orders.status','=','delivered')
+        ->orderBy('orders.status','ASC')
+        ->get([
+            'orders.id',
+            'orders.total_payment',
+            'orders.payment',
+            'orders.status',
+            'customers.name',
+            'orders.checkoutDelivery'
+        ]);
+
         $countOrder=DB::table('orders')
         ->get();
 
-        return view('shop.order.index',$data, compact('custOrder','countOrder'));
+        return view('shop.order.index',$data, compact('custOrder','countOrder','PreparingOrder','DeliveringOrder','DeliveredOrder'));
     }
 
     
@@ -201,48 +243,48 @@ class ViewOrderController extends Controller
     }
 
     //email untuk confirm item dah deliver
-    public function confirmPurchase($confirmPurchase)
-    {
-        //dd($request->all());
-        $custOrder=DB::table('orders')
-        ->join('customers','orders.customer_id','=','customers.id')
-        ->join('shop_owners','orders.shop_id','=','shop_owners.id')
-        ->where('orders.id',$confirmPurchase)
-        ->first([
-            'orders.id',
-            'orders.total_payment',
-            'orders.payment',
-            'orders.status',
-            'customers.name',
-            'orders.checkoutDelivery',
-            'customers.email',
-            'shop_owners.shopName'
-        ]);
+    // public function confirmPurchase($confirmPurchase)
+    // {
+    //     //dd($request->all());
+    //     $custOrder=DB::table('orders')
+    //     ->join('customers','orders.customer_id','=','customers.id')
+    //     ->join('shop_owners','orders.shop_id','=','shop_owners.id')
+    //     ->where('orders.id',$confirmPurchase)
+    //     ->first([
+    //         'orders.id',
+    //         'orders.total_payment',
+    //         'orders.payment',
+    //         'orders.status',
+    //         'customers.name',
+    //         'orders.checkoutDelivery',
+    //         'customers.email',
+    //         'shop_owners.shopName'
+    //     ]);
 
-        $this->confirmPurchaseEmail($custOrder);
+    //     $this->confirmPurchaseEmail($custOrder);
         
-        $todayDate = date('Y-m-d H:i:s');
-        $query = DB::table('orders')
-                ->where('id', $confirmPurchase)
-                ->update([
-                    'status'=> 'delivered',
-                    'updated_at'=> $todayDate
-                ]);
-        if($query){
-            return back()->with('success','Good Job! You have successfully completed this order.');
-        }else{
-            return back()->with('error','Something was not right, please try again');
-        }
-    }
+    //     $todayDate = date('Y-m-d H:i:s');
+    //     $query = DB::table('orders')
+    //             ->where('id', $confirmPurchase)
+    //             ->update([
+    //                 'status'=> 'delivered',
+    //                 'updated_at'=> $todayDate
+    //             ]);
+    //     if($query){
+    //         return back()->with('success','Good Job! You have successfully completed this order.');
+    //     }else{
+    //         return back()->with('error','Something was not right, please try again');
+    //     }
+    // }
 
-    public function confirmPurchaseEmail($custOrder){
-        Mail::send(
-            'shop.order.confirmPurchaseEmail',
-            ['custOrder'=> $custOrder],
-            function($message) use ($custOrder){
-                $message->to($custOrder->email);
-                $message->subject("ReadyGrocer, Thank you for choosing us!");
-            }
-        );
-    }
+    // public function confirmPurchaseEmail($custOrder){
+    //     Mail::send(
+    //         'shop.order.confirmPurchaseEmail',
+    //         ['custOrder'=> $custOrder],
+    //         function($message) use ($custOrder){
+    //             $message->to($custOrder->email);
+    //             $message->subject("ReadyGrocer, Thank you for choosing us!");
+    //         }
+    //     );
+    // }
 }

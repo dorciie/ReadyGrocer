@@ -283,7 +283,6 @@ class ShopItemController extends Controller
         $Itemstock=DB::table('shop_items')
         ->join('categories','shop_items.category_id','=','categories.id')
         ->where('shop_items.shop_id',$shopOwner->id)
-        // ->orderBy('item_stock','ASC')
         ->get([
             'shop_items.id',
             'shop_items.item_name',
@@ -291,7 +290,46 @@ class ShopItemController extends Controller
             'shop_items.item_stock',
             'categories.category_name'
         ]);
-        return view('shop.item.stock',$data, compact('Itemstock'));
+
+        $LowStock=DB::table('shop_items')
+        ->join('categories','shop_items.category_id','=','categories.id')
+        ->where('shop_items.shop_id',$shopOwner->id)
+        ->where('shop_items.item_stock','<=','10')
+        ->where('shop_items.item_stock','>','0')
+        ->get([
+            'shop_items.id',
+            'shop_items.item_name',
+            'shop_items.item_brand',
+            'shop_items.item_stock',
+            'categories.category_name'
+        ]);
+
+        $ActiveStock=DB::table('shop_items')
+        ->join('categories','shop_items.category_id','=','categories.id')
+        ->where('shop_items.shop_id',$shopOwner->id)
+        ->where('shop_items.item_stock','>','10')
+        ->get([
+            'shop_items.id',
+            'shop_items.item_name',
+            'shop_items.item_brand',
+            'shop_items.item_stock',
+            'categories.category_name'
+        ]);
+
+        $NoStock=DB::table('shop_items')
+        ->join('categories','shop_items.category_id','=','categories.id')
+        ->where('shop_items.shop_id',$shopOwner->id)
+        ->where('shop_items.item_stock','=','0')
+        ->get([
+            'shop_items.id',
+            'shop_items.item_name',
+            'shop_items.item_brand',
+            'shop_items.item_stock',
+            'categories.category_name'
+        ]);
+
+
+        return view('shop.item.stock',$data, compact('Itemstock','LowStock','ActiveStock','NoStock'));
     }
 
     function editStock(Request $request, $id)
@@ -308,7 +346,7 @@ class ShopItemController extends Controller
                 ]);
     
             if($query){
-                return back()->with('success','Successfully updated category');
+                return back()->with('success','Successfully updated stock item');
             }else{
                 return back()->with('error','Something went wrong');
             }

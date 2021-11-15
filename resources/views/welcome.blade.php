@@ -5,9 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="generator" content="">
 
-        <title>Laravel</title>
+        <title>ReadyGrocer</title>
         
-        <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/favicon.png')}}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/logodef.png')}}">
         <link href="{{ asset('mainPage/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
         <link href="{{ asset('mainPage/css/style.css') }}" rel="stylesheet">
@@ -28,15 +28,12 @@
             <nav role="navigation" class="navbar navbar-white navbar-embossed navbar-lg navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <button data-target="#navbar-collapse-02" data-toggle="collapse" class="navbar-toggle" type="button">
-                    <i class="fa fa-bars"></i>
-                    <span class="sr-only">Toggle navigation</span>
-                    </button>
-                    <a href="#" class="navbar-brand brand"> ONLINE SHOPPING </a>
+                    {{-- <a href="/" class="navbar-brand brand"> LOGO </a> --}}
+                    <a href="/"> <img src="{{asset('assets/images/default.png')}}" alt="homepage" class="light-logo" width="200" height="50" /></a>
                 </div>
                 <div id="navbar-collapse-02" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="propClone"><a href="/">Home</a></li>
+                        {{-- <li class="propClone"><a href="/">Home</a></li> --}}
                         <li class="propClone"><a href="{{ url('/shop/shoplogin') }}">Login as Shop owner</a></li>
                         <li class="propClone"><a href="{{ url('/customer/custLogin') }}">Login as Customer</a></li>
                     </ul>

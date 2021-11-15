@@ -193,8 +193,10 @@ class GroceryCartController extends Controller
         $createOrder->payment =$request->payment;
         $createOrder->customer_id=$customer->id;
         $createOrder->shop_id=$customer->fav_shop;
+
         $createOrder->total_payment = $request->totalPrice;
         $createOrder->status = 'pending delivery';
+
         if($request->delivery ==='deliveryLater'){
             $createOrder->checkOutDelivery = $request->deliveryDT;
         }else{

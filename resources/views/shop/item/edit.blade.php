@@ -1,5 +1,5 @@
 @extends('shop.layouts.master')
-
+{{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
 @section('content')
     <div class="ms-auto text-end">
         <nav aria-label="breadcrumb">
@@ -83,7 +83,14 @@
                 </div>
                 <div class="form-group row">
                     <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label" >Image <span class="text-danger">*</span></label>
+                        class="col-sm-2 text-end control-label col-form-label">Current Image <span class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <img src="{{ Storage::url($item->item_image) }}" width="250px">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="fname"
+                        class="col-sm-2 text-end control-label col-form-label" > </label>
                     <div class="col-sm-9">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" name="item_image" value="{{$item->item_image}}" accept="image/*">
@@ -91,8 +98,6 @@
                                 file...</label> --}}
                             {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
                         </div>
-                        <p>Old image: </p>
-                        <img src="{{ Storage::url($item->item_image) }}" width="200px">
                         <span class="text-danger">@error('item_image'){{ $message }} @enderror</span>
                     </div>
                 </div>
