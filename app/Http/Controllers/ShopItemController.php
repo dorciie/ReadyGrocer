@@ -189,10 +189,22 @@ class ShopItemController extends Controller
                 'item_price'=>'required|numeric',
                 'category_id'=>'required|exists:categories,id',
                 'item_stock'=>'required|numeric',
-                'item_image'=>'required|image|mimes:jpeg,png,jpg,gif,svg',
                 'item_description'=>'nullable|string',
                 'item_size'=>'required',
             ]);
+
+            if($item->item_image == NULL){
+                $this->validate($request,[
+                    'item_name'=>'required|string',
+                    'item_brand'=>'required|string',
+                    'item_price'=>'required|numeric',
+                    'category_id'=>'required|exists:categories,id',
+                    'item_stock'=>'required|numeric',
+                    'item_image'=>'required|image|mimes:jpeg,png,jpg,gif,svg',
+                    'item_description'=>'nullable|string',
+                    'item_size'=>'required',
+                ]);
+            }
 
             if ($request->hasFile('item_image')) {
                     Storage::delete('/public/'.$item->item_image);       

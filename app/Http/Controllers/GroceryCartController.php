@@ -193,9 +193,9 @@ class GroceryCartController extends Controller
         $createOrder->payment =$request->payment;
         $createOrder->customer_id=$customer->id;
         $createOrder->shop_id=$customer->fav_shop;
-
+        // $createOrder->status = 'pending delivery';//
         $createOrder->total_payment = $request->totalPrice;
-        $createOrder->status = 'pending delivery';
+        $createOrder->status = 'preparing';
 
         if($request->delivery ==='deliveryLater'){
             $createOrder->checkOutDelivery = $request->deliveryDT;
@@ -212,7 +212,7 @@ class GroceryCartController extends Controller
             $update = GroceryCart::where('customer_id',session('LoggedCustomer'))->where('item_id',$order->item_id)->where('checkout','false')
             ->update([
                 'checkout' => 'true',
-                'payment' => $request->payment,
+                // 'payment' => $request->payment,
                 'order_id'=> $createOrder->id,
                 ]);
 

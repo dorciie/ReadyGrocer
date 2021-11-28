@@ -67,7 +67,7 @@
                                     <th><strong>Delivery date</strong></th>
                                     <th><strong>Delivery time</strong></th>
                                     <th><strong>Total amount</strong></th>
-                                    {{-- <th><strong>Payment method</strong></th> --}}
+                                    <th><strong>Payment method</strong></th>
                                     <th><strong>Deliver grocery</strong></th>
                                     {{-- <th><strong>BUANG</strong></th>  --}}
                                     <th><strong>Status</strong></th> 
@@ -81,7 +81,7 @@
                                     <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('d/m/Y')}}</td>
                                     <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('H:i:s')}}</td>
                                     <td>RM{{$order->total_payment}}</td>
-                                    {{-- <td>{{$order->payment}}</td> --}}
+                                    <td>{{$order->payment}}</td>
                                     @if($order->status == 'preparing')
                                     <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#deliverOrder{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> Deliver now!</a></div></td>
                                     {{-- <td>No</td> --}}
@@ -96,7 +96,7 @@
                                     <td>Successfully delivered</td>
                                     {{-- <td>Yes</td> --}}
                                     {{-- <td><p><span class="label label-success">Yes</span></p></td> --}}
-                                    <td class="text-success">Delivered</td>
+                                    <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#viewRating{{$order->id}}" class="btn btn-sm btn-success" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> View Rating</a></div></td>
                                     @endif
                                     
                                 </tr> 
@@ -122,6 +122,43 @@
                                         </div>
                                     </div>
                                 {{-- end Modal --}}
+
+                                 <!-- Modal View Rating-->
+                                 <div class="modal fade" id="viewRating{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="deliverOrderTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Customer rating for this order</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <strong>Rate: </strong>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <p>{{\App\Models\Order::where('id',$order->id)->value('rate')}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <strong>Comment: </strong>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <p>{{\App\Models\Order::where('id',$order->id)->value('comment')}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        {{-- <button id="deliveryOrder" type="submit" class="btn btn-primary" data-dismiss="modal">Deliver order</button> --}}
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            {{-- end Modal --}}
         
                                     <!-- Modal Confirm purchase-->
                                     {{-- <div class="modal fade" id="confirmPurchase{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="confirmPurchaseTitle" aria-hidden="true">
@@ -162,7 +199,7 @@
                                     <th><strong>Delivery date</strong></th>
                                     <th><strong>Delivery time</strong></th>
                                     <th><strong>Total amount</strong></th>
-                                    {{-- <th><strong>Payment method</strong></th> --}}
+                                    <th><strong>Payment method</strong></th>
                                     <th><strong>Deliver grocery</strong></th>
                                     {{-- <th><strong>Done Deliver</strong></th>  --}}
                                     <th><strong>Status</strong></th> 
@@ -176,7 +213,7 @@
                                             <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('d/m/Y')}}</td>
                                             <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('H:i:s')}}</td>
                                             <td>RM{{$order->total_payment}}</td>
-                                            {{-- <td>{{$order->payment}}</td> --}}
+                                            <td>{{$order->payment}}</td>
                                             <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#deliverOrder1{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> Deliver now!</a></div></td>
                                             {{-- <td>No</td> --}}
                                             <td class="text-danger">Preparing</td>
@@ -221,7 +258,7 @@
                                     <th><strong>Delivery date</strong></th>
                                     <th><strong>Delivery time</strong></th>
                                     <th><strong>Total amount</strong></th>
-                                    {{-- <th><strong>Payment method</strong></th> --}}
+                                    <th><strong>Payment method</strong></th>
                                     <th><strong>Deliver grocery</strong></th>
                                     {{-- <th><strong>Done Deliver</strong></th>  --}}
                                     <th><strong>Status</strong></th> 
@@ -235,7 +272,7 @@
                                             <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('d/m/Y')}}</td>
                                             <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('H:i:s')}}</td>
                                             <td>RM{{$order->total_payment}}</td>
-                                            {{-- <td>{{$order->payment}}</td> --}}
+                                            <td>{{$order->payment}}</td>
                                             <td>Item out for delivery</td>
                                             {{-- <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#confirmPurchase1{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom">No</a></div></td> --}}
                                             <td class="text-warning">Delivering</td>
@@ -279,7 +316,7 @@
                                     <th><strong>Delivery date</strong></th>
                                     <th><strong>Delivery time</strong></th>
                                     <th><strong>Total amount</strong></th>
-                                    {{-- <th><strong>Payment method</strong></th> --}}
+                                    <th><strong>Payment method</strong></th>
                                     <th><strong>Deliver grocery</strong></th>
                                     {{-- <th><strong>Done Deliver</strong></th>  --}}
                                     <th><strong>Status</strong></th> 
@@ -293,11 +330,48 @@
                                             <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('d/m/Y')}}</td>
                                             <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('H:i:s')}}</td>
                                             <td>RM{{$order->total_payment}}</td>
-                                            {{-- <td>{{$order->payment}}</td> --}}
+                                            <td>{{$order->payment}}</td>
                                             <td>Successfully delivered</td>
                                             {{-- <td>Yes</td> --}}
-                                            <td class="text-success">Delivered</td>
+                                            <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#viewRating1{{$order->id}}" class="btn btn-sm btn-success" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> View Rating</a></div></td>
                                         </tr>
+
+                                        <!-- Modal View Rating-->
+                                            <div class="modal fade" id="viewRating1{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="viewRating" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Customer rating for this order</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-4">
+                                                                <strong>Rate: </strong>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <p>{{\App\Models\Order::where('id',$order->id)->value('rate')}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-md-4">
+                                                                <strong>Comment: </strong>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <p>{{\App\Models\Order::where('id',$order->id)->value('comment')}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    {{-- <button id="deliveryOrder" type="submit" class="btn btn-primary" data-dismiss="modal">Deliver order</button> --}}
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        {{-- end Modal --}}
                                     @endforeach   
                             </tbody>
                         </table>

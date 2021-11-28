@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\shopOwner;
 use App\Models\customer;
+use App\Models\order;
 use Mail;
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
@@ -125,7 +126,12 @@ class ViewOrderController extends Controller
         ->where('grocery_carts.order_id',$order_id)
         ->get();
 
-        return view('shop.order.customer',$data, compact('custOrder'));
+        $OverallRate = DB::table('orders')
+            ->where('id',$order_id)
+            ->where('shop_id', $shopOwner->id)
+            ->first(['rate','comment']);
+
+        return view('shop.order.customer',$data, compact('custOrder','OverallRate'));
     }
     // public function create()
     // {

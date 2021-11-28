@@ -46,7 +46,7 @@
 
 <div class="container-fluid">
     <div style="text-align: right;">
-        <a class="btn btn-info" href="{{route('profile.show',$shopOwner->id)}}"><i class="fas fa-edit"></i> Change password</a>
+        <a class="btn btn-info" href="{{route('profile.show',$shopOwner->id)}}"><i class="mdi mdi-account-key"></i> Change password</a>
         <a class="btn btn-info" href="{{route('profile.edit',$shopOwner->id)}}"><i class="fas fa-edit"></i> Edit profile</a>
     </div>
     <br>
@@ -63,9 +63,9 @@
         @endif
     </div>
     <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
+        <div class="col-md-5">
+            <div class="card align-items-center">
+                <div class="card-bod align-items-centery">
                     {{-- <h5 class="card-title"  style="text-align: center">
                         @if($shopOwner->shop_image==NULL)
                         <img src="{{asset('assets/images/logodef.png')}}" alt="user" width="180">
@@ -75,7 +75,7 @@
                         @endif
                         {{-- <img src="{{asset('assets/images/users/2.jpg')}}" alt="user" class="rounded-circle" width="170"> 
                     </h5> --}}
-
+                    <br>
                     <div class="flip-card align-items-center">
                         <div class="flip-card-inner">
                           <div class="flip-card-front"  style="text-align: center">
@@ -95,7 +95,7 @@
                         </div>
                       </div><br>
                     <h4><br></h4>
-                    <h2 style="text-align: center">{{$shopOwner->shopName}}</h2>
+                    <h2 style="text-align: center">{{$shopOwner->shopName}}</h2><br>
                     {{-- <h2 style="text-align: center">Rating: {{$shopOwner->rating}}</h2> --}}
                 </div>
             </div>
@@ -133,12 +133,12 @@
                 @csrf
                 <div class="input-group container-fluid justify-content-center ">
                     <div class="col-sm-12 col-md-12">
-                    <div class="custom-file">
-                        <input type="file" class="form-control-file custom-file-input" id="image" name="image" accept="image/*">
-                        {{-- <label class="custom-file-label" for="customFile">Choose File</label> --}}
+                        <div class="custom-file">
+                            <input type="file" class="form-control-file custom-file-input" id="image" name="image" accept="image/*">
+                            {{-- <label class="custom-file-label" for="customFile">Choose File</label> --}}
+                            <button type="submit" name="send" class="btn btn-outline-info pb--9">Change photo&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
+                        </div>
                     </div>
-                    </div>
-                    <button type="submit" name="send" class="btn btn-outline-info pb--9">Change photo&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
                 </div>
                 </form>
             
@@ -147,43 +147,43 @@
         </div>
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="card">
-                <div class="card-body" style="line-height: 0.7;">
+                <div class="card-body" style="line-height: 1.2;">
                     <h3 class="card-title">Shop details</h3>
                     <br>
                     <div class="form-group row">
-                        <p style="font-size: 14px;" class="col-sm-4" style="font-size: 18px;"><strong>Name:</strong></p>
-                        <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{$shopOwner->name}}</p>
+                        <p class="col-sm-3" style="font-size: 14px;"><strong>Name:</strong></p>
+                        <p class="col-sm-9" style="font-size: 14px;">{{$shopOwner->name}}</p>
                     </div>
                     <div class="form-group row">
-                        <p style="font-size: 14px;" class="col-sm-4" style="font-size: 18px;"><strong>Email:</strong></p>
-                        <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{$shopOwner->email}}</p>
+                        <p class="col-sm-3" style="font-size: 14px;"><strong>Email:</strong></p>
+                        <p class="col-sm-9" style="font-size: 14px;">{{$shopOwner->email}}</p>
                     </div>
                     <div class="form-group row">
-                        <p style="font-size: 14px;" class="col-sm-4" style="font-size: 18px;"><strong>Address: </strong></p>
-                        <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{$shopOwner->address}}</p>
+                        <p class="col-sm-3" style="font-size: 14px;"><strong>Address: </strong></p>
+                        <p class="col-sm-9" style="font-size: 14px;">{{$shopOwner->address}}</p>
                     </div>
                     <div class="form-group row">
-                        <p style="font-size: 14px;" class="col-sm-4" style="font-size: 18px;"><strong>Location: </strong></p>
-                        <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{$shopOwner->address_latitude}}, {{$shopOwner->address_longitude}}</p>
+                        <p class="col-sm-3" style="font-size: 14px;"><strong>Location: </strong></p>
+                        <p class="col-sm-9" style="font-size: 14px;">{{$shopOwner->address_latitude}}, {{$shopOwner->address_longitude}}</p>
                     </div>
                     <div class="form-group row">
-                        <p style="font-size: 14px;" class="col-sm-4" style="font-size: 18px;"><strong>Contact Number: </strong></p>
-                        <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{$shopOwner->phone_number}}</p>
+                        <p class="col-sm-3" style="font-size: 14px;"><strong>Contact Number: </strong></p>
+                        <p class="col-sm-9" style="font-size: 14px;">{{$shopOwner->phone_number}}</p>
                     </div>
                     <div class="form-group row">
-                        <p style="font-size: 14px;" class="col-sm-4" style="font-size: 18px;"><strong>Delivery Charge: </strong></p>
+                        <p class="col-sm-3" style="font-size: 14px;"><strong>Delivery Charge: </strong></p>
                         @if($shopOwner->delivery_charge==NULL)
-                        <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">0</p>
+                        <p class="col-sm-9" style="font-size: 14px;">0</p>
                         @endif
                         @if($shopOwner->delivery_charge!=NULL)
-                        <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">RM {{$shopOwner->delivery_charge}} per km</p>
+                        <p class="col-sm-9" style="font-size: 14px;">RM {{$shopOwner->delivery_charge}} per km</p>
                         @endif
                     </div>
                     <div class="form-group row">
-                        <p style="font-size: 14px;" class="col-sm-4" style="font-size: 18px;"><strong>Rating: </strong></p>
-                        <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;"></p>
+                        <p class="col-sm-3" style="font-size: 14px;"><strong>Rating: </strong></p>
+                        <p class="col-sm-9" style="font-size: 14px;">{{$averageRate}}</p>
                     </div>
                 </div>
             </div>

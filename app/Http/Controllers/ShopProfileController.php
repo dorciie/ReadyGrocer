@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\shopOwner;
+use App\Models\Order;
 use File;
 use Illuminate\Support\Facades\Storage;
 
@@ -31,7 +32,20 @@ class ShopProfileController extends Controller
         $shopOwner = DB::table('shop_owners')
             ->where('id', session('LoggedShop'))
             ->first();
-        return view('shop.profile.index',$data,compact('shopOwner'));
+
+        $OverallRate = DB::table('orders')
+            ->where('shop_id', session('LoggedShop'))
+            ->where('rate', '!=', NULL)
+            ->get('rate');
+
+        $rating = 0.0;
+        $i=0;
+        foreach($OverallRate as $rate){
+            $rating += $rate->rate;
+            $i++;
+        }
+        $averageRate = $rating/$i;
+        return view('shop.profile.index',$data,compact('shopOwner','averageRate'));
     }
 
     /**
@@ -215,7 +229,10 @@ class ShopProfileController extends Controller
                 'address'=>'required|string',
                 // 'password'  => 'required|min:5|max:12',
                 'shop_description'=>'nullable',
-                'phone_number'=>'nullable|numeric',
+                'phone_number'=>'required|numeric',
+                'delivery_charge' => 'required|numeric',
+                'address_latitude' => 'required',
+                'address_longitude' => 'required'
             ]);
 
             // if ($request->hasFile('shop_image')) {

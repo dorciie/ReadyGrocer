@@ -38,7 +38,7 @@
             <a class="btn btn-sm btn-info" href="{{route('item.create')}}"><i class="fa fa-plus"></i> Add New Item</a>
             <h6> </h6>
             <p>
-                <button class="btn btn-sm btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-plus"></i> Import Items from excel</button>
+                <button class="btn btn-sm btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-upload"></i> Import Items from excel</button>
             </p>
               <div class="collapse" id="collapseExample">
                 <div class="card card-body">
@@ -141,11 +141,11 @@
                                             <strong>Price: </strong>
                                             <p>RM{{number_format($product->item_price,2)}}</p>
                                         </div>
-                                        <div class="col-md-6">
-                                            <strong>Offer price: </strong>
-                                            <p>RM{{number_format($product->offer_price,2)}}</p>
-                                        </div>
                                         @if($product->item_discount != "")
+                                            <div class="col-md-6">
+                                                <strong>Offer price: </strong>
+                                                <p>RM{{number_format($product->offer_price,2)}}</p>
+                                            </div>
                                             <div class="col-md-6">
                                                 <strong>Discount: </strong>
                                                 <p>{{$product->item_discount}}%</p>
@@ -153,8 +153,12 @@
                                         @endif
                                         @if($product->item_discount == "")
                                             <div class="col-md-6">
+                                                <strong>Offer price: </strong>
+                                                <p>None</p>
+                                            </div>
+                                            <div class="col-md-6">
                                                 <strong>Discount: </strong>
-                                                <p>No discount offer for this item</p>
+                                                <p>None</p>
                                             </div>
                                         @endif
                                         <div class="col-md-6">

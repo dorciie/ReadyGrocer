@@ -37,7 +37,7 @@
                                 <th style="width:100px;"><strong>Start Promotion</strong></th>{{-- bila tekan view "icon mata", show table semua item+price before and after promotion --}}
                                 <th style="width:100px;"><strong>End Promotion</strong></th>
                                 <th style="width:100px;"><strong>Day(s)</strong></th>
-                                <th style="width:100px;"><strong>Price</strong></th>
+                                <th style="width:100px;"><strong>Original Price</strong></th>
                                 <th style="width:100px;"><strong>Discount</strong></th>
                                 <th style="width:100px;"><strong>Offer Price</strong></th>
                                 <th style="width:100px;"><strong>Action</strong></th>

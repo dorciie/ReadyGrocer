@@ -7,7 +7,7 @@
         <div class="col-md-6 col-lg-4 col-xlg-3">
             <div class="card card-hover">
                 <div class="box bg-cyan bg-gradient text-center shadow">
-                    <h1 class="font-light text-white"><i class="mdi mdi-view-dashboard"></i></h1>
+                    <h1 class="font-light text-white"><i class="mdi mdi-view-list"></i></h1>
                     <h6 class="text-white">Total items</h6>
                     <h6 class="text-white">{{\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->count()}}</h6>
                 </div>
@@ -16,7 +16,7 @@
         <div class="col-md-6 col-lg-4 col-xlg-3">
             <div class="card card-hover">
                 <div class="box bg-success bg-gradient text-center shadow">
-                    <h1 class="font-light text-white"><i class="mdi mdi-chart-bubble"></i></h1>
+                    <h1 class="font-light text-white"><i class="mdi mdi-cart-outline"></i></h1>
                     <h6 class="text-white">Total orders</h6>
                     <h6 class="text-white">{{\App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','=','delivered')->count()}}</h6>
                 </div>
@@ -39,7 +39,7 @@
                 <div class="box bg-warning bg-gradient text-center shadow">
                     <h1 class="font-light text-white"><i class="mdi mdi-alert-box"></i></h1>
                     <h6 class="text-white">Items low in stock: {{\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('item_stock','<=','10')->where('item_stock','>','0')->count()}}</h6>
-                    <button type="button" class="btn btn-info btn-sm shadow" data-bs-toggle="modal" data-bs-target="#lowStock">View items</button>
+                    <button type="button" class="btn btn-info btn-sm shadow" data-bs-toggle="modal" data-bs-target="#lowStock"><i class="fa fa-info-circle" aria-hidden="true"></i> View items</button>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
                 <div class="box bg-danger bg-gradient text-center shadow">
                     <h1 class="font-light text-white"><i class="mdi mdi-alert"></i></h1>
                     <h6 class="text-white">Items out of stock: {{\App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('item_stock','==','0')->count()}}</h6>
-                    <button type="button" class="btn btn-info btn-sm shadow" data-bs-toggle="modal" data-bs-target="#noStock">View items</button>
+                    <button type="button" class="btn btn-info btn-sm shadow" data-bs-toggle="modal" data-bs-target="#noStock"><i class="fa fa-info-circle" aria-hidden="true"></i> View items</button>
                 </div>
             </div>
         </div>
