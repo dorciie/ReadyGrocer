@@ -189,7 +189,7 @@ class shopOwnerController extends Controller
                  ->join('categories','shop_items.category_id','=','categories.id')
                  ->join('orders','grocery_carts.order_id','=','orders.id')
                  ->groupBy('shop_items.id','categories.category_name','month')
-                 ->whereYear('grocery_carts.created_at', date('Y'))
+                 ->whereYear('grocery_carts.created_at', $request->year)
                  ->where('grocery_carts.shop_id',$shopOwner->id)
                  ->where('orders.status','delivered')
                  ->get();

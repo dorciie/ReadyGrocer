@@ -85,7 +85,12 @@
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Current Image <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
+                        @if($item->item_image != NULL)
                         <img src="{{ Storage::url($item->item_image) }}" width="250px">
+                        @endif
+                        @if($item->item_image == NULL)
+                        <p>No image yet</p>
+                        @endif
                     </div>
                 </div>
                 <div class="form-group row">

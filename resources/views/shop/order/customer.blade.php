@@ -47,6 +47,16 @@
                                 <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Total amount of payment: </p>
                                 <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">RM{{$custOrders->total_payment}} (Including 6% sst)</p>
                             </div>
+                            @if($OverallRate->rate != NULL)
+                            <div class="form-group row">
+                                <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Rate: </p>
+                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{$OverallRate->rate}}</p>
+                            </div>
+                            <div class="form-group row">
+                                <p style="font-size: 14px;" class="col-sm-3" style="font-size: 18px;">Comment: </p>
+                                <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">{{$OverallRate->comment}}</p>
+                            </div>
+                            @endif
                             <div class="form-group row">
                                 <p style="font-size: 14px;" class="col-sm-4" style="font-size: 18px;">List of item bought: </p>
                                 <p style="font-size: 14px;" class="col-sm-8" style="font-size: 18px;">
