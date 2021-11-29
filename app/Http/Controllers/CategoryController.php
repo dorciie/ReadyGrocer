@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\shopOwner;
 use App\Models\Category; 
+use App\Models\ShopItem; 
+use App\Models\GroceryCart; 
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
 class CategoryController extends Controller
@@ -165,13 +167,24 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category=Category::find($id);
+        $ItemID = DB::table('shop_items')
+                ->join('grocery_carts', 'grocery_carts.item_id','=','shop_items.id')
+                ->join('categories', 'shop_items.category_id','=','categories.id')
+                ->where('categories.id', $id)
+                ->first();
+        
         if($category){
-            $status = $category->delete();
-            if($status){
-                return redirect()->route('category.index')->with('success','Successfully delete the category');
-            }
-            else{
-                return back()->with('error','Something went wrong');
+            if($ItemID){
+                return back()->with('error','This category cannot be deleted to keep track the order history');
+            }else{
+                // return back()->with('success','DELETED');
+                $status = $category->delete();
+                if($status){
+                    return redirect()->route('category.index')->with('success','Successfully delete the category');
+                }
+                else{
+                    return back()->with('error','Something went wrong');
+                }
             }
         }else{
             return back()->with('error','Data not found');

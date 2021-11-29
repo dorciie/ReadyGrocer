@@ -13,6 +13,12 @@
         <link href="{{ asset('mainPage/css/style.css') }}" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Roboto:200,300,400,500,600,700" rel="stylesheet">
+    
+        <!-- PWA  -->
+        <meta name="theme-color" content="#0D79CA"/>
+        <link rel="apple-touch-icon" href="{{ asset('logodef.png') }}">
+        <link rel="manifest" href="{{ asset('/manifest.json') }}">
+
     </head>
     <body>
         <div class="preloader">
@@ -140,6 +146,15 @@
             );
         });
         </script>
+        <script src="{{ asset('/sw.js') }}"></script>
+        <script>
+            if (!navigator.serviceWorker.controller) {
+                navigator.serviceWorker.register("/sw.js").then(function (reg) {
+                    console.log("Service worker has been registered for scope: " + reg.scope);
+                });
+            }
+        </script>
+        
         </body>
 </html>
 

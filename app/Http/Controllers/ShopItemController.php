@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\shopOwner;
 use App\Models\Category; 
 use App\Models\ShopItem; 
+use App\Models\GroceryCart; 
 use File;
 use Illuminate\Support\Facades\Storage;
 use App\Imports\ShopItemImport;
@@ -267,14 +268,19 @@ class ShopItemController extends Controller
     public function destroy($id)
     {
         $item=ShopItem::find($id);
+        $groceryCart = GroceryCart::where('item_id', $id)->first();
         if($item){
-            $status = $item->delete();
-            if($status){
-                Storage::delete('/public/'.$item->item_image); 
-                return redirect()->route('item.index')->with('success','Successfully delete the item');
-            }
-            else{
-                return back()->with('error','Something went wrong');
+            if($groceryCart){
+                return back()->with('error','This item cannot be deleted to keep track the order history');
+            }else{
+                $status = $item->delete();
+                if($status){
+                    Storage::delete('/public/'.$item->item_image); 
+                    return redirect()->route('item.index')->with('success','Successfully delete the item');
+                }
+                else{
+                    return back()->with('error','Something went wrong');
+                }
             }
         }else{
             return back()->with('error','Data not found');

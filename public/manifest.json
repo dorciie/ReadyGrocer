@@ -1,0 +1,17 @@
+{
+    "name": "ReadyGrocer",
+    "short_name": "RG",
+    "start_url": "/",
+    "background_color": "#0D79CA",
+    "description": "Online groceries application",
+    "display": "fullscreen",
+    "theme_color": "#0D79CA",
+    "icons": [
+        {
+            "src": "logodef.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

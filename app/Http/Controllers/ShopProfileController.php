@@ -38,13 +38,23 @@ class ShopProfileController extends Controller
             ->where('rate', '!=', NULL)
             ->get('rate');
 
+        $CountRating = DB::table('orders')
+            ->where('shop_id', session('LoggedShop'))
+            ->where('rate', '!=', NULL)
+            ->count();
+
         $rating = 0.0;
-        $i=0;
+        $i=1;
         foreach($OverallRate as $rate){
             $rating += $rate->rate;
             $i++;
         }
-        $averageRate = $rating/$i;
+
+        if($CountRating == 1){
+            $averageRate = $rating;
+        }else{
+            $averageRate = $rating/$i;
+        }
         return view('shop.profile.index',$data,compact('shopOwner','averageRate'));
     }
 

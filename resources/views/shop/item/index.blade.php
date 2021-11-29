@@ -240,7 +240,7 @@
         .then((willDelete) => {
             if (willDelete) {
                 form.submit();
-                swal("Poof! This item has been deleted!", {
+                swal("Deleting in process!", {
                 icon: "success",
                 });
             } else {

@@ -15,9 +15,9 @@
                 {{Session::get('success')}}
             </div>
         @endif
-        @if(Session::get('fail'))
+        @if(Session::get('error'))
             <div class="alert alert-danger" id="alert">
-                {{Session::get('fail')}}
+                {{Session::get('error')}}
             </div>
         @endif
     </div>
@@ -82,7 +82,7 @@
         .then((willDelete) => {
             if (willDelete) {
                 form.submit();
-                swal("Poof! This category has been deleted!", {
+                swal("Deleting in process!", {
                 icon: "success",
                 });
             } else {
