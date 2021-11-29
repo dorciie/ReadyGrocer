@@ -75,7 +75,7 @@
                                             <tbody style="text-align:center;">
                                                 @foreach($custOrder as $order)
                                                     <tr>
-                                                        <td>{{$loop->iteration}}</td>
+                                                        <td>{{$loop->iteration}}.</td>
                                                         <td>{{$order->item_name}}</td>
                                                         <td>{{$order->item_brand}}</td>
                                                         <td>{{$order->item_quantity}}</td>
