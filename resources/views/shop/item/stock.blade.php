@@ -1,6 +1,18 @@
 @extends('shop.layouts.master')
 
 @section('content')
+{{-- <style>
+    body {
+    /* Set "my-sec-counter" to 0 */
+    counter-reset: my-sec-counter;
+    }
+
+    #counter::before {
+    /* Increment "my-sec-counter" by 1 */
+    counter-increment: my-sec-counter;
+    content: counter(my-sec-counter) ". ";
+    }      
+</style> --}}
 <div class="ms-auto text-end">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -50,7 +62,7 @@
                     <table id="myTable" class="table table-striped table-bordered">
                         <thead>
                             <tr class="table-info">
-                                <th><strong>Number</strong></th>
+                                <th><strong>No</strong></th>
                                 <th><strong>Item Name</strong></th>
                                 {{-- <th>Item Category</th> --}}
                                 <th><strong>Brand</strong></th>
@@ -62,7 +74,7 @@
                         <tbody>
                             @foreach($Itemstock as $itemstock)
                             <tr>
-                                <td>{{$loop->iteration}}</td>
+                                <td>{{$loop->iteration}}.</td>
                                 <td>{{$itemstock->item_name}}</td>
                                 {{-- <td>{{$itemstock->category_name}}</td> --}}
                                 <td>{{$itemstock->item_brand}}</td>
@@ -125,7 +137,7 @@
                     <table id="myTableNoStock" class="table table-striped table-bordered">
                         <thead>
                             <tr class="table-info">
-                                <th><strong>Number</strong></th>
+                                <th><strong>No</strong></th>
                                 <th><strong>Item Name</strong></th>
                                 {{-- <th>Item Category</th> --}}
                                 <th><strong>Brand</strong></th>
@@ -135,10 +147,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($Itemstock as $itemstock)
-                                @if($itemstock->item_stock=='0')
+                                @foreach($NoStock as $itemstock)
                                     <tr>
-                                        <td>{{$loop->iteration}}</td>
+                                        <td>{{$loop->iteration}}.</td>
                                         <td>{{$itemstock->item_name}}</td>
                                         {{-- <td>{{$itemstock->category_name}}</td> --}}
                                         <td>{{$itemstock->item_brand}}</td>
@@ -148,41 +159,40 @@
                                             <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#itemID1{{$itemstock->id}}">Update Stock</button>
                                         </td>
                                     </tr>
-                                @endif
-                            {{-- MODAL STOCK --}}
-                            <div class="modal fade" id="itemID1{{$itemstock->id}}"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <form method="get" action="{{route('updateStock',['itemID' => $itemstock->id])}}">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Update Stock for {{$itemstock->item_name}}</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label>Item Quantity</label>
+                                    {{-- MODAL STOCK --}}
+                                    <div class="modal fade" id="itemID1{{$itemstock->id}}"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <form method="get" action="{{route('updateStock',['itemID' => $itemstock->id])}}">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update Stock for {{$itemstock->item_name}}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="input-group mb-3">
-                                                            <input type="number" class="form-control" name="item_stock" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$itemstock->item_stock}}" required>
-                                                            <span class="text-danger">@error('item_stock'){{ $message }} @enderror</span>
-                                                        </div>
 
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label>Item Quantity</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="input-group mb-3">
+                                                                    <input type="number" class="form-control" name="item_stock" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$itemstock->item_stock}}" required>
+                                                                    <span class="text-danger">@error('item_stock'){{ $message }} @enderror</span>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-info">Save changes</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-info">Save changes</button>
-                                            </div>
-                                        </div>
+                                        </form>
                                     </div>
-                                </form>
-                            </div>
-                            {{--END MODAL STOCK --}}
-                            @endforeach
+                                    {{--END MODAL STOCK --}}
+                                @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -194,7 +204,7 @@
                     <table id="myTableLowStock" class="table table-striped table-bordered">
                         <thead>
                             <tr class="table-info">
-                                <th><strong>Number</strong></th>
+                                <th><strong>No</strong></th>
                                 <th><strong>Item Name</strong></th>
                                 {{-- <th>Item Category</th> --}}
                                 <th><strong>Brand</strong></th>
@@ -204,10 +214,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($Itemstock as $itemstock)
-                                @if($itemstock->item_stock <='10' && $itemstock->item_stock >'0')
+                                @foreach($LowStock as $itemstock)
                                     <tr>
-                                        <td>{{$loop->iteration}}</td>
+                                        <td>{{$loop->iteration}}.</td>
                                         <td>{{$itemstock->item_name}}</td>
                                         {{-- <td>{{$itemstock->category_name}}</td> --}}
                                         <td>{{$itemstock->item_brand}}</td>
@@ -217,41 +226,40 @@
                                             <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#itemID2{{$itemstock->id}}">Update Stock</button>
                                         </td>
                                     </tr>
-                                @endif
-                            {{-- MODAL STOCK --}}
-                            <div class="modal fade" id="itemID2{{$itemstock->id}}"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <form method="get" action="{{route('updateStock',['itemID' => $itemstock->id])}}">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Update Stock for {{$itemstock->item_name}}</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label>Item Quantity</label>
+                                    {{-- MODAL STOCK --}}
+                                    <div class="modal fade" id="itemID2{{$itemstock->id}}"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <form method="get" action="{{route('updateStock',['itemID' => $itemstock->id])}}">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update Stock for {{$itemstock->item_name}}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="input-group mb-3">
-                                                            <input type="number" class="form-control" name="item_stock" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$itemstock->item_stock}}" required>
-                                                            <span class="text-danger">@error('item_stock'){{ $message }} @enderror</span>
-                                                        </div>
 
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label>Item Quantity</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="input-group mb-3">
+                                                                    <input type="number" class="form-control" name="item_stock" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$itemstock->item_stock}}" required>
+                                                                    <span class="text-danger">@error('item_stock'){{ $message }} @enderror</span>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-info">Save changes</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-info">Save changes</button>
-                                            </div>
-                                        </div>
+                                        </form>
                                     </div>
-                                </form>
-                            </div>
-                            {{--END MODAL STOCK --}}
-                            @endforeach
+                                    {{--END MODAL STOCK --}}
+                                @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -263,7 +271,7 @@
                     <table id="myTableActive" class="table table-striped table-bordered">
                         <thead>
                             <tr class="table-info">
-                                <th><strong>Number</strong></th>
+                                <th><strong>No</strong></th>
                                 <th><strong>Item Name</strong></th>
                                 {{-- <th>Item Category</th> --}}
                                 <th><strong>Brand</strong></th>
@@ -273,10 +281,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($Itemstock as $itemstock)
-                                @if($itemstock->item_stock>'10')
+                                @foreach($ActiveStock as $itemstock)
                                     <tr>
-                                        <td>{{$loop->iteration}}</td>
+                                        <td>{{$loop->iteration}}.</td>
+                                        {{-- <td><div id="counter"></div></td> --}}
                                         <td>{{$itemstock->item_name}}</td>
                                         {{-- <td>{{$itemstock->category_name}}</td> --}}
                                         <td>{{$itemstock->item_brand}}</td>
@@ -286,41 +294,39 @@
                                             <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#itemID3{{$itemstock->id}}">Update Stock</button>
                                         </td>
                                     </tr>
-                                @endif
-                            {{-- MODAL ALL STOCK --}}
-                            <div class="modal fade" id="itemID3{{$itemstock->id}}"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <form method="get" action="{{route('updateStock',['itemID' => $itemstock->id])}}">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                 
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Update Stock for {{$itemstock->item_name}}</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label>Item Quantity</label>
+                                    {{-- MODAL ALL STOCK --}}
+                                    <div class="modal fade" id="itemID3{{$itemstock->id}}"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <form method="get" action="{{route('updateStock',['itemID' => $itemstock->id])}}">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update Stock for {{$itemstock->item_name}}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="input-group mb-3">
-                                                            <input type="number" class="form-control" name="item_stock" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$itemstock->item_stock}}" required>
-                                                            <span class="text-danger">@error('item_stock'){{ $message }} @enderror</span>
-                                                        </div>
 
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label>Item Quantity</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="input-group mb-3">
+                                                                    <input type="number" class="form-control" name="item_stock" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$itemstock->item_stock}}" required>
+                                                                    <span class="text-danger">@error('item_stock'){{ $message }} @enderror</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-info">Save changes</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-info">Save changes</button>
-                                            </div>
-                                        </div>
+                                        </form>
                                     </div>
-                                </form>
-                            </div>
-                            {{--END MODAL STOCK --}}
-                            @endforeach
+                                    {{--END MODAL STOCK --}}
+                                @endforeach
                         </tbody>
                     </table>
                 </div>

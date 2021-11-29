@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\shopOwner;
+use App\Models\Order;
 use File;
 use Illuminate\Support\Facades\Storage;
 
@@ -31,7 +32,20 @@ class ShopProfileController extends Controller
         $shopOwner = DB::table('shop_owners')
             ->where('id', session('LoggedShop'))
             ->first();
-        return view('shop.profile.index',$data,compact('shopOwner'));
+
+        $OverallRate = DB::table('orders')
+            ->where('shop_id', session('LoggedShop'))
+            ->where('rate', '!=', NULL)
+            ->get('rate');
+
+        $rating = 0.0;
+        $i=0;
+        foreach($OverallRate as $rate){
+            $rating += $rate->rate;
+            $i++;
+        }
+        $averageRate = $rating/$i;
+        return view('shop.profile.index',$data,compact('shopOwner','averageRate'));
     }
 
     /**
@@ -117,6 +131,59 @@ class ShopProfileController extends Controller
 
     }
 
+    public function updateImage(Request $request)
+    {
+        $shopOwner = DB::table('shop_owners')
+                    ->where('id',session('LoggedShop'))
+                    ->first();
+        // $user = User::where('id', '=', Auth::user()->id)->get();
+
+        request()->validate([
+            'image' => 'required',
+
+        ]);
+
+        if ($request->file('image') == null){
+            if(($shopOwner->shop_image) != NULL){
+                Storage::delete('/public/'.$shopOwner->shop_image);
+            }
+            $name = "";
+            $path = "";
+            $naming = NULL;
+
+        } elseif ($request->image == "none"){
+            if(($shopOwner->shop_image) != NULL){
+                Storage::delete('/public/'.$shopOwner->shop_image);
+            }
+            $name = "";
+            $path = "";
+            $naming = NULL;
+
+        } else { //request current image and delete 
+            if(($shopOwner->shop_image) != NULL){
+                Storage::delete('/public/'.$shopOwner->shop_image);
+            }
+            $name = $request->file('image');
+            $path = $request->file('image')->store('shopProfile', 'public');
+            $naming = $request->file('image')->store('shopProfile', 'public');
+        }
+ 
+        $save = new File;
+ 
+        $save->name = $name;
+        $save->path = $path;
+
+        // $user->update([
+        //     'image' => $naming,
+        // ]);
+        
+        $user = DB::table('shop_owners')
+              ->where('id',session('LoggedShop'))
+              ->update(['shop_image' => $naming]);
+
+              return redirect()->route('profile.index')->with('success','Successfully update the profile image');
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -162,38 +229,41 @@ class ShopProfileController extends Controller
                 'address'=>'required|string',
                 // 'password'  => 'required|min:5|max:12',
                 'shop_description'=>'nullable',
-                'phone_number'=>'nullable|numeric',
+                'phone_number'=>'required|numeric',
+                'delivery_charge' => 'required|numeric',
+                'address_latitude' => 'required',
+                'address_longitude' => 'required'
             ]);
 
-            if ($request->hasFile('shop_image')) {
-                Storage::delete('/public/'.$shopOwner->shop_image);       
-                $path = $request->shop_image->store('shopProfile', 'public');
-                // $item->item_image= $path;
+            // if ($request->hasFile('shop_image')) {
+            //     Storage::delete('/public/'.$shopOwner->shop_image);       
+            //     $path = $request->shop_image->store('shopProfile', 'public');
+            //     // $item->item_image= $path;
            
 
-                $todayDate = date('Y-m-d H:i:s');
-                $query = DB::table('shop_owners')
-                        ->where('id', $id)
-                        ->update([
-                            'name'=> $request->name,
-                            'shopName'=> $request->shopName,
-                            'address'=> $request->address, 
-                            'phone_number'=> $request->phone_number, 
-                            'delivery_charge'=> $request->delivery_charge, 
-                            'shop_description'=> $request->shop_description, 
-                            'shop_image'=> $path,
-                            'address_latitude'=>$request->address_latitude,
-                            'address_longitude'=>$request->address_longitude,
-                            'updated_at'=> $todayDate
-                        ]);
+            //     $todayDate = date('Y-m-d H:i:s');
+            //     $query = DB::table('shop_owners')
+            //             ->where('id', $id)
+            //             ->update([
+            //                 'name'=> $request->name,
+            //                 'shopName'=> $request->shopName,
+            //                 'address'=> $request->address, 
+            //                 'phone_number'=> $request->phone_number, 
+            //                 'delivery_charge'=> $request->delivery_charge, 
+            //                 'shop_description'=> $request->shop_description, 
+            //                 'shop_image'=> $path,
+            //                 'address_latitude'=>$request->address_latitude,
+            //                 'address_longitude'=>$request->address_longitude,
+            //                 'updated_at'=> $todayDate
+            //             ]);
         
-                if($query){
-                    return redirect()->route('profile.index')->with('success','Successfully updated profile');
-                }else{
-                    return back()->with('error','Something went wrong');
-                }
+            //     if($query){
+            //         return redirect()->route('profile.index')->with('success','Successfully updated profile');
+            //     }else{
+            //         return back()->with('error','Something went wrong');
+            //     }
 
-            }else{
+            // }else{
                 $todayDate = date('Y-m-d H:i:s');
                 $query = DB::table('shop_owners')
                         ->where('id', $id)
@@ -214,7 +284,7 @@ class ShopProfileController extends Controller
                             return back()->with('error','Something went wrong');
                         }
 
-            }
+            // }
         
         }else{
                 return back()->with('error','Data not found');

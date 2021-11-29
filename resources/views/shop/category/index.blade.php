@@ -40,7 +40,7 @@
                     <tbody>
                         @foreach($categories as $category)
                         <tr>
-                            <td>{{$loop->iteration}}</td>
+                            <td>{{$loop->iteration}}.</td>
                             <td>{{$category->category_name}}</td>
                             {{-- <td>active / inactive</td> --}}
                             <td>

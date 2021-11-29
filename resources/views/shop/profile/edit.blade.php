@@ -31,7 +31,7 @@
             <div class="card-body">
                 <h4 class="card-title">Edit profile</h4>
                 <br>
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label" >Image</label>
                     <div class="col-sm-9">
@@ -39,13 +39,13 @@
                             <input type="file" class="custom-file-input" name="shop_image" value="{{$shopOwner->shop_image}}" accept="image/*">
                             {{-- <label class="custom-file-label" for="shop_image">Choose
                                 file...</label> --}}
-                            {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
+                            {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> 
                         </div>
                         <p>Old image: </p>
                         <img src="{{ Storage::url($shopOwner->shop_image) }}" width="200px">
                         <span class="text-danger">@error('shop_image'){{ $message }} @enderror</span>
                     </div>
-                </div>
+                </div> --}}
                 <div class="form-group row">
                     <label for="fname"
                         class="col-sm-2 text-end control-label col-form-label">Name <span class="text-danger">*</span></label>
@@ -74,7 +74,7 @@
 
                 <div class="form-group row">
                     <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Contact Number</label>
+                        class="col-sm-2 text-end control-label col-form-label">Contact Number <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" name="phone_number" value="{{$shopOwner->phone_number}}">
                         <span class="text-danger">@error('phone_number'){{ $message }} @enderror</span>
@@ -82,7 +82,7 @@
                 </div>
                 <div class="form-group row">
                     <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Delivery Charge</label>
+                        class="col-sm-2 text-end control-label col-form-label">Delivery Charge <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -105,7 +105,7 @@
                 
                 <div class="form-group row">
                     <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Location</label>
+                        class="col-sm-2 text-end control-label col-form-label">Location <span class="text-danger">*</span></label>
                     <div class="col-md-9">
                         <div class="input-group">
                             <input id="caddress" type="string" class="form-control " name="caddress" value="{{$shopOwner->address_latitude}}, {{$shopOwner->address_longitude}}" readonly><br>

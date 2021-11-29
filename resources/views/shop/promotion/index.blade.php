@@ -37,7 +37,7 @@
                                 <th style="width:100px;"><strong>Start Promotion</strong></th>{{-- bila tekan view "icon mata", show table semua item+price before and after promotion --}}
                                 <th style="width:100px;"><strong>End Promotion</strong></th>
                                 <th style="width:100px;"><strong>Day(s)</strong></th>
-                                <th style="width:100px;"><strong>Price</strong></th>
+                                <th style="width:100px;"><strong>Original Price</strong></th>
                                 <th style="width:100px;"><strong>Discount</strong></th>
                                 <th style="width:100px;"><strong>Offer Price</strong></th>
                                 <th style="width:100px;"><strong>Action</strong></th>
@@ -49,7 +49,7 @@
                             <input type="hidden" value="{{$end_date = \Carbon\Carbon::parse($item->item_endPromo)}}">
                             <input type="hidden" value="{{$different_days = $start_date->diffInDays($end_date)}}">
                             <tr>
-                                <td>{{$loop->iteration}}</td>
+                                <td>{{$loop->iteration}}.</td>
                                 <td>{{$item->item_name}}</td>
                                 <td>{{$item->item_brand}}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->item_startPromo)->format('d/m/Y')}}</td>
