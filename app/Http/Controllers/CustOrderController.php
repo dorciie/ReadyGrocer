@@ -65,7 +65,7 @@ class CustOrderController extends Controller
     {
         $update = Order::where('id',$id)
         ->update([
-            'status' => 'delivered'
+            'status' => 'Delivered'
                  ]);
         
                  return back();

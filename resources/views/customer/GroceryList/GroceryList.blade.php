@@ -1,7 +1,5 @@
 @extends('customer.layouts.master')
 
-
-
 @section('title')
 
 <div class="row">
@@ -19,6 +17,7 @@
     </div>
 </div>
 @endsection
+
 @section('content')
 <div class="row">
     <div class="col-12">
