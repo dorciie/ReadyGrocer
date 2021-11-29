@@ -44,6 +44,13 @@
                                     </div>
                                     
                                     @endif
+                                    @if($order->status==='Preparing')
+                                        <div class="alert alert-info" role="alert">
+                                             Sit Back! Your shop is preparing your order~<marquee height="15px" width="10%" behavior="scroll" direction="right">  <i class="me-2 mdi mdi-cart-plus"></i>   </marquee>        
+                                                   
+                                             
+                                        </div>
+                                    @endif
                                     
                             <table class="table">
                                 <thead>
@@ -67,14 +74,14 @@
                                 </tbody>
                             </table>
 
-                             @if($order->status==='pending delivery')
+                             @if($order->status==='Delivering')
                              <form method="get" action="{{route('custOrder.edit',$order->id)}}">
                                     <input type="hidden" name="status" id="status" value="delivered" />
                                     <button type="submit" class="btn btn-primary" >Order Received</button>
 
                              </form>
                             
-                            @elseif($order->status==='delivered')
+                            @elseif($order->status==='Delivered')
 
                             <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#rateshop">Rate Shop</button>
                             <!-- make modal display by default but howww -->
@@ -124,7 +131,7 @@
                                                 </form> -->
                                                 <form class="form-horizontal" action="{{route('custOrder.update',$order->id)}}" method="post" enctype="multipart/form-data">
                                                 @csrf
-                                                @method('patch')
+                                                @method('patch') 
                                                     <div class="card-body">
                                                     <h4>Rate your order</h4>
 
@@ -171,6 +178,7 @@
                                             </div>
                                         </div>
                                     </div> 
+                                   
                                     @endif
                         </div>
 

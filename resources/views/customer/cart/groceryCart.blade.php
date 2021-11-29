@@ -219,7 +219,7 @@
                                             <select class="form-select" name="payment" aria-label="Default select example">
                                                 <option value="Cash">Cash</option>
                                                 <option value="Online Banking">Online Banking</option>
-                                                <option value="Card">Credit Card/Debit Card</option>
+                                                <option value="Credit/Debit Card">Credit/Debit Card</option>
                                             </select>
                                         </div>
 
