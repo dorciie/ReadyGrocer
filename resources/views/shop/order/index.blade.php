@@ -208,7 +208,7 @@
                             <tbody style="text-align:center;">
                                     @foreach($PreparingOrder as $order)
                                         <tr>
-                                            <td>{{$loop->iteration}}.</td>\
+                                            <td>{{$loop->iteration}}.</td>
                                             <td><div class="card card-hover"><a href="{{route('orderCustomer',['orderID' => $order->id])}}" data-toggle="tooltip" class="btn btn-sm btn-info" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> Order details</a></div></td>
                                             <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('d/m/Y')}}</td>
                                             <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('H:i:s')}}</td>

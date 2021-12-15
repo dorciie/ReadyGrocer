@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\DB;
 use App\Models\shopOwner;
 use App\Models\customer;
 use App\Models\ShopItem;
+use App\Models\GroceryCart;
+use Carbon\Carbon;
+
+
 
 class LoginController extends Controller
 {
@@ -113,6 +117,7 @@ class LoginController extends Controller
             return back()->with('fail', 'No account found for this email')->withInput();;
         }
     }
+
     function custDashboard()
     {
         if (session()->has('LoggedCustomer')) {
@@ -131,11 +136,24 @@ class LoginController extends Controller
                 $categories = Category::get()->where('shop_id', $customer->fav_shop);
                 $items = ShopItem::get()->where('shop_id', $customer->fav_shop);
 
+                $customerLogged = session('LoggedCustomer');
+                $time = now();
+                $favourites = $customer->fav_shop;
+                $recommendation = DB::select("SELECT * FROM shop_items 
+                WHERE shop_items.item_startPromo <= '$time' 
+                AND shop_items.category_id IN 
+                (SELECT category_id FROM shop_items 
+                 RIGHT JOIN grocery_carts ON shop_items.id = grocery_carts.item_id 
+                 WHERE grocery_carts.customer_id = '$customerLogged' 
+                 AND grocery_carts.shop_id = '$favourites' 
+                 AND grocery_carts.order_id IS NOT NULL)"
+                    );
                 $data = [
                     'LoggedCustomerInfo' => $customer
                 ];
-                return view('customer.dashboard')->with('shop', $shop)->with('name', $data)->with('categories', $categories)->with('items', $items);
+                return view('customer.dashboard')->with('recommendation',$recommendation)->with('shop', $shop)->with('name', $data)->with('categories', $categories)->with('items', $items);
             }
         }
     }
+
 }

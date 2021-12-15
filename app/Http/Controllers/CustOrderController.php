@@ -17,7 +17,10 @@ class CustOrderController extends Controller
     public function index()
     {
         $order = order::where('customer_id', session('LoggedCustomer'))->get();
-        return view('customer.order.orders')->with('order',$order);
+        $pendingOrder = order::where('customer_id', session('LoggedCustomer'))->where('status','Delivering')->get();
+        $completeOrder = order::where('customer_id', session('LoggedCustomer'))->where('status','Delivered')->get();
+
+        return view('customer.order.orders')->with('order',$order)->with('pendingOrder',$pendingOrder)->with('completeOrder',$completeOrder);
     }
 
     /**

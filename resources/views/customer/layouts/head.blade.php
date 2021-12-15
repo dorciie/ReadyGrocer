@@ -9,7 +9,7 @@
     <meta name="robots" content="noindex,nofollow">
     <title>ReadyGrocer</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/logodef.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/logoRG.png')}}">
     <!-- Custom CSS -->
     <link href="{{asset('assets/libs/flot/css/float-chart.css')}}" rel="stylesheet">
     <!-- Custom CSS -->
@@ -20,7 +20,5 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
     <link rel="stylesheet" href="jquery.rateyo.css"/>
 
-    <!-- {{-- <link rel="stylesheet" href="{{asset('bootstrap-3.4.1-dist/bootstrap-3.4.1-dist/css/bootstrap.min.css')}}"> --}}
-    {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}} -->
     @yield('head')
 

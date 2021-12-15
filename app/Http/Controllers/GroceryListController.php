@@ -18,6 +18,10 @@ class GroceryListController extends Controller
      */
     public function index(Request $request,$itemID)
     { 
+        // if (GroceryList::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
+        //     // throw new Exception('Possible multi submit');
+        //     return back()->with('success','successful');
+        // }
         $this->validate($request,[
             'item_frequency'=>'required',
             'item_quantity'=>'required',

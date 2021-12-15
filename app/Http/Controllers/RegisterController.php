@@ -122,16 +122,18 @@ class RegisterController extends Controller
             'name'=>'required',
             'email'=>'required|email|unique:shop_owners',
             'address'=>'required',
-            'password'=>'required|min:5|max:12'
-            
+            'password'=>'required|min:5|max:12',
+            'cpassword'=>'required|in:'.$request->password,
+
         ]);
+        
         $newCust = new customer;
         $newCust->name=$request->name;
         $newCust->email=$request->email;
         $newCust->address=$request->address;
         $newCust->password=Hash::make($request->password);
-        $newCust->address_latitude=$request->address_latitude;
-        $newCust->address_longitude=$request->address_longitude;
+        // $newCust->address_latitude=$request->address_latitude;
+        // $newCust->address_longitude=$request->address_longitude;
         $query = $newCust->save();
 
         
