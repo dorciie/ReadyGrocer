@@ -37,7 +37,7 @@
                             <div class="card-header">{{ __('Register As Shop Owner') }}</div>
 
                             <div class="card-body">
-                                <form method="POST" action="{{route('register.index')}}">
+                                <form method="GET" action="{{route('register.index')}}">
                                     {{@csrf_field()}}
 
                                     <div class="form-group row">
