@@ -5,14 +5,7 @@
 <div class="row">
     <div class="col-12 d-flex no-block align-items-center">
         <h4 class="page-title">{{$shop->shopName}}</h4>
-        <div class="ms-auto text-end">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Library</li>
-                </ol>
-            </nav>
-        </div>
+       
     </div>
 </div>
 
@@ -67,7 +60,7 @@
                     @endif
                     @foreach($items as $item)
                     <div class="col-md-4">
-                        <div class="profile-img">
+                        <div class="profile-img"style="text-align:center;">
                         <img src="{{ Storage::url($item->item_image) }}" width="100px">
 
                         </div>
@@ -266,9 +259,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-md-6">
-                                                                <label>Total Price</label>
-                                                            </div>
+                                                            
                                                             <div class="col-md-6">
                                                                 <p id="results">
 
@@ -308,6 +299,63 @@
                 </form>
 
 
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Similar Like This</h5>
+                <div class="col ">
+                    <div class="row-1 align-self-end  ">
+                        <div class="row align-items-start">
+                         @if($similar->isEmpty())
+                         <div class="col" >
+                                <div class="card-body" style="height: 150px; ">
+                                    <h5 class="card-title">No items available</h5>
+                                    <p> </p>
+                                </div>
+                            </div>
+                         @else
+                          @foreach($similar as $s)
+                         
+                        
+                         
+                            <div class="col" >
+                                <div class="card-body border border-secondary" style="height: 150px; ">
+                                    <a href=""><h5 class="card-title">{{$s->item_name}}</h5></a>
+                                    <p>{{$s->item_description}} </p>
+                                </div>
+                            </div>
+                           
+                            @endforeach
+                              @endif
+                            <!-- <div class="col" >
+                                <div class="card-body border border-secondary" style="height: 150px; ">
+                                    <a href=""><h5 class="card-title">Item 2</h5></a>
+                                    <p> </p>
+                                </div>
+                            </div>
+                            <div class="col" >
+                                <div class="card-body border border-secondary" style="height: 150px; ">
+                                    <a href=""><h5 class="card-title">Item 3</h5></a>
+                                    <p> </p>
+                                </div>
+                            </div>
+                            <div class="col" >
+                                <div class="card-body border border-secondary" style="height: 150px; ">
+                                    <a href=""><h5 class="card-title">Item3</h5></a>
+                                    <p> </p>
+                                </div>
+                            </div> -->
+                                
+                          
+                            
+                            
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

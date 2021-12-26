@@ -109,11 +109,11 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label>Item test</label>
+                                                    <label>Item Quantity</label>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="input-group mb-3">
-                                                        <input type="number" class="form-control" name="item_quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$info->item_quantity}}" placeholder="{{$info->item_quantity}}"max="{{\App\Models\ShopItem::where('id',$info->item_id)->value('item_stock')}}">
+                                                        <input type="number" class="form-control" name="item_quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$info->item_quantity}}" placeholder="{{$info->item_quantity}}"max="{{\App\Models\ShopItem::where('id',$info->item_id)->value('item_stock')}}"min="1">
                                                     </div>
                                                 </div>
                                             </div>

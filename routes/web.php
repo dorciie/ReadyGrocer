@@ -9,6 +9,7 @@ use App\Http\Controllers\shopOwnerController;
 use App\Http\Controllers\custDashboardController;
 use App\Http\Controllers\GroceryListController;
 use App\Http\Controllers\custShopController;
+use App\Http\Controllers\custProfileController;
 use App\Http\Controllers\GroceryCartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShopItemController;
@@ -66,6 +67,7 @@ Route::post('customer/reset_password/{email}',[ForgotPasswordController::class,'
 Route::resource('shops', 'App\Http\Controllers\custShopController')->middleware('isLogged');
 
 Route::get('itemCategory/{categoryID}', [custDashboardController::class,'listOfCategory'])->name('category');
+Route::get('recommendation', [custDashboardController::class,'recommendationDetails'])->name('recommendation');
 Route::get('itemDetails/{itemID}', [custDashboardController::class,'itemdetails'])->name('itemDetails');
 Route::get('groceryList', [custDashboardController::class,'list'])->name('groceryList')->middleware('isLogged');
 Route::get('groceryCart', [custDashboardController::class,'cart'])->name('groceryCart')->middleware('isLogged');
@@ -81,6 +83,8 @@ Route::get('updateList2/{itemID}', [GroceryListController::class,'update'])->nam
 Route::get('addItemList/{itemID}', [GroceryListController::class,'index'])->name('addItemList');
 
 Route::resource('custProfile', 'App\Http\Controllers\custProfileController')->middleware('isLogged');
+Route::post('cust_image_update',[custProfileController::class,'updateImage'])->middleware('isLogged');
+
 
 Route::resource('custOrder', 'App\Http\Controllers\CustOrderController')->middleware('isLogged');
 
