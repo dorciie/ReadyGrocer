@@ -71,12 +71,26 @@
                 <div class="col ">
                     <div class="row-1 align-self-end  ">
                         <div class="row align-items-start">
+                        <?php
+                                $count =0;
+                            ?>
                         @foreach($recommendation as $recommendation)
-                           {{$recommendation->id}}
+                        <div class="col" >
+                                <div class="card-body border border-secondary"style="height: 175px;" >
+                                    <a href="{{route('itemDetails',['itemID' => $recommendation->id])}}"><h5 class="card-title">{{$recommendation->item_name}}</h5></a>
+                                    <p>{{$recommendation->item_description}} </p>
+                                    <small>SALE from {{$recommendation->item_startPromo}} until {{$recommendation->item_endPromo}}</small>
+                                </div> 
+                            </div>
+                            <?php $count++; 
+                            if($count==5){
+                                ?>@break<?php
+                            }
+                            ?>
                            @endforeach
                           
                             <div class="col d-flex justify-content-end align-items-center p-4">
-                                <a type="button" href="" class="btn btn-info btn-lg" id="ts-info" width="100px">see more</a>
+                                <a type="button" href="{{ route('recommendation') }}" class="btn btn-info btn-lg" id="ts-info" width="100px">see more</a>
                             </div>
                         </div>
                     </div>
@@ -93,17 +107,27 @@
                 <div class="col ">
                     <div class="row-1 align-self-end  ">
                         <div class="row align-items-start">
+                            <?php
+                                $count =0;
+                            ?>
+
                             @foreach($items as $item)
-                            
                             @if (($item->category_id) ===($category->id) )
-                            <a class="col" href="{{route('itemDetails',['itemID' => $item->id])}}">
-                                <div class="card-body border border-secondary">
-                                    <h5 class="card-title">{{$item->item_name}}</h5>
+                            <div class="col" >
+                                <div class="card-body border border-secondary" style="height: 150px; ">
+                                    <a href="{{route('itemDetails',['itemID' => $item->id])}}"><h5 class="card-title">{{$item->item_name}}</h5></a>
                                     <p>{{$item->item_description}} </p>
                                 </div>
-                            </a>
+                            </div>
+                                
+                            <?php $count++; 
+                            if($count==5){
+                                ?>@break<?php
+                            }
+                            ?>
                             @endif
                             @endforeach
+                            
                             <div class="col d-flex justify-content-end align-items-center p-4">
                                 <a type="button" href="{{ route('category',['categoryID' => $category->id]) }}" class="btn btn-info btn-lg" id="ts-info" width="100px">see more</a>
                             </div>

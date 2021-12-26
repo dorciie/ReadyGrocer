@@ -67,7 +67,7 @@
                 </div>
                 @endforeach
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-                <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyBssz6ueHoR7WDOQTcwDM8RYwfH0B7YYU0" type="text/javascript"></script>
+                <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=" type="text/javascript"></script> put google api -->
                 <script>
 
                 function calculateDistance() {

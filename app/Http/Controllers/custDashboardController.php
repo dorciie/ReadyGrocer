@@ -57,10 +57,47 @@ class custDashboardController extends Controller
         ->where('shop_id', $customer->fav_shop)
         ->where('id', $itemID);
 
+        $itemName = shopItem::where('id',$itemID)->where('shop_id',$customer->fav_shop)->value('item_name');
+        $first = strtok($itemName, " ");
+
+        $similar = shopItem::where('shop_id', $customer->fav_shop)
+        ->where('id','!=',$itemID)->where('item_name','like','%'.$first.'%')
+        ->get();
+
+
         $data = [
             'LoggedCustomerInfo'=> $customer
         ];
-        return view('customer.items.itemdetails',compact('shop'))->with('name',$data)->with('customer',$customer)->with('items',$items);
+        return view('customer.items.itemdetails',compact('shop'))->with('name',$data)->with('customer',$customer)->with('items',$items)->with('similar',$similar);
+    }
+
+    public function recommendationDetails()
+    {
+        if(session()->has('LoggedCustomer')){
+            $customer = customer::where('id', session('LoggedCustomer'))
+            ->first();}
+            
+        $shop = shopOwner::find($customer->fav_shop);
+        
+        $time = now();
+        $favourites = $customer->fav_shop;
+        $recommendation = DB::select("SELECT * FROM shop_items 
+        WHERE shop_items.item_startPromo <= '$time' 
+        AND shop_items.category_id IN 
+        (SELECT category_id FROM shop_items 
+         RIGHT JOIN grocery_carts ON shop_items.id = grocery_carts.item_id 
+         WHERE grocery_carts.customer_id = '$customer->id' 
+         AND grocery_carts.shop_id = '$favourites' 
+         AND grocery_carts.order_id IS NOT NULL)"
+            );
+       
+
+        $data = [
+            'LoggedCustomerInfo'=> $customer
+        ];
+        // return view('customer.dashboard')->with('recommendation',$recommendation)->with('shop', $shop)->with('name', $data)->with('categories', $categories)->with('items', $items);
+
+        return view('customer.items.recommendation',compact('shop'))->with('name',$data)->with('customer',$customer)->with('recommendation',$recommendation);
     }
     /**
      * Show the form for creating a new resource.

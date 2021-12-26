@@ -38,7 +38,7 @@ class GroceryCartController extends Controller
         
         if (GroceryCart::where('item_id', $item->id)->where('customer_id', $customer->id)->where('checkout','false')->exists()) {
             
-              return back()->with('error','already exits in your Grocery Cart');
+              return back()->with('error','Item already exits in your Grocery Cart');
     }
         $dt = now();
         $newCart = new GroceryCart;
@@ -72,7 +72,7 @@ class GroceryCartController extends Controller
             return back()->with('error','Item quantity is over item stock');
         }
         if (GroceryCart::where('item_id', $item->id)->where('customer_id', $customer->id)->where('checkout','false')->exists()) {
-              return back()->with('error','already exits in your Grocery Cart');
+              return back()->with('error','Item already exits in your Grocery Cart');
         }
 
         $dt = now();

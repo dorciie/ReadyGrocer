@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\customer;
+use Illuminate\Support\Facades\DB;
+use File;
+use Illuminate\Support\Facades\Storage;
 
 class custProfileController extends Controller
 {
@@ -14,7 +17,7 @@ class custProfileController extends Controller
      */
     public function index()
     {
-        $info = customer::all()->where('id',session('LoggedCustomer'));
+        $info = customer::all()->where('id',session('LoggedCustomer'))->first();
         return view('customer.profile.custProfile')->with('info',$info);
     }
 
@@ -50,6 +53,59 @@ class custProfileController extends Controller
             $info = customer::all()->where('id',session('LoggedCustomer'));
          return view('customer.profile.custProfile')->with('success','Profile Successfully Updated!')->with('info',$info);
 
+    }
+
+    public function updateImage(Request $request)
+    {
+        $customer = DB::table('customers')
+                    ->where('id',session('LoggedCustomer'))
+                    ->first();
+        // $user = User::where('id', '=', Auth::user()->id)->get();
+
+        request()->validate([
+            'image' => 'required',
+
+        ]);
+
+        if ($request->file('image') == null){
+            if(($customer->CustImage) != NULL){
+                Storage::delete('/public/'.$customer->CustImage);
+            }
+            $name = "";
+            $path = "";
+            $naming = NULL;
+
+        } elseif ($request->image == "none"){
+            if(($customer->CustImage) != NULL){
+                Storage::delete('/public/'.$customer->CustImage);
+            }
+            $name = "";
+            $path = "";
+            $naming = NULL;
+
+        } else { //request current image and delete 
+            if(($customer->CustImage) != NULL){
+                Storage::delete('/public/'.$customer->CustImage);
+            }
+            $name = $request->file('image');
+            $path = $request->file('image')->store('custProfile', 'public');
+            $naming = $request->file('image')->store('custProfile', 'public');
+        }
+ 
+        $save = new File;
+ 
+        $save->name = $name;
+        $save->path = $path;
+
+        // $user->update([
+        //     'image' => $naming,
+        // ]);
+        
+        $user = DB::table('customers')
+              ->where('id',session('LoggedCustomer'))
+              ->update(['CustImage' => $naming]);
+        $info = customer::all()->where('id',session('LoggedCustomer'))->first();
+              return back()->with('success','Successfully update the profile image')->with('info',$info);
     }
 
     /**

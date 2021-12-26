@@ -276,7 +276,7 @@
                                    
                                     <div class="input-group">                                    
                                         <div class="input-group-prepend col-2" >
-                                            <span class="input-group-text bg-success text-white h-100" id="basic-addon1">Name</span>
+                                            <span class="input-group-text bg-success text-white h-100" id="basic-addon1">Name *</span>
                                         </div>
                                        
                                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -290,7 +290,7 @@
                                     <br>
                                     <div class="input-group">                                    
                                         <div class="input-group-prepend col-2">
-                                            <span class="input-group-text bg-success text-white h-100"  id="basic-addon1">{{ __('E-Mail Address') }}</span>
+                                            <span class="input-group-text bg-success text-white h-100"  id="basic-addon1">{{ __('E-Mail Address *') }}</span>
                                         </div>
                                        
                                         <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}">
@@ -304,7 +304,7 @@
                                     <br>
                                     <div class="input-group">                                    
                                         <div class="input-group-prepend col-2">
-                                            <span class="input-group-text bg-success text-white h-100" id="basic-addon1">{{ __('Password') }}</span>
+                                            <span class="input-group-text bg-success text-white h-100" id="basic-addon1">{{ __('Password *') }}</span>
                                         </div>
                                        
                                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror " name="password" required autocomplete="new-password">
@@ -319,7 +319,7 @@
                                     <br>
                                     <div class="input-group">                                    
                                         <div class="input-group-prepend col-2">
-                                            <span class="input-group-text bg-success text-white h-100" id="basic-addon1">{{ __('Verify Password') }}</span>
+                                            <span class="input-group-text bg-success text-white h-100" id="basic-addon1">{{ __('Verify Password *') }}</span>
                                         </div>
                                        
                                         <input id="cpassword" type="password" class="form-control @error('cpassword') is-invalid @enderror " name="cpassword" required autocomplete="new-password">
@@ -334,7 +334,7 @@
                                     <br>
                                     <div class="input-group">                                    
                                         <div class="input-group-prepend col-2">
-                                            <span class="input-group-text bg-success text-white h-100" id="basic-addon1">{{ __('Phone Number') }}</span>
+                                            <span class="input-group-text bg-success text-white h-100" id="basic-addon1">{{ __('Phone Number *') }}</span>
                                         </div>
                                        
                                         <input id="phone" type="string" class="form-control @error('phone') is-invalid @enderror " name="phone" required value="{{ old('phone') }}" pattern="[0-9]{3}-[0-9]{8}">
@@ -348,7 +348,7 @@
                                     <br>
                                     <div class="input-group">                                    
                                         <div class="input-group-prepend col-2">
-                                            <span class="input-group-text bg-success text-white h-100" id="basic-addon1">{{_('Status')}}</span>
+                                            <span class="input-group-text bg-success text-white h-100" id="basic-addon1">{{_('Status *')}}</span>
                                         </div>
                                        
                                         <input id="status" type="string" class="form-control " name="Customer" value="Customer" readonly>
@@ -358,7 +358,7 @@
                                    
                                     <div class="input-group">                                    
                                         <div class="input-group-prepend col-2">
-                                            <span class="input-group-text bg-success text-white h-100" id="basic-addon1">{{ __('Address') }}</span>
+                                            <span class="input-group-text bg-success text-white h-100" id="basic-addon1">{{ __('Address *') }}</span>
                                         </div>
                                        
                                         <input id="search_input" type="string" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}">

@@ -30,7 +30,7 @@ class GroceryListController extends Controller
         $customer = customer::where('id', session('LoggedCustomer'))->first();
 
         if (GroceryList::where('item_id', $itemID)->where('customer_id', $customer->id)->exists()) {
-              return back()->with('error','already exits in your groceryList');
+              return back()->with('error','Item already exits in your Grocery List');
             }
 
         $newList = new GroceryList;
@@ -98,10 +98,14 @@ class GroceryListController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,[
-            'item_frequency'=>'required',
-            'item_quantity'=>'required',
-        ]);
+        if (GroceryList::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
+            // throw new Exception('Possible multi submit');
+            return back()->with('success','Item has updated!');
+        }
+        
+        // $this->validate($request,[
+        //     'item_quantity'=>'required|numeric|max:'.$qty,
+        // ]);
         $update = GroceryList::where('customer_id',session('LoggedCustomer'))
         ->where('item_id',$id)
         ->update([
@@ -113,7 +117,7 @@ class GroceryListController extends Controller
                         return back()->with('success','List has been updated!');
 
             }
-            return back()->with('error','List cannot be updated');
+            return back()->with('error','The amount is over the item quantity');
 
     }
 

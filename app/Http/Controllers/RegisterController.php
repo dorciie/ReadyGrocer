@@ -34,8 +34,8 @@ class RegisterController extends Controller
             $newShop->shopName=$request->shopName;
             $newShop->address=$request->address;
             $newShop->password=Hash::make($request->password);
-            $newShop->address_latitude=$request->address_latitude;
-            $newShop->address_longitude=$request->address_longitude;
+            // $newShop->address_latitude=$request->address_latitude;
+            // $newShop->address_longitude=$request->address_longitude;
 
             $query = $newShop->save();
             

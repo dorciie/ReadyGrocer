@@ -37,7 +37,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="profile-img">
-                                    <img src="{{asset('assets/images/image.jpg')}}" alt="user" width="250px" height="250px"/>
+                                    <img src="{{asset('assets/images/shop1.jpg')}}" alt="user" width="190px" height="190px"/>
                                         <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" /> -->
 
                                     </div>
