@@ -1,6 +1,7 @@
 @extends('shop.layouts.master')
 @section('head')
 <link rel="stylesheet" type="text/css" href="{{asset('assets/libs/select2/dist/css/select2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}">
 @endsection
 @section('content')
 <div class="ms-auto text-end">
@@ -44,24 +45,37 @@
                                         <option value="{{$items->id}}" {{old('items_id')==$items->id?'selected':''}}> {{$items->item_name}}, {{$items->item_brand}}</option>
                                         @endforeach
                                     </select>
-                                    <span class="text-danger">@error('items_id'){{ $message }} @enderror</span>
                                 </div>
                             @endforeach
+                            <span class="text-danger">@error('items_id'){{ $message }} @enderror</span>
                         </div>
                         <div class="border-top">
                             <br>
+                            <?php
+                             $tomorrow = date("d/m/Y", strtotime('tomorrow'));
+                            ?>
                             <h4>Promotion details</h4>
                                 <div class="form-group row">
                                     <label for="fname" class="col-md-3 control-label col-form-label">Start Promotion <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
-                                        <input type="date" class="min-today form-control" id="min" name="item_startPromo" value="{{old('item_startPromo')}}">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="datepicker-autoclose1" name="item_startPromo" placeholder="dd/mm/yyyy" value='{{$tomorrow}}'>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text h-100"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
                                         <span class="text-danger">@error('item_startPromo'){{ $message }} @enderror</span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="fname" class="col-md-3 control-label col-form-label">End Promotion <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
-                                        <input type="date" class="min-today form-control" id="min" name="item_endPromo" value="{{old('item_endPromo')}}">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="datepicker-autoclose2" name="item_endPromo" placeholder="dd/mm/yyyy" value='{{$tomorrow}}'>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text h-100"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
                                         <span class="text-danger">@error('item_endPromo'){{ $message }} @enderror</span>
                                     </div>
                                 </div>
@@ -95,23 +109,47 @@
 @section('script')
     <script src="{{asset('assets/libs/select2/dist/js/select2.min.js')}}"></script>
     <script src="{{asset('assets/libs/select2/dist/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
 
     <script> $(".select2").select2();</script>
     <script>
-        $(function () {
-                $(document).ready(function () {
+    // $(document).ready(function(){
+    //     jQuery('#datepicker-autoclose1').datepicker({
+    //         autoclose: true,
+    //         todayHighlight: true,
+    //         startDate: new Date(),
+    //         format: 'dd/mm/yyyy'
+    //     });
+    //     jQuery('#datepicker-autoclose2').datepicker({
+    //         autoclose: true,
+    //         todayHighlight: true,
+    //         startDate: new Date(),
+    //         format: 'dd/mm/yyyy'
+    //     });
+    // });
+    $(document).ready(function(){
+        today = new Date();
+        tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+   $("#datepicker-autoclose1").datepicker({
+       format: 'dd/mm/yyyy',
+       autoclose: true,
+    //    todayHighlight: true,
+       startDate: tomorrow,
+   }).on('changeDate', function (selected) {
+       var minDate = new Date(selected.date.valueOf());
+       $('#datepicker-autoclose2').datepicker('setStartDate', minDate);
+   });
 
-                    var todaysDate = new Date(); // Gets today's date
-                    var year = todaysDate.getFullYear(); // YYYY
-                    var month = ("0" + (todaysDate.getMonth() + 1)).slice(-2); // MM
-                    var day = ("0" + (todaysDate.getDate()+1)).slice(-2); // DD
-
-                    var minDate = (year + "-" + month + "-" + day); // Results in "YYYY-MM-DD" for today's date 
-
-                    // Now to set the max date value for the calendar to be today's date
-                    $('[type="date"].min-today').attr('min', minDate);
-
-                });
-            });
+   $("#datepicker-autoclose2").datepicker({
+       format: 'dd/mm/yyyy',
+       autoclose: true,
+    //    todayHighlight: true,
+       startDate: tomorrow,
+   }).on('changeDate', function (selected) {
+           var minDate = new Date(selected.date.valueOf());
+           $('#datepicker-autoclose1').datepicker('setEndDate', minDate);
+   });
+});
     </script>
 @endsection

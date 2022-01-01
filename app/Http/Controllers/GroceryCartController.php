@@ -25,6 +25,10 @@ class GroceryCartController extends Controller
     }
     public function cart(Request $request,$itemID)
     {
+        if (GroceryCart::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
+            // throw new Exception('Possible multi submit');
+            return back()->with('success','successful');
+        }
         $item = ShopItem::find($itemID);
         $qty=$item->item_stock;
         $this->validate($request,[
@@ -61,6 +65,10 @@ class GroceryCartController extends Controller
 
     public function cart2($itemID)
     {
+        if (GroceryCart::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
+            // throw new Exception('Possible multi submit');
+            return back()->with('success','successful');
+        }
         $customer = customer::find(session('LoggedCustomer'));
             
         $item = ShopItem::find($itemID);
@@ -171,6 +179,9 @@ class GroceryCartController extends Controller
     }
     
     public function checkout(Request $request){
+        if (Order::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
+            throw new Exception('Possible multi submit');
+        }
         $customer = customer::where('id', session('LoggedCustomer'))
         ->first();
 

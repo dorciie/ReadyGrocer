@@ -1,6 +1,6 @@
 @extends('shop.layouts.master')
 @section('head')
-
+<link rel="stylesheet" type="text/css" href="{{asset('assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}">
 @endsection
 @section('content')
 <div class="ms-auto text-end">
@@ -27,25 +27,35 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <h3 class="card-title">Schedule New promotion</h3>
+                <h3 class="card-title">Promotion for {{$item->item_name}}, {{$item->item_brand}}</h3><br>
                 <div class="card">
                     <form class="form-horizontal" action="{{route('promotion.update',$item->id)}}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('patch')
                         <div class="card-body">
-                        <h4>Promotion for {{$item->item_name}} brand {{$item->item_brand}}</h4>
+                        {{-- <h4>Promotion for {{$item->item_name}} brand {{$item->item_brand}}</h4> --}}
                         <div class="border-top">
                                 <div class="form-group row">
                                     <label for="fname" class="col-md-3 control-label col-form-label">Start Promotion <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
-                                        <input type="date" class="min-today form-control" id="min" name="item_startPromo" value="{{$item->item_startPromo}}">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="datepicker-autoclose1" name="item_startPromo" value="{{\Carbon\Carbon::parse($item->item_startPromo)->format('d/m/Y')}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text h-100"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
                                         <span class="text-danger">@error('item_startPromo'){{ $message }} @enderror</span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="fname" class="col-md-3 control-label col-form-label">End Promotion <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
-                                        <input type="date" class="min-today form-control" id="min" name="item_endPromo" value="{{$item->item_endPromo}}">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="datepicker-autoclose2" name="item_endPromo" value="{{\Carbon\Carbon::parse($item->item_endPromo)->format('d/m/Y')}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text h-100"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
                                         <span class="text-danger">@error('item_endPromo'){{ $message }} @enderror</span>
                                     </div>
                                 </div>
@@ -78,22 +88,46 @@
 @endsection
 
 @section('script')
+<script src="{{asset('assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
 <script>
-    $(function () {
-            $(document).ready(function () {
+// $(document).ready(function(){
+//     jQuery('#datepicker-autoclose1').datepicker({
+//         autoclose: true,
+//         todayHighlight: true,
+//         startDate: new Date(),
+//         format: 'dd/mm/yyyy'
+//     });
+//     jQuery('#datepicker-autoclose2').datepicker({
+//         autoclose: true,
+//         todayHighlight: true,
+//         startDate: new Date(),
+//         format: 'dd/mm/yyyy'
+//     });
+// });
 
-                var todaysDate = new Date(); // Gets today's date
-                var year = todaysDate.getFullYear(); // YYYY
-                var month = ("0" + (todaysDate.getMonth() + 1)).slice(-2); // MM
-                var day = ("0" + (todaysDate.getDate()+1)).slice(-2); // DD
+$(document).ready(function(){
+    today = new Date();
+    tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+   $("#datepicker-autoclose1").datepicker({
+       format: 'dd/mm/yyyy',
+       autoclose: true,
+    //    todayHighlight: true,
+       startDate: tomorrow,
+   }).on('changeDate', function (selected) {
+       var minDate = new Date(selected.date.valueOf());
+       $('#datepicker-autoclose2').datepicker('setStartDate', minDate);
+   });
 
-                var minDate = (year + "-" + month + "-" +
-                day); // Results in "YYYY-MM-DD" for today's date 
-
-                // Now to set the max date value for the calendar to be today's date
-                $('[type="date"].min-today').attr('min', minDate);
-
-            });
-        });
+   $("#datepicker-autoclose2").datepicker({
+       format: 'dd/mm/yyyy',
+       autoclose: true,
+    //    todayHighlight: true,
+       startDate: tomorrow,
+   }).on('changeDate', function (selected) {
+           var minDate = new Date(selected.date.valueOf());
+           $('#datepicker-autoclose1').datepicker('setEndDate', minDate);
+   });
+});
 </script>
 @endsection
