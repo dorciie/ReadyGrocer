@@ -28,7 +28,7 @@ class ForgotPasswordController extends Controller
         }
 
         $this->sendEmail($customer);
-        return redirect()->back()->with(['success' => 'Reset code sent to your email']);
+        return redirect()->back()->with(['success' => 'Reset password link has been sent to your email']);
     }
 
     public function sendEmail($customer){
@@ -91,7 +91,7 @@ class ForgotPasswordController extends Controller
         }
 
         $this->shopsendEmail($shopOwner);
-        return redirect()->back()->with(['success' => 'Reset code sent to your email']);
+        return redirect()->back()->with(['success' => 'Reset password link has been sent to your email']);
     }
 
     public function shopsendEmail($shopOwner){

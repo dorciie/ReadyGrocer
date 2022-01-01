@@ -146,7 +146,7 @@
             </div>
         </div>
         </div>
-
+        {{-- END MODAL EDIT PROFILE --}}
         <div class="col-md-7">
             <div class="card">
                 <div class="card-body" style="line-height: 1.2;">
@@ -183,7 +183,7 @@
                     </div>
                     <div class="form-group row">
                         <p class="col-sm-3" style="font-size: 14px;"><strong>Rating: </strong></p>
-                        <p class="col-sm-9" style="font-size: 14px;">{{$averageRate}}</p>
+                        <p class="col-sm-9" style="font-size: 14px;">{{$shopOwner->rating}}</p>
                     </div>
                 </div>
             </div>

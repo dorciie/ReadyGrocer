@@ -65,7 +65,7 @@ class CategoryController extends Controller
     {
         // return $request->all();
         $this->validate($request,[
-            'category_name'=>'required|string|unique:categories'
+            'category_name'=>'required|string|unique:categories,category_name,NULL,id,shop_id,'.session('LoggedShop')
         ]);
         $shopOwner = DB::table('shop_owners')
             ->where('id', session('LoggedShop'))
@@ -135,10 +135,9 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category=Category::find($id);
-
         if($category){
             $this->validate($request,[
-                'category_name'=>'required|string|unique:categories'
+                'category_name'=>'required|string|unique:categories,category_name,NULL,id,shop_id,'.session('LoggedShop')
             ]);
             $todayDate = date('Y-m-d H:i:s');
             $query = DB::table('categories')

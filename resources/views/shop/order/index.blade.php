@@ -54,6 +54,7 @@
                     <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false">Completed</button>
                 </li>
             </ul>
+
         {{-- START TAB --}}
             <div class="tab-content" id="myTabContent">
             {{-- VIEW ALL ORDER --}}
@@ -96,7 +97,14 @@
                                     <td>Successfully delivered</td>
                                     {{-- <td>Yes</td> --}}
                                     {{-- <td><p><span class="label label-success">Yes</span></p></td> --}}
+                                    @php
+                                        $ratingValue = \App\Models\Order::where('id',$order->id)->value('rate');          
+                                    @endphp
+                                    @if($ratingValue != NULL)
                                     <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#viewRating{{$order->id}}" class="btn btn-sm btn-success" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> View Rating</a></div></td>
+                                    @else
+                                    <td>Not rated yet</td>
+                                    @endif
                                     @endif
                                     
                                 </tr> 
@@ -333,8 +341,14 @@
                                             <td>{{$order->payment}}</td>
                                             <td>Successfully delivered</td>
                                             {{-- <td>Yes</td> --}}
+                                            @php
+                                                $ratingValues = \App\Models\Order::where('id',$order->id)->value('rate');          
+                                            @endphp
+                                            @if($ratingValues != NULL)
                                             <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#viewRating1{{$order->id}}" class="btn btn-sm btn-success" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> View Rating</a></div></td>
-                                        </tr>
+                                            @else
+                                            <td>Not rated yet</td>
+                                            @endif                                        </tr>
 
                                         <!-- Modal View Rating-->
                                             <div class="modal fade" id="viewRating1{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="viewRating" aria-hidden="true">

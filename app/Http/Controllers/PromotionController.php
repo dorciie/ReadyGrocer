@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\shopOwner;
 use App\Models\Category; 
 use App\Models\ShopItem; 
+use Carbon\Carbon;;
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
 class PromotionController extends Controller
@@ -95,6 +96,7 @@ class PromotionController extends Controller
             'item_startPromo'=>'required',
             'item_endPromo'=>'required|after_or_equal:item_startPromo',
             'item_discount'=>'required|numeric',
+            'items_id' => 'required'
         ]);
 
         // $offer_price=($request->item_price-(($request->item_price*$request->item_discount)/100));
@@ -107,8 +109,10 @@ class PromotionController extends Controller
 
             $itemPrice = $shopItems->item_price;
             $offer_price=($itemPrice-(($itemPrice*$request->item_discount)/100));
-            $item_startPromo = date('Y-m-d',strtotime($request->item_startPromo));
-            $item_endPromo = date('Y-m-d',strtotime($request->item_endPromo));
+            // $item_startPromo = date('Y-m-d',strtotime($request->item_startPromo));
+            // $item_endPromo = date('Y-m-d',strtotime($request->item_endPromo));
+            $item_startPromo = Carbon::createFromFormat('d/m/Y', $request->item_startPromo)->format('Y-m-d');
+            $item_endPromo = Carbon::createFromFormat('d/m/Y', $request->item_endPromo)->format('Y-m-d');
             $todayDate = date('Y-m-d H:i:s');
             $query = DB::table('shop_items')
                 ->where('id', $item)
@@ -181,13 +185,15 @@ class PromotionController extends Controller
                 'item_endPromo'=>'required|after_or_equal:item_startPromo',
                 'item_discount'=>'required|numeric'
             ]);
+                $item_startPromo = Carbon::createFromFormat('d/m/Y', $request->item_startPromo)->format('Y-m-d');
+                $item_endPromo = Carbon::createFromFormat('d/m/Y', $request->item_endPromo)->format('Y-m-d');
                 $todayDate = date('Y-m-d H:i:s');
                 $offer_price=($item->item_price-(($item->item_price*$request->item_discount)/100));
                 $query = DB::table('shop_items')
                         ->where('id', $id)
                         ->update([
-                            'item_startPromo'=> $request->item_startPromo, //
-                            'item_endPromo'=> $request->item_endPromo, //
+                            'item_startPromo'=> $item_startPromo, //
+                            'item_endPromo'=> $item_endPromo, //
                             'offer_price'=> $offer_price, //
                             'item_discount'=> $request->item_discount, //
                             'updated_at'=> $todayDate
@@ -225,7 +231,7 @@ class PromotionController extends Controller
                             'updated_at'=> $todayDate
                         ]);
             if($query){
-                return redirect()->route('promotion.index')->with('success','Successfully delete the item');
+                return redirect()->route('promotion.index')->with('success','Successfully delete the promotion');
             }
             else{
                 return back()->with('error','Something went wrong');

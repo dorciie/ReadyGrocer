@@ -197,6 +197,10 @@ class ViewOrderController extends Controller
     //email untuk delivery
     public function deliverOrder($deliveryOrder)
     {
+        if (Order::where('id', $deliveryOrder)->where('updated_at', '>', now()->subSeconds(10))->exists()) {
+            // throw new Exception('Possible multi submit');
+            return back()->with('success','An email has been send to customer to inform about the delivery');
+        }
         //dd($request->all());
         $custOrder=DB::table('orders')
         ->join('customers','orders.customer_id','=','customers.id')
