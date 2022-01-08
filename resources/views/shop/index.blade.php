@@ -62,19 +62,19 @@
                     <form action="{{url('year_change')}}" method="get" enctype="multipart/form-data">
                         <label>Select Year:</label>
                         <select name="year">
-                                <option value="{{$Oneyear->years}}">{{$Oneyear->years}}</option>
                             @foreach($year as $tahun)
-                                <option value="{{$tahun->year}}">{{$tahun->year}}</option>
+                                <option value="{{date('Y')}}">{{date('Y')}}</option> {{-- get current year --}}
+                                <option value="{{$tahun->year}}">{{$tahun->year}}</option> {{-- get from start user register year --}}
                             @endforeach 
                         </select>
                         <button type="submit" class="btn btn-info" style="padding: 3px 7px; font-size:14px">View</button>
                     </form>
                 </div><br>
-                @if((\App\Models\Order::where('orders.status','delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear->years)->count()) != NULL)
-                    <h6 style="text-align: center;">Total sales ({{$Oneyear->years}}): RM{{$totalSales->payment}} </h6> 
+                @if((\App\Models\Order::where('orders.status','delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear)->count()) != NULL)
+                    <h6 style="text-align: center;">Total sales ({{$Oneyear}}): RM{{$totalSales->payment}} </h6> 
                 @endif
-                @if((\App\Models\Order::where('orders.status','delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear->years)->count()) == NULL)
-                    <h6 style="text-align: center;">Total sales ({{$Oneyear->years}}): NULL</h6> 
+                @if((\App\Models\Order::where('orders.status','delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear)->count()) == NULL)
+                    <h6 style="text-align: center;">Total sales ({{$Oneyear}}): NULL</h6> 
                 @endif
                 <div>
                     <canvas id="Total-Sales-Analysis" style="max-width:100%;"></canvas>
@@ -173,11 +173,11 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-body">
-                    @if((\App\Models\Order::where('orders.status','delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear->years)->count()) != NULL)
-                        <h6 style="text-align: center;">Total item(s) sold in {{$Oneyear->years}}:  {{$totalItemSold->totalItem}}</h6> 
+                    @if((\App\Models\Order::where('orders.status','delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear)->count()) != NULL)
+                        <h6 style="text-align: center;">Total item(s) sold in {{$Oneyear}}:  {{$totalItemSold->totalItem}}</h6> 
                     @endif
-                    @if((\App\Models\Order::where('orders.status','delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear->years)->count()) == NULL)
-                        <h6 style="text-align: center;">Total item sold in {{$Oneyear->years}}: NULL</h6> 
+                    @if((\App\Models\Order::where('orders.status','delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear)->count()) == NULL)
+                        <h6 style="text-align: center;">Total item sold in {{$Oneyear}}: NULL</h6> 
                     @endif
                     <hr>
                     {{--Table item sold--}}
