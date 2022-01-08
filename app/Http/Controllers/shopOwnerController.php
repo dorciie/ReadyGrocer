@@ -65,18 +65,20 @@ class shopOwnerController extends Controller
               ->where('status','delivered')
               ->get();
 
-        if(empty(DB::table('orders')->where('orders.status','delivered')->where('orders.shop_id',$shopOwner->id)->whereYear('created_at', date('Y'))->count())){
-            $Oneyear = shopOwner::select(DB::raw("YEAR(created_at) as years"))->distinct()
-                    ->whereYear('created_at', date('Y'))
-                    ->where('id',$shopOwner->id)
-                    ->first();
-        }else{
-            $Oneyear = Order::select(DB::raw("YEAR(created_at) as years"))->distinct()
-                    ->whereYear('created_at', date('Y'))
-                    ->where('shop_id',$shopOwner->id)
-                    ->where('status','delivered')
-                    ->first();
-        }
+        // if(empty(DB::table('orders')->where('orders.status','delivered')->where('orders.shop_id',$shopOwner->id)->whereYear('created_at', date('Y'))->count())){
+        //     $Oneyear = shopOwner::select(DB::raw("YEAR(created_at) as years"))->distinct()
+        //             // ->whereYear('created_at', date('Y'))
+        //             ->where('id',$shopOwner->id)
+        //             ->first();
+        // }else{
+        //     $Oneyear = Order::select(DB::raw("YEAR(created_at) as years"))->distinct()
+        //             // ->whereYear('created_at', date('Y'))
+        //             ->where('shop_id',$shopOwner->id)
+        //             ->where('status','delivered')
+        //             ->first();
+        // }
+
+        $Oneyear = date('Y');
 
         $datas = array(0,0,0,0,0,0,0,0,0,0,0,0);
         foreach($months as $index => $month){
@@ -152,24 +154,24 @@ class shopOwnerController extends Controller
                     ->first();
 
         $year = Order::select(DB::raw("YEAR(created_at) as year"))->distinct()
-                ->whereYear('created_at','!=', $request->year)
+                // ->whereYear('created_at','!=', $request->year)
                 ->where('shop_id',$shopOwner->id)
                 ->where('status','delivered')
                 ->get();
 
-        if(empty(DB::table('orders')->where('orders.status','delivered')->where('orders.shop_id',$shopOwner->id)->whereYear('created_at', $request->year)->count())){
-            $Oneyear = shopOwner::select(DB::raw("YEAR(created_at) as years"))->distinct()
-                    ->whereYear('created_at', $request->year)
-                    ->where('id',$shopOwner->id)
-                    ->first();
-        }else{
-            $Oneyear = Order::select(DB::raw("YEAR(created_at) as years"))->distinct()
-                    ->whereYear('created_at', $request->year)
-                    ->where('shop_id',$shopOwner->id)
-                    ->where('status','delivered')
-                    ->first();
-            }
-
+        // if(empty(DB::table('orders')->where('orders.status','delivered')->where('orders.shop_id',$shopOwner->id)->whereYear('created_at', $request->year)->count())){
+        //     $Oneyear = shopOwner::select(DB::raw("YEAR(created_at) as years"))->distinct()
+        //             ->whereYear('created_at', $request->year)
+        //             ->where('id',$shopOwner->id)
+        //             ->first();
+        // }else{
+        //     $Oneyear = Order::select(DB::raw("YEAR(created_at) as years"))->distinct()
+        //             ->whereYear('created_at', $request->year)
+        //             ->where('shop_id',$shopOwner->id)
+        //             ->where('status','delivered')
+        //             ->first();
+        //     }
+        $Oneyear = $request->year;
         $datas = array(0,0,0,0,0,0,0,0,0,0,0,0);
             foreach($months as $index => $month){
             $datas[$month-1] = $payment[$index];
