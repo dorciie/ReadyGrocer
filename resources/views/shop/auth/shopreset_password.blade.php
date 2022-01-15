@@ -61,7 +61,7 @@
                                         <input id="myInput2" type="password" class="form-control form-control-lg border border-secondary" name="password_confirm" placeholder="Confirm password"> 
                                     </div><h6></h6>
                                     &nbsp&nbsp&nbsp&nbsp<input type="checkbox" onclick="myFunction2()">&nbspShow Password<br>
-                                    <span class="text-danger">@error('password'){{ $message }} @enderror</span>
+                                    <span class="text-danger">@error('password_confirm'){{ $message }} @enderror</span>
                                 </div>
                             </div>
                             <div class="row">

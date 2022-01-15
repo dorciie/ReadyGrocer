@@ -106,7 +106,7 @@
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <label>Item Quantity</label>
+                                                        <label>Item Quantity <span class="text-danger">*</span></label>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="input-group mb-3">
@@ -173,7 +173,7 @@
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <label>Item Quantity</label>
+                                                                <label>Item Quantity <span class="text-danger">*</span></label>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="input-group mb-3">
@@ -240,7 +240,7 @@
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <label>Item Quantity</label>
+                                                                <label>Item Quantity <span class="text-danger">*</span></label>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="input-group mb-3">
@@ -308,7 +308,7 @@
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <label>Item Quantity</label>
+                                                                <label>Item Quantity <span class="text-danger">*</span></label>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="input-group mb-3">

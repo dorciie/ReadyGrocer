@@ -266,7 +266,7 @@ class ShopProfileController extends Controller
                             'updated_at'=> $todayDate
                         ]);
                         if($query){
-                            return redirect()->route('profile.index')->with('success','Successfully updated item');
+                            return redirect()->route('profile.index')->with('success','Successfully update profile');
                         }else{
                             return back()->with('error','Something went wrong');
                         }
