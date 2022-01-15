@@ -148,7 +148,7 @@ class CategoryController extends Controller
                     ]);
     
             if($query){
-                return redirect()->route('category.index')->with('success','Successfully updated category');
+                return redirect()->route('category.index')->with('success','Successfully update category name');
             }else{
                 return back()->with('error','Something went wrong');
             }
@@ -170,6 +170,7 @@ class CategoryController extends Controller
                 ->join('grocery_carts', 'grocery_carts.item_id','=','shop_items.id')
                 ->join('categories', 'shop_items.category_id','=','categories.id')
                 ->where('categories.id', $id)
+                ->where('grocery_carts.order_id',"!=",NULL)
                 ->first();
         
         if($category){

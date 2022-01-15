@@ -182,7 +182,7 @@ class PromotionController extends Controller
         if($item){
             $this->validate($request,[
                 'item_startPromo'=>'required',
-                'item_endPromo'=>'required|after_or_equal:item_startPromo',
+                'item_endPromo'=>'required',
                 'item_discount'=>'required|numeric'
             ]);
                 $item_startPromo = Carbon::createFromFormat('d/m/Y', $request->item_startPromo)->format('Y-m-d');
@@ -200,7 +200,7 @@ class PromotionController extends Controller
                         ]);
         
                 if($query){
-                    return redirect()->route('promotion.index')->with('success','Successfully updated promotion');
+                    return redirect()->route('promotion.index')->with('success','Successfully update promotion details');
                 }else{
                     return back()->with('error','Something went wrong');
                 }

@@ -227,7 +227,7 @@ class ShopItemController extends Controller
                             ]);
             
                     if($query){
-                        return redirect()->route('item.index')->with('success','Successfully updated item');
+                        return redirect()->route('item.index')->with('success','Successfully update the item details');
                     }else{
                         return back()->with('error','Something went wrong');
                     }
@@ -247,7 +247,7 @@ class ShopItemController extends Controller
                                 'updated_at'=> $todayDate
                             ]);
                             if($query){
-                                return redirect()->route('item.index')->with('success','Successfully updated item');
+                                return redirect()->route('item.index')->with('success','Successfully update the item details');
                             }else{
                                 return back()->with('error','Something went wrong');
                             }
@@ -268,7 +268,7 @@ class ShopItemController extends Controller
     public function destroy($id)
     {
         $item=ShopItem::find($id);
-        $groceryCart = GroceryCart::where('item_id', $id)->first();
+        $groceryCart = GroceryCart::where('item_id', $id)->where('order_id',"!=",NULL)->first();
         if($item){
             if($groceryCart){
                 return back()->with('error','This item cannot be deleted to keep track the order history');
@@ -352,22 +352,27 @@ class ShopItemController extends Controller
 
     function editStock(Request $request, $id)
     {
-    	$this->validate($request,[
-            'item_stock'=>'required'
-        ]);
-        $todayDate = date('Y-m-d H:i:s');
-        $query = DB::table('shop_items')
-            ->where('id', $id)
-            ->update([
-                'item_stock'=> $request->item_stock,
-                'updated_at'=> $todayDate
-                ]);
-    
-            if($query){
+        $item=ShopItem::find($id);
+        if($item){
+            $this->validate($request,[
+                'item_stock'=>'required'
+            ]);
+            $todayDate = date('Y-m-d H:i:s');
+            $query = DB::table('shop_items')
+                ->where('id', $id)
+                ->update([
+                    'item_stock'=> $request->item_stock,
+                    'updated_at'=> $todayDate,
+                    ]);
+        
+            // if($query){
                 return back()->with('success','Successfully updated stock item');
-            }else{
-                return back()->with('error','Something went wrong');
-            }
+            // }else{
+            //     return back()->with('fail','Something went wrong');
+            // }
+        }else{
+            return back()->with('fail','Data not found');
+        }
     }
 
     public function import(Request $request){
