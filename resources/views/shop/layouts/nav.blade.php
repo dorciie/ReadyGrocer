@@ -46,6 +46,51 @@
         
         <!-- Right side toggle and nav items -->
         <ul class="navbar-nav float-end" style="float: end;">
+            @php
+                date_default_timezone_set("Asia/Kuala_Lumpur");
+                $todayDate = date("Y-m-d");
+                $count = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','preparing')->count();
+                $item = \App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('item_stock','<','10')->where('item_stock','>','0')->count();
+                $noStock = \App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('item_stock','=','0')->count();
+                $total = 0;
+            @endphp
+            
+            @if($count > 0)
+                @php  $total = $total + 1;   @endphp             
+            @endif
+            @if($item >0)
+                @php  $total = $total + 1;   @endphp       
+            @endif
+            @if($noStock > 0)
+                @php  $total = $total + 1;   @endphp        
+            @endif
+
+            {{-- Bell notification stock --}}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    @if($total != 0)
+                    <i class="mdi mdi-bell font-24"></i><span class="badge rounded-pill bg-info">{{$total}}</span>
+                    @endif
+                    @if($total == 0)
+                    <i class="mdi mdi-bell font-24"></i><span class="badge rounded-pill bg-info"></span>
+                    @endif
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    @if($total == 0)
+                    <li><a class="dropdown-item" href="#">No new notification</a></li>
+                    @endif
+                    @if($count > 0)
+                        <li><a class="dropdown-item" href="{{route('order.index')}}">You have {{$count}} new order</a></li>
+                    @endif
+                    {{-- <li><hr class="dropdown-divider"></li> --}}
+                    @if($item >0)
+                        <li><a class="dropdown-item" href="{{url('stock')}}">You have {{$item}} items that low in stock</a></li>
+                    @endif
+                    @if($noStock > 0)
+                        <li><a class="dropdown-item" href="{{url('stock')}}">You have {{$noStock}} items that out of stock stock</a></li>
+                    @endif
+                </ul>
+            </li>
             <!-- User profile and search -->
             <li class="nav-item dropdown">
                 @if($LoggedShopInfo->shop_image==NULL)

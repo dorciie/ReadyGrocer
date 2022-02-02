@@ -90,7 +90,7 @@
                            @endforeach
                           
                             <div class="col d-flex justify-content-end align-items-center p-4">
-                                <a type="button" href="{{ route('recommendation') }}" class="btn btn-info btn-lg" id="ts-info" width="100px">see more</a>
+                                {{-- <a type="button" href="{{ route('recommendation') }}" class="btn btn-info btn-lg" id="ts-info" width="100px">see more</a> --}}
                             </div>
                         </div>
                     </div>

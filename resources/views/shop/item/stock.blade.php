@@ -33,6 +33,15 @@
         </div>
     @endif
 </div>
+
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+    This items are in recommendation list to customer but it is already <strong>low in stock</strong> <br>
+    @foreach($recommendation as $recommendation)
+        <li>{{$recommendation->item_name}}, {{$recommendation->item_brand}}
+    @endforeach
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div> 
+
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">Update Item Stock</h5>

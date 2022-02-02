@@ -62,6 +62,7 @@ class custDashboardController extends Controller
 
         $similar = shopItem::where('shop_id', $customer->fav_shop)
         ->where('id','!=',$itemID)->where('item_name','like','%'.$first.'%')
+        ->where('item_stock','>',0)
         ->get();
 
 
@@ -83,6 +84,7 @@ class custDashboardController extends Controller
         $favourites = $customer->fav_shop;
         $recommendation = DB::select("SELECT * FROM shop_items 
         WHERE shop_items.item_startPromo <= '$time' 
+        AND shop_items.item_stock > 0
         AND shop_items.category_id IN 
         (SELECT category_id FROM shop_items 
          RIGHT JOIN grocery_carts ON shop_items.id = grocery_carts.item_id 
