@@ -9,6 +9,8 @@ use App\Models\shopItem;
 use App\Models\GroceryList;
 use App\Models\Category;
 use App\Models\GroceryCart;
+use Carbon\Carbon;
+
 use Illuminate\Support\Facades\DB;
 
 class custDashboardController extends Controller
@@ -108,17 +110,18 @@ class custDashboardController extends Controller
      */
     public function list()
     {
-        $customer = customer::where('id', session('LoggedCustomer'))
-        ->first();
+        $customer = customer::where('id', session('LoggedCustomer'))->first();
         
         $list = DB::table('grocery_lists')
         ->join('shop_items','grocery_lists.item_id','=','shop_items.id')
         ->where('customer_id', session('LoggedCustomer'))
         ->where('grocery_lists.shop_id', $customer->fav_shop)
-        ->select('grocery_lists.id AS id','shop_items.id AS item_id','grocery_lists.item_quantity AS item_quantity','grocery_lists.item_frequency AS item_frequency', 'grocery_lists.shop_id AS shop_id','shop_items.item_name AS item_name','shop_items.item_brand AS item_brand','shop_items.item_price AS item_price','shop_items.item_description AS item_description','shop_items.category_id AS category_id')
+        ->select('grocery_lists.id AS id','shop_items.id AS item_id',
+        'grocery_lists.item_quantity AS item_quantity','grocery_lists.item_frequency AS item_frequency', 
+        'grocery_lists.shop_id AS shop_id','shop_items.item_name AS item_name','shop_items.item_brand AS item_brand',
+        'shop_items.item_price AS item_price','shop_items.item_description AS item_description','shop_items.category_id AS category_id')
         ->get();
        
-
         return view('customer.GroceryList.GroceryList')->with('list',$list);
     }
 
@@ -132,9 +135,17 @@ class custDashboardController extends Controller
         ->where('customer_id', session('LoggedCustomer'))
         ->where('checkout','false')
         ->where('grocery_carts.shop_id',$customer->fav_shop)
-        ->select('grocery_carts.id AS id','grocery_carts.item_quantity AS item_quantity', 'grocery_carts.shop_id AS shop_id','grocery_carts.total_price AS total_price','shop_items.item_brand AS item_brand','shop_items.item_price AS item_price','shop_items.offer_price AS offer_price','shop_items.item_name AS item_name','shop_items.id AS item_id','shop_items.item_startPromo AS item_startPromo','shop_items.item_endPromo AS item_endPromo')
+        ->select('grocery_carts.id AS id','grocery_carts.item_quantity AS item_quantity', 'grocery_carts.shop_id AS shop_id',
+        'grocery_carts.total_price AS total_price','shop_items.item_brand AS item_brand','shop_items.item_price AS item_price',
+        'shop_items.offer_price AS offer_price','shop_items.item_name AS item_name','shop_items.id AS item_id',
+        'shop_items.item_startPromo AS item_startPromo','shop_items.item_endPromo AS item_endPromo')
         ->get();
-        return view('customer.cart.groceryCart')->with('info',$info);
+
+        $now =\Carbon\Carbon::now()->format('H:i:s');;
+        $end = '22:00:00';
+        $start = '08:00:00';
+
+        return view('customer.cart.groceryCart')->with('info',$info)->with('now',$now)->with('start',$start)->with('end',$end);
     }
 
   

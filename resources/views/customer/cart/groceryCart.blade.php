@@ -15,16 +15,7 @@
 </div>
 @endsection
 @section('content')
-@if(Session::get('success'))
-<div class="alert alert-success">
-    {{Session::get('success')}}
-</div>
-@endif
-@if(Session::get('error'))
-<div class="alert alert-danger">
-    {{Session::get('error')}}
-</div>
-@endif
+
 @if ($errors->any())
                     <div class="alert alert-danger">
                            <ul>
@@ -39,8 +30,18 @@
         <div class="card">
 
             <div class="card-body">
-                <h5 class="card-title mb-0">Your Cart</h5>
+                <h5 class="card-title mb-0">Your Cart </h5>
             </div>
+            @if(Session::get('success'))
+                <div class="alert alert-success">
+                    {{Session::get('success')}}
+                </div>
+                @endif
+            @if(Session::get('error'))
+                <div class="alert alert-danger">
+                    {{Session::get('error')}}
+                </div>
+            @endif
             @error('item_quantity')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -188,25 +189,30 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                       
-                                        <input type="radio" name="delivery"  value="deliveryNow"/>&nbspDeliveryNow<br>
-                                        <?php
-                                        date_default_timezone_set("Asia/Kuala_Lumpur");
-                                        echo  date(('Y-m-d H:i:s'));
-                                        ?><br><br>
-                                       <!-- {{ $now = \Carbon\Carbon::now()}} -->
+                                            
+                                         <!-- @if((\Carbon\Carbon::now())->between('22:00:00','08:00:00'))
+                                        <input type="radio" name="delivery"  value="deliveryNow" disabled/>&nbspDeliveryNow<br>
+                                        {{ \Carbon\Carbon::now()}}
+                                        @else
+                                        <input type="radio" name="delivery"  value="deliveryNow" />&nbspDeliveryNow<br>
+                                       {{ \Carbon\Carbon::now()}}
+
+                                        @endif -->
+
+                                        @if($now>=$end || $now<=$start) 
+                                            <input type="radio" name="delivery"  value="deliveryNow" disabled/>&nbspDeliveryNow<br>
+                                           <small> now {{$now}} <br>
+                                            can delivery from  {{$start}} until {{$end}} </small>
+                                        @else
+                                        <input type="radio" name="delivery"  value="deliveryNow" />&nbspDeliveryNow<br>
+                                        <small> now {{$now}} <br>
+                                            can delivery from  {{$start}} until {{$end}} </small>
+                                        @endif
+                                        <br>
                                         <input type="radio" name="delivery" value="deliveryLater"/>&nbspDeliveryLater
-                                        <input type="datetime-local" class="form-control"  name="deliveryDT" >
+                                        <input type="datetime-local" class="form-control"  name="deliveryDT"   min="<?php echo date('Y-m-d\TH:i', strtotime(date("Y-m-d H:i")));?>:00">
                 
                                         </div>
-                                        <!-- <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="delivery" id="flexRadioDefault2" >
-                                        <label class="form-check-label" for="flexRadioDefault2" value="deliveryLater">
-                                            Delivery Later
-                                        </label>
-                                        <input type="datetime-local" class="form-control"  name="deliveryDT" >
-
-                                        </div> -->
                                     
                                     </div>
                                 </div><br>

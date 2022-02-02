@@ -35,6 +35,15 @@
                     {{Session::get('error')}}
                 </div>
                 @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                           <ul>
+                            @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                          @endforeach
+                            </ul>
+                            </div>
+                    @endif
                 <h5 class="card-title">Basic Datatable</h5>
                 <div class="table-responsive">
                     <table id="zero_config" class="table table-striped table-bordered">
@@ -60,9 +69,7 @@
                                 <td>{{$list->item_quantity}}</td>
                                 <td>{{$list->item_frequency}}</td>
                                 <td><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#productID{{$list->item_id}}">Update List</button></td>
-
                                 <td><a class="btn btn-outline-primary" href="{{route('updateCart2',['itemID' => $list->item_id])}}" role="button">Add to Cart</a></td>
-
                             </tr>
 
 
@@ -91,7 +98,7 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="input-group mb-3">
-                                                            <input type="number" class="form-control" name="item_quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$list->item_quantity}}" placeholder="{{$list->item_quantity}}">
+                                                            <input type="number" class="form-control" name="item_quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{$list->item_quantity}}" placeholder="{{$list->item_quantity}}"min="1">
                                                         </div>
 
                                                     </div>

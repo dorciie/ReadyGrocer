@@ -186,10 +186,12 @@
 
 <div class="container-fluid">
     <div style="text-align: right;">
-        <a class="btn btn-info" href=""><i class="mdi mdi-account-key"></i> Change password</a>
+        <a class="btn btn-info" href="{{route('custProfile.show',$info->id)}}"><i class="mdi mdi-account-key"></i> Change password</a>
         <a class="btn btn-info" href="{{route('custProfile.create')}}"><i class="fas fa-edit"></i> Edit profile</a>
     </div>
     <br>
+  
+    <div class="row">
     <div class="results">
         @if(Session::get('success'))
             <div class="alert alert-success" id="alert">
@@ -202,7 +204,6 @@
             </div>
         @endif
     </div>
-    <div class="row">
         <div class="col-md-5">
             <div class="card align-items-center">
                 <div class="card-bod align-items-centery">
@@ -222,10 +223,7 @@
                             @endif
                         </div>
                           <div class="flip-card-back"><br><br><br><br><br><br>
-                            {{-- @foreach ($shopOwner as $user) --}}
-                              {{-- <a href="" class="text-dark btn" style="background-color: #FFFFFF;" data-toggle="modal" data-bs-target="#modalEditPhoto"><strong>Edit Photo</strong></a> --}}
-                              <button type="button" style="background-color: #FFFFFF;" class="btn text-dark" data-bs-toggle="modal" data-bs-target="#modalEditPhoto"><strong>Edit Photo</strong></button>
-                            {{-- @endforeach --}}
+                            
                           </div>
                         </div>
                       </div><br>
@@ -278,10 +276,10 @@
 
         <div class="col-md-7">
             <div class="card">
-            
                 <div class="card-body" style="line-height: 1.2;">
                     <h3 class="card-title">Customer details</h3>
                     <br>
+                    
                     <div class="form-group row">
                         <p class="col-sm-3" style="font-size: 14px;"><strong>Name:</strong></p>
                         <p class="col-sm-9" style="font-size: 14px;">{{$info->name}}</p>
@@ -295,7 +293,7 @@
                         <p class="col-sm-9" style="font-size: 14px;">{{$info->address}}</p>
                     </div>
                     <div class="form-group row">
-                        <p class="col-sm-3" style="font-size: 14px;"><strong>Auto Deliver </strong></p>
+                        <p class="col-sm-3" style="font-size: 14px;"><strong>Auto Delivery </strong></p>
                         <p class="col-sm-9" style="font-size: 14px;">{{$info->autoDelivery}}</p>
                     </div>
                     <div class="form-group row">
@@ -311,15 +309,7 @@
             
             </div>
         </div>
-        {{--<div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title">Shop description</h2>
-                    <br>
-                    <p></p>
-                </div>
-            </div>
-        </div>--}}
+        
     </div>
 </div>
 @endsection

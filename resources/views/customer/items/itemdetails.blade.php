@@ -319,40 +319,15 @@
                             </div>
                          @else
                           @foreach($similar as $s)
-                         
-                        
-                         
                             <div class="col" >
                                 <div class="card-body border border-secondary" style="height: 150px; ">
-                                    <a href=""><h5 class="card-title">{{$s->item_name}}</h5></a>
+                                    <a href="{{route('itemDetails',['itemID' => $s->id])}}"><h5 class="card-title">{{$s->item_name}}</h5></a>
                                     <p>{{$s->item_description}} </p>
                                 </div>
                             </div>
                            
                             @endforeach
                               @endif
-                            <!-- <div class="col" >
-                                <div class="card-body border border-secondary" style="height: 150px; ">
-                                    <a href=""><h5 class="card-title">Item 2</h5></a>
-                                    <p> </p>
-                                </div>
-                            </div>
-                            <div class="col" >
-                                <div class="card-body border border-secondary" style="height: 150px; ">
-                                    <a href=""><h5 class="card-title">Item 3</h5></a>
-                                    <p> </p>
-                                </div>
-                            </div>
-                            <div class="col" >
-                                <div class="card-body border border-secondary" style="height: 150px; ">
-                                    <a href=""><h5 class="card-title">Item3</h5></a>
-                                    <p> </p>
-                                </div>
-                            </div> -->
-                                
-                          
-                            
-                            
                         </div>
                     </div>
                 </div>

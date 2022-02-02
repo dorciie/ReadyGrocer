@@ -132,8 +132,8 @@ class RegisterController extends Controller
         $newCust->email=$request->email;
         $newCust->address=$request->address;
         $newCust->password=Hash::make($request->password);
-        // $newCust->address_latitude=$request->address_latitude;
-        // $newCust->address_longitude=$request->address_longitude;
+        $newCust->address_latitude=$request->address_latitude;
+        $newCust->address_longitude=$request->address_longitude;
         $query = $newCust->save();
 
         

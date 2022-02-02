@@ -83,17 +83,17 @@
                                     <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('H:i:s')}}</td>
                                     <td>RM{{$order->total_payment}}</td>
                                     <td>{{$order->payment}}</td>
-                                    @if($order->status == 'preparing')
+                                    @if($order->status == 'Preparing')
                                     <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#deliverOrder{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> Deliver now!</a></div></td>
                                     {{-- <td>No</td> --}}
                                     <td class="text-danger">Preparing</td>
                                     @endif
-                                    @if($order->status == 'delivering')
+                                    @if($order->status == 'Delivering')
                                     <td>Item out for delivery</td>
                                     {{-- <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#confirmPurchase{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom">No</a></div></td> --}}
                                     <td class="text-warning">Delivering</td>
                                     @endif
-                                    @if($order->status == 'delivered')
+                                    @if($order->status == 'Delivered')
                                     <td>Successfully delivered</td>
                                     {{-- <td>Yes</td> --}}
                                     {{-- <td><p><span class="label label-success">Yes</span></p></td> --}}

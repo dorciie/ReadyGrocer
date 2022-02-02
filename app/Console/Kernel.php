@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
        Commands\DeletePromotion::class,
        Commands\cronEmail::class,
+       Commands\updateCart::class,
     ];
 
     /**
@@ -27,14 +28,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
 
         $schedule->command('Promotion:delete')
                  ->dailyAt('00:00')
                  ->timezone('Asia/Kuala_Lumpur');
 
          $schedule->command('Checkout:email')
-                 ->everyMinute()->withoutOverlapping();
+                 ->everyMinute();
 
         $schedule->command('cart:update')
                 ->dailyAt('00:00')
