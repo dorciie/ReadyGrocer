@@ -79,12 +79,7 @@
                                                         <td>{{$order->item_name}}</td>
                                                         <td>{{$order->item_brand}}</td>
                                                         <td>{{$order->item_quantity}}</td>
-                                                        @if($order->item_endPromo == NULL)
-                                                            <td>RM{{$order->item_price}}</td>
-                                                        @endif
-                                                        @if($order->item_endPromo != NULL)
-                                                            <td>RM{{$order->offer_price}}</td>
-                                                        @endif
+                                                        <td>RM {{($order->total_price) / ($order->item_quantity)}}</td>
                                                         <td>RM{{$order->total_price}}</td>
                                                     </tr>    
                                                 @endforeach        

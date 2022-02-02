@@ -346,8 +346,19 @@ class ShopItemController extends Controller
             'categories.category_name'
         ]);
 
+        $time = now();
+        $recommendation = DB::select("SELECT * FROM shop_items 
+        WHERE shop_items.item_startPromo <= '$time' 
+        AND shop_items.item_stock > 0
+        AND shop_items.item_stock <= 10
+        AND shop_items.category_id IN 
+        (SELECT category_id FROM shop_items 
+         RIGHT JOIN grocery_carts ON shop_items.id = grocery_carts.item_id 
+         AND grocery_carts.shop_id = '$shopOwner->id' 
+         AND grocery_carts.order_id IS NOT NULL)"
+        );
 
-        return view('shop.item.stock',$data, compact('Itemstock','LowStock','ActiveStock','NoStock'));
+        return view('shop.item.stock',$data, compact('recommendation','Itemstock','LowStock','ActiveStock','NoStock'));
     }
 
     function editStock(Request $request, $id)
