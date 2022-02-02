@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\GroceryCart;
 use App\Models\ShopOwner;
-
+use App\Models\customer;
 use Illuminate\Http\Request;
 
 class CustOrderController extends Controller
@@ -115,5 +115,61 @@ class CustOrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    function pdf($orderID)
+    {
+     $pdf = \App::make('dompdf.wrapper');
+     $pdf->loadHTML($this->convert_customer_data_to_html($orderID));
+     return $pdf->stream();
+    }
+
+    function convert_customer_data_to_html($orderID)
+    {
+     $customer_data = customer::all()->where('id',session('LoggedCustomer'))->first();
+     $order = Order::find($orderID);
+     $cart = GroceryCart::where('order_id',$orderID)->get();
+     $iterate = 1;
+
+     $output = '
+     <h3 align="center">Order Reciept</h3>
+     <p>Order at : '.$order->created_at.'</p>
+     <p>Payment  : '.$order->payment.'</p>
+     <p>Status   : '.$order->status.'</p>
+     <p>Shop     : '.shopOwner::where('id',$order->shop_id)->value('shopName').'</p>
+     <table width="100%" style="border-collapse: collapse; border: 0px;">
+        <tr>
+            <th style="border: 1px solid; padding:12px;" width="20%">#</th>
+            <th style="border: 1px solid; padding:12px;" width="30%">Item Name</th>
+            <th style="border: 1px solid; padding:12px;" width="15%">Item Quantity</th>
+            <th style="border: 1px solid; padding:12px;" width="15%">Total Price</th>
+        </tr>
+        <tbody> ';  
+     foreach($cart as $cart)
+     {
+      $output .= '
+      <tr>
+       <td style="border: 1px solid; padding:12px;">'.$iterate.'</td>
+       <td style="border: 1px solid; padding:12px;">aaa</td>
+       <td style="border: 1px solid; padding:12px;">'.$cart->item_quantity.'</td>
+       <td style="border: 1px solid; padding:12px;">'.$cart->total_price.'</td>
+      </tr>
+      
+      ';
+      $iterate++;
+     };
+    
+     
+     $output .= '
+     <tr>
+     <td style="border: 1px solid; padding:12px;"></td>
+     <td style="border: 1px solid; padding:12px;"></td>
+     <td style="border: 1px solid; padding:12px;">Total Payment (including 6% GST) : </td>
+     <td style="border: 1px solid; padding:12px;">'.$order->total_payment.'</td>
+    </tr>
+     
+     </table>';
+    
+     return $output;
     }
 }

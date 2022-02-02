@@ -18,10 +18,9 @@ class GroceryListController extends Controller
      */
     public function index(Request $request,$itemID)
     { 
-        // if (GroceryList::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
-        //     // throw new Exception('Possible multi submit');
-        //     return back()->with('success','successful');
-        // }
+         if (GroceryList::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
+            return back()->with('success','Item has successfully added into your Grocery List');
+         }
         $this->validate($request,[
             'item_frequency'=>'required',
             'item_quantity'=>'required',
@@ -42,7 +41,7 @@ class GroceryListController extends Controller
             $newList->last_bought = NULL;
             if($newList->last_bought = GroceryCart::where('customer_id',session('LoggedCustomer'))->where('item_id',$itemID)->where('checkout','true')->value('updated_at')){}
             $newList->save();
-         return back()->with('success','successful');
+         return back()->with('success','Item has successfully added into your Grocery List');
   
     }
     
@@ -97,15 +96,11 @@ class GroceryListController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        if (GroceryList::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
-            // throw new Exception('Possible multi submit');
-            return back()->with('success','Item has updated!');
-        }
-        
-        // $this->validate($request,[
-        //     'item_quantity'=>'required|numeric|max:'.$qty,
-        // ]);
+        {
+         $this->validate($request,[
+             'item_quantity'=>'required|numeric|min:1',
+         ]);
+
         $update = GroceryList::where('customer_id',session('LoggedCustomer'))
         ->where('item_id',$id)
         ->update([
@@ -113,11 +108,9 @@ class GroceryListController extends Controller
             'item_frequency' => $request->item_frequency
             ]);
             
-            if($update){
-                        return back()->with('success','List has been updated!');
+        return back()->with('success','List has been updated!');
 
-            }
-            return back()->with('error','The amount is over the item quantity');
+            
 
     }
 
@@ -130,6 +123,6 @@ class GroceryListController extends Controller
     public function destroy($id)
     {
         $deletedRows = GroceryList::where('id', $id)->delete();
-        return back()->with('success','successful');
+        return back()->with('success','Item has successfully deleted!');
     }
 }

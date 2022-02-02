@@ -2,16 +2,7 @@
 @section('title')
     <div class="row">
         <div class="col-12 d-flex no-block align-items-center">
-            
-            <h4 class="page-title">Order Details</h4>
-            <div class="ms-auto text-end"> 
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Library</li>
-                    </ol>
-                </nav>
-            </div>
+            <h4 class="page-title">Order Details {{$order->id}}</h4>
         </div>
     </div>
 @endsection
@@ -35,7 +26,9 @@
                                             <p class="card-text">Order at   : {{$order->created_at}}
                                             <br> Payment  : {{$order->payment}}
                                             <br> Status    : {{$order->status}}</p>
-
+                                            <div class="col-md-5" text-align="right">
+                                                <a href="{{ route('pdf',$order->id) }}" class="btn btn-danger">Export into PDF</a>
+                                            </div>
                                         </div>
                                     </div>
                                     @if(!empty($success))
@@ -47,8 +40,6 @@
                                     @if($order->status==='Preparing')
                                         <div class="alert alert-info" role="alert">
                                              Sit Back! Your shop is preparing your order~<marquee height="15px" width="10%" behavior="scroll" direction="right">  <i class="me-2 mdi mdi-cart-plus"></i>   </marquee>        
-                                                   
-                                             
                                         </div>
                                     @endif
                                     
@@ -82,66 +73,19 @@
                              </form>
                             
                             @elseif($order->status==='Delivered')
-
+                            @if($order->rate===NULL && $order->comment===NULL)
                             <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#rateshop">Rate Shop</button>
                             <!-- make modal display by default but howww -->
                             <div class="modal fade" id="rateshop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
-                                                <!-- <form method="put" action="{{route('custOrder.update',$order->id)}}" enctype="multipart/form-data">
-                                                 @csrf 
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Add to List</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-
-                                                    <div class="modal-body">
-                                                        <div class="form-group row">
-
-                                                            <div class="col-md-6">
-                                                                <label>Rate</label>
-                                                            </div>
-
-                                                            <div class="col-md-6">
-                                                                <div class="input-group mb-3">
-                                                            <input type="number" class="form-control" id ="rate" name="rate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" min="1" max="5" required autofocus>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="form-group row">
-                                                            <div class="col-md-6">
-                                                                <label>Comment</label>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="input-group mb-3">
-                                                            <input id="comment" type="text" class="form-control" name="comment" value="{{ old('comment') }}" autofocus>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                       
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-info btn-lg">Save changes</button>
-                                                    </div>
-                                                    
-                                                </form> -->
+                                                
                                                 <form class="form-horizontal" action="{{route('custOrder.update',$order->id)}}" method="post" enctype="multipart/form-data">
                                                 @csrf
                                                 @method('patch') 
                                                     <div class="card-body">
                                                     <h4>Rate your order</h4>
-
-                                                        <div class="border-top">
-                                                        
-                                                           
-                                                            
-                                                            
-                                                            
-                                                            
+                                                        <div class="border-top">                                                            
                                                             <div class="form-group row">
                                                                 <label for="fname" class="col-md-3 control-label col-form-label">Rate <span class="text-danger">*</span></label>
                                                                 <div class="col-md-9">
@@ -178,7 +122,8 @@
                                             </div>
                                         </div>
                                     </div> 
-                                   
+                                    @endif
+
                                     @endif
                         </div>
 

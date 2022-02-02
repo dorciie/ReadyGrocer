@@ -44,10 +44,12 @@ class updateCart extends Command
     {
         $allList = GroceryList::all(); //get only item which do not exists in customer's grocery cart
         $dtnow = \Carbon\Carbon::now();
+        $shopitems = ShopItem::all();
+        
         foreach($allList as $list){
             \Log::info("Test 1");
             if($list->last_bought!=NULL){
-                if(($list->item_frequency)==='Daily'&& (((new DateTime($list->last_bought))->diff($dtnow))->format('%a')>1)) {
+                if(($list->item_frequency)==='Daily'&& (((new DateTime($list->last_bought))->diff($dtnow))->format('%a')>1) &&($list->item_quantity)>=(ShopItem::where('id',$list->item)->value('item_stock'))) {
                      if((GroceryCart::where('customer_id',$list->customer_id)->where('item_id',$list->item_id)->where('checkout','false')->get())->isEmpty()){
                         $newCart = new GroceryCart;
                         $newCart->customer_id=$list->customer_id;

@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\customer;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use File;
+use DateTime;
+
 use Illuminate\Support\Facades\Storage;
 
 class custProfileController extends Controller
@@ -28,7 +31,8 @@ class custProfileController extends Controller
      */
     public function create()
     {
-        $info = customer::all()->where('id',session('LoggedCustomer'));
+        $info = customer::all()->where('id',session('LoggedCustomer'))->first();
+
 
         return view('customer.profile.editProfile')->with('info',$info);
     }
@@ -41,17 +45,27 @@ class custProfileController extends Controller
      */
     public function store(Request $request)
     {
+        // $input = date("h-i", strtotime($request->dtdelivery));
+        $input = new DateTime($request->dtdelivery);
+        $input->format('H:i a');
+        $end = DateTime::createFromFormat('h:i a', "10:00 pm");
+        $start = DateTime::createFromFormat('h:i a', "8:00 am");
+        // $date = new DateTime('2000-01-01');
+        // echo $date->format('Y-m-d H:i:s');
+        if($input>=$end || $input<=$start) {
+            return back()->with('error', 'Please choose different time');
+        }
+
         $update = customer::where('id',session('LoggedCustomer'))
         ->update([
-            'email' => $request->email,
-            'address' => $request->address,
-            'address_latitude' => $request->address_latitude,
-            'address_longitude' => $request->address_longitude,
-            'dtdelivery' => $request->dtdelivery,
-            'autoDelivery' =>$request->autoDelivery
+            'name' => $request->name,
+            'dtdelivery'=>$request->dtdelivery,
+            'autoDelivery'=>$request->autoDelivery,
             ]);
-            $info = customer::all()->where('id',session('LoggedCustomer'));
-         return view('customer.profile.custProfile')->with('success','Profile Successfully Updated!')->with('info',$info);
+
+            $info = customer::all()->where('id',session('LoggedCustomer'))->first();
+
+         return redirect()->route('custProfile.index')->with('success','Profile Successfully Updated!')->with('input',$input);
 
     }
 
@@ -108,6 +122,52 @@ class custProfileController extends Controller
               return back()->with('success','Successfully update the profile image')->with('info',$info);
     }
 
+
+    public function updatePassword(Request $request){
+        $request->validate([
+            'changePassword'  => 'required|min:5|max:12',
+            'newPassword'  => 'required|min:5|max:12',
+            'confirmPassword'  => 'required|min:5|max:12'
+        ]);
+
+        $customer = DB::table('customers')
+                    ->where('id',session('LoggedCustomer'))
+                    ->first();
+        // if(session()->has('LoggedShop')){
+        //     $shopOwner = DB::table('shop_owners')
+        //     ->where('id', session('LoggedShop'))
+        //     ->first();
+
+        //     $data = [
+        //         'LoggedShopInfo'=> $shopOwner
+        //     ];
+        // }
+        
+
+        if(Hash::check($request->changePassword, $customer->password)){
+                if($request->newPassword == $request->confirmPassword){
+                    $todayDate = date('Y-m-d H:i:s');
+                    $query = DB::table('customers')
+                        ->where('id', $customer->id)
+                        ->update([
+                            'password'=> Hash::make($request->newPassword),
+                            'updated_at'=> $todayDate
+                        ]);
+                    if($query){
+                        return redirect()->route('custProfile.index')->with('success','Successfully change password');
+
+                        // return view('customer.profile.custProfile')->with('success','Successfully change password')->with('info',$customer);
+                    }else{
+                        return back()->with('error','Something went wrong. Please try again later.')->withInput();
+                    }
+                }else{
+                    return back()->with('error','WARNING! New password and Confirm password are not the same')->withInput();
+                }
+        }else{
+            return back()->with('error','Wrong old password inserted! Please try again.')->withInput();
+        }
+
+    }
     /**
      * Display the specified resource.
      *
@@ -116,7 +176,14 @@ class custProfileController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $customer = customer::find(session('LoggedCustomer'))->first();
+
+        $data = [
+            'LoggedCustomerInfo'=> $customer
+        ];
+        
+        return view('customer.profile.password',$data);
     }
 
     /**

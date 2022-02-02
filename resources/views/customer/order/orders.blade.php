@@ -43,7 +43,7 @@
                                     <th scope="col">Order ID</th>
                                     <th scope="col">Shop Name</th>
                                     <th scope="col">Date Time</th>
-                                    <th scope="col">Total Price(RM)</th>
+                                    <!-- <th scope="col">Total Price(RM)</th> -->
                                 </tr>
                             </thead> 
                             <tbody style="text-align:center;">
@@ -53,7 +53,7 @@
                                                 <td><a href="{{route('custOrder.show',$order->id)}}">{{$order->id}}</a></td>
                                                 <td>{{\App\Models\shopOwner::where('id',$order->shop_id)->value('shopName')}}</td>
                                                 <td>{{$order->checkoutDelivery}}</td>
-                                                <td>{{$order->total_price}}</td>
+                                                <!-- <td>{{$order->total_payment}}</td> -->
                                             </tr>
                                  @endforeach
                             </tbody>

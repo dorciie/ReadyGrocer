@@ -9,6 +9,8 @@ use App\Models\Customer;
 use App\Models\GroceryCart;
 use App\Models\GroceryList;
 use App\Models\Order;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 
 
@@ -27,7 +29,7 @@ class GroceryCartController extends Controller
     {
         if (GroceryCart::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
             // throw new Exception('Possible multi submit');
-            return back()->with('success','successful');
+           return back()->with('success','Item has successfully added to your Grocery Cart');
         }
         $item = ShopItem::find($itemID);
         $qty=$item->item_stock;
@@ -67,7 +69,7 @@ class GroceryCartController extends Controller
     {
         if (GroceryCart::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
             // throw new Exception('Possible multi submit');
-            return back()->with('success','successful');
+           return back()->with('success','Item has successfully added to your Grocery Cart');
         }
         $customer = customer::find(session('LoggedCustomer'));
             
@@ -174,7 +176,7 @@ class GroceryCartController extends Controller
             'total_price' =>($item->offer_price)*($request->item_quantity)
              ]);
     
-            return back();
+            return back()->with('success','Item has been successfully edited!');
        
     }
     
@@ -182,18 +184,24 @@ class GroceryCartController extends Controller
         if (Order::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
             throw new Exception('Possible multi submit');
         }
+        $input = new DateTime($request->deliveryDT);
+        $input->format('H:i a');
+        $end = DateTime::createFromFormat('h:i a', "10:00 pm");
+        $start = DateTime::createFromFormat('h:i a', "8:00 am");
+        if($input>=$end || $input<=$start) {
+            return back()->with('error', 'Please choose different time');
+        }
+        if (Order::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
+            // throw new Exception('Possible multi submit');
+            return view('customer.order.orderDetails',compact('cart','order'))->with('success','Cart has been checkout');
+        }
+
         $customer = customer::where('id', session('LoggedCustomer'))
         ->first();
 
         $order = GroceryCart::where('customer_id',session('LoggedCustomer'))
         ->where('checkout','false')->where('shop_id',$customer->fav_shop)->get();
-
-// validate can be use for $request only kot
-    //     $this->validate($request,[
-    //         'item_quantity'=>'required|numeric|max:'.$stock,
-    //     ]);
-
-    // find() kena declare dulu
+    
         foreach($order as $order){
             if($order->item_quantity>(ShopItem::where('id',$order->item_id)->value('item_stock'))){
                 return back()->with('error','item more than stock');
@@ -215,13 +223,15 @@ class GroceryCartController extends Controller
         $createOrder->save();
 
         $order2 = GroceryCart::where('customer_id',session('LoggedCustomer'))
-        ->where('checkout','false')->where('shop_id',$customer->fav_shop)->get(); //why kena fetch data again eh
+        ->where('checkout','false')->where('shop_id',$customer->fav_shop)->get(); 
+
+        
+
 
         foreach($order2 as $order){
             $update = GroceryCart::where('customer_id',session('LoggedCustomer'))->where('item_id',$order->item_id)->where('checkout','false')
             ->update([
                 'checkout' => 'true',
-                // 'payment' => $request->payment,
                 'order_id'=> $createOrder->id,
                 ]);
 
@@ -239,13 +249,48 @@ class GroceryCartController extends Controller
             if($update){
                 $cart = $order2;
                 $order = $createOrder;
-                   return view('customer.order.orderDetails',compact('cart','order'))->with('success','Cart has been checkout');
-
-                // return view('customer.cart.checkout')->with('success','Cart has been checkout');
+                    if($request->payment ==='Credit/Debit Card'){
+                        \Stripe\Stripe::setApiKey('sk_test_51KOJ8oCVYgvhDegI4dhcDA4r9kp37HJUYnhkk3hMPH53d0w3JCbj8NkUP2TWkAsyvB9KFfbNDfMdw79Nr8XazPH100MNpOM3IS');
+                        
+                        // $amount = 100;
+                        // $amount *= 100;
+                        // $amount = (int) $request->totalPrice;
+            
+                        $amount = 100;
+                        $amount *= 100;
+                        $amount = (int) $amount;
+                        
+                        $payment_intent = \Stripe\PaymentIntent::create([
+                            'description' => 'Stripe Test Payment',
+                            'amount' => $amount,
+                            'currency' => 'MYR',
+                            'description' => 'Payment From ReadyGrocer',
+                            'payment_method_types' => ['card'],
+                        ]);
+                        $intent = $payment_intent->client_secret;
+                
+                        return view('customer.cart.credit-card',compact('intent'))->with('totalprice',$createOrder->total_payment);
+                    }
+                    
+                    return view('customer.order.orderDetails',compact('cart','order'))->with('success','Cart has been checkout');
             }
             return back()->with('error','Cart cannot be check out');
     }
 
+
+    
+    public function afterPayment()
+    {
+        // echo 'Payment Has been Received';
+        $customer = customer::where('id', session('LoggedCustomer'))
+        ->first();
+
+        $order = Order::where('customer_id',session('LoggedCustomer'))->where('shop_id',$customer->fav_shop)->orderBy('id', 'DESC')->first();
+
+        $cart = GroceryCart::where('customer_id',session('LoggedCustomer'))->where('shop_id',$customer->fav_shop)->where('order_id',$order->id)->get();
+
+        return view('customer.order.orderDetails',compact('cart','order'))->with('success','Cart has been checkout');
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -254,9 +299,8 @@ class GroceryCartController extends Controller
      */
     public function destroy($id)
     {
-        $item =  GroceryCart::find($id);
-        $item->delete();
+        $deletedRows = GroceryCart::where('id', $id)->delete();
 
-        return back();
+        return back()->with('success','Item has been successfully deleted!'); 
     }
 }
