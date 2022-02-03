@@ -21,6 +21,15 @@
             </div>
         @endif
     </div>
+    @php
+        date_default_timezone_set("Asia/Kuala_Lumpur");
+        $todayDate = date("Y-m-d");
+        $countTodayOrder = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where(DB::raw("(DATE_FORMAT(checkoutDelivery,'%Y-%m-%d'))"),'=',$todayDate)->count();
+    @endphp
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        You need to deliver {{$countTodayOrder}} order(s) today.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div> 
     <div class="card">
         <div class="card-body">
             {{-- <h5 class="card-title">All Order</h5> --}}
@@ -76,6 +85,9 @@
                             </thead>
                             <tbody style="text-align:center;">
                                 @foreach($custOrder as $order)
+                                @php
+                                 $disableDeliverButton = \Carbon\Carbon::parse($order->checkoutDelivery)->format('Y-m-d');
+                                @endphp
                                 <tr>
                                     <td>{{$loop->iteration}}.</td>
                                     <td><div class="card card-hover"><a href="{{route('orderCustomer',['orderID' => $order->id])}}" data-toggle="tooltip" class="btn btn-sm btn-info" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> Order details</a></div></td>
@@ -84,9 +96,13 @@
                                     <td>RM{{$order->total_payment}}</td>
                                     <td>{{$order->payment}}</td>
                                     @if($order->status == 'Preparing')
-                                    <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#deliverOrder{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> Deliver now!</a></div></td>
-                                    {{-- <td>No</td> --}}
-                                    <td class="text-danger">Preparing</td>
+                                        @if($disableDeliverButton==$todayDate)
+                                            <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#deliverOrder{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> Deliver now!</a></div></td>
+                                            <td class="text-danger">Preparing</td>
+                                        @else
+                                            <td>Not today</td>
+                                            <td>Pending</td>
+                                        @endif
                                     @endif
                                     @if($order->status == 'Delivering')
                                     <td>Item out for delivery</td>
@@ -215,6 +231,9 @@
                             </thead>
                             <tbody style="text-align:center;">
                                     @foreach($PreparingOrder as $order)
+                                    @php
+                                        $disableDeliver = \Carbon\Carbon::parse($order->checkoutDelivery)->format('Y-m-d');
+                                    @endphp
                                         <tr>
                                             <td>{{$loop->iteration}}.</td>
                                             <td><div class="card card-hover"><a href="{{route('orderCustomer',['orderID' => $order->id])}}" data-toggle="tooltip" class="btn btn-sm btn-info" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> Order details</a></div></td>
@@ -222,9 +241,13 @@
                                             <td>{{ \Carbon\Carbon::parse($order->checkoutDelivery)->format('H:i:s')}}</td>
                                             <td>RM{{$order->total_payment}}</td>
                                             <td>{{$order->payment}}</td>
-                                            <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#deliverOrder1{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> Deliver now!</a></div></td>
-                                            {{-- <td>No</td> --}}
-                                            <td class="text-danger">Preparing</td>
+                                            @if($disableDeliver==$todayDate)
+                                                <td><div class="card card-hover"><a style="color:white;" href="" data-toggle="modal" data-target="#deliverOrder{{$order->id}}" class="btn btn-sm btn-danger" data-placement="bottom"><i class="fa fa-info-circle" aria-hidden="true"></i> Deliver now!</a></div></td>
+                                                <td class="text-danger">Preparing</td>
+                                            @else
+                                                <td>Not today</td>
+                                                <td>Pending</td>
+                                            @endif
                                         </tr>
                                     <!-- Modal Deliver Order-->
                                         <div class="modal fade" id="deliverOrder1{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="deliverOrderTitle" aria-hidden="true">

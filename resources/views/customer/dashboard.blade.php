@@ -76,9 +76,9 @@
                             ?>
                         @foreach($recommendation as $recommendation)
                         <div class="col" >
-                                <div class="card-body border border-secondary"style="height: 175px;" >
+                                <div class="card-body border border-secondary"style="height: 200px;" >
                                     <a href="{{route('itemDetails',['itemID' => $recommendation->id])}}"><h5 class="card-title">{{$recommendation->item_name}}</h5></a>
-                                    <p>{{$item->item_brand}} </p>
+                                    <p>{{$recommendation->item_brand}} </p>
                                     <p>{{$recommendation->item_description}} </p>
                                     <small>SALE from {{$recommendation->item_startPromo}} until {{$recommendation->item_endPromo}}</small>
                                 </div> 

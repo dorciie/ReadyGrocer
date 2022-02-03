@@ -34,8 +34,8 @@
     @endif
 </div>
 
-<div class="alert alert-info alert-dismissible fade show" role="alert">
-    This items are in recommendation list to customer but it is already <strong>low in stock</strong> <br>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    This item(s) are in recommendation list for customer, but it is already <strong>low in stock</strong> or <strong>out of stock</strong> <br>
     @foreach($recommendation as $recommendation)
         <li>{{$recommendation->item_name}}, {{$recommendation->item_brand}}
     @endforeach

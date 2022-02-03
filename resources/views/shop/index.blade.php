@@ -18,7 +18,7 @@
                 <div class="box bg-success bg-gradient text-center shadow">
                     <h1 class="font-light text-white"><i class="mdi mdi-cart-outline"></i></h1>
                     <h6 class="text-white">Total orders</h6>
-                    <h6 class="text-white">{{\App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','=','Delivered')->count()}}</h6>
+                    <h6 class="text-white">{{\App\Models\Order::where('shop_id',$LoggedShopInfo->id)->count()}}</h6>
                 </div>
             </div>
         </div>
