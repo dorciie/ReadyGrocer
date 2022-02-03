@@ -28,7 +28,6 @@ class GroceryCartController extends Controller
     public function cart(Request $request,$itemID)
     {
         if (GroceryCart::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
-            // throw new Exception('Possible multi submit');
            return back()->with('success','Item has successfully added to your Grocery Cart');
         }
         $item = ShopItem::find($itemID);
@@ -59,7 +58,7 @@ class GroceryCartController extends Controller
             $newCart->item_quantity=$request->input('item_quantity');
 
             $newCart->save();
-         return back()->with('success','successful');
+         return back()->with('success','Item has added in your Grocery Cart');
 
         
 
@@ -68,7 +67,6 @@ class GroceryCartController extends Controller
     public function cart2($itemID)
     {
         if (GroceryCart::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
-            // throw new Exception('Possible multi submit');
            return back()->with('success','Item has successfully added to your Grocery Cart');
         }
         $customer = customer::find(session('LoggedCustomer'));
@@ -102,9 +100,6 @@ class GroceryCartController extends Controller
 
     }
 
-    public function editItem(){
-
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -149,6 +144,53 @@ class GroceryCartController extends Controller
         //
     }
 
+    public function cancel()
+    {
+        if (GroceryCart::where('customer_id', session('LoggedCustomer'))->where('updated_at', '>', now()->subSeconds(10))->exists()) {
+            return back()->with('error','Checkout is cancelled');
+         }
+        $customer = customer::where('id', session('LoggedCustomer'))->first();
+
+        $order = Order::where('customer_id',session('LoggedCustomer'))->where('shop_id',$customer->fav_shop)->max('id');
+        $items = GroceryCart::where('customer_id',session('LoggedCustomer'))->where('order_id',$order)->get();
+
+        foreach($items as $item){ //add quantity yg checkout tadi
+            $shopItem = ShopItem::where('id',$item->item_id)->first();
+            $update2 = ShopItem::where('id',$item->item_id)->update([
+                'item_stock' => ($shopItem->item_stock)+($item->item_quantity),
+            ]);
+        $update = GroceryCart::where('customer_id',session('LoggedCustomer'))->where('order_id',$order)
+            ->update([
+                'checkout' => 'false',
+                'order_id'=> NULL,
+                ]);
+
+
+       
+        };
+
+        $deletedRows = Order::where('id', $order)->delete();
+
+        $info = DB::table('grocery_carts')
+        ->join('shop_items','grocery_carts.item_id','=','shop_items.id')
+        ->where('customer_id', session('LoggedCustomer'))
+        ->where('checkout','false')
+        ->where('grocery_carts.shop_id',$customer->fav_shop)
+        ->select('grocery_carts.id AS id','grocery_carts.item_quantity AS item_quantity', 'grocery_carts.shop_id AS shop_id',
+        'grocery_carts.total_price AS total_price','shop_items.item_brand AS item_brand','shop_items.item_price AS item_price',
+        'shop_items.offer_price AS offer_price','shop_items.item_name AS item_name','shop_items.id AS item_id',
+        'shop_items.item_startPromo AS item_startPromo','shop_items.item_endPromo AS item_endPromo')
+        ->get();
+
+        $now =\Carbon\Carbon::now()->format('H:i:s');;
+        $end = '22:00:00';
+        $start = '08:00:00';
+
+        return view('customer.cart.groceryCart')->with('info',$info)->with('now',$now)->with('start',$start)->with('end',$end);
+
+
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -181,18 +223,17 @@ class GroceryCartController extends Controller
     }
     
     public function checkout(Request $request){
-        if (Order::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
-            throw new Exception('Possible multi submit');
-        }
+       
         $input = new DateTime($request->deliveryDT);
-        $input->format('H:i a');
-        $end = DateTime::createFromFormat('h:i a', "10:00 pm");
-        $start = DateTime::createFromFormat('h:i a', "8:00 am");
+        $input=$input->format('H:i');
+        $input=strtotime($input);
+
+        $end =strtotime('20:00');
+        $start =strtotime('08:00');
         if($input>=$end || $input<=$start) {
             return back()->with('error', 'Please choose different time');
         }
         if (Order::where('customer_id', session('LoggedCustomer'))->where('created_at', '>', now()->subSeconds(10))->exists()) {
-            // throw new Exception('Possible multi submit');
             return view('customer.order.orderDetails',compact('cart','order'))->with('success','Cart has been checkout');
         }
 
@@ -225,9 +266,6 @@ class GroceryCartController extends Controller
         $order2 = GroceryCart::where('customer_id',session('LoggedCustomer'))
         ->where('checkout','false')->where('shop_id',$customer->fav_shop)->get(); 
 
-        
-
-
         foreach($order2 as $order){
             $update = GroceryCart::where('customer_id',session('LoggedCustomer'))->where('item_id',$order->item_id)->where('checkout','false')
             ->update([
@@ -256,7 +294,7 @@ class GroceryCartController extends Controller
                         // $amount *= 100;
                         // $amount = (int) $request->totalPrice;
             
-                        $amount = 100;
+                        $amount =$createOrder->total_payment;
                         $amount *= 100;
                         $amount = (int) $amount;
                         

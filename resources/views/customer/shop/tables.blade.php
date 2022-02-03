@@ -22,7 +22,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Shops</h5>
+                                <h5 class="card-title">Shops</h5> 
                                 <div class="table-responsive">
                                 <input id="custaddress" type="hidden" name="custaddress" value="{{$cust->address_latitude}},{{$cust->address_longitude}}">
                                     <table id="zero_config" class="table table-striped table-bordered">
@@ -67,7 +67,7 @@
                 </div>
                 @endforeach
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-                <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=" type="text/javascript"></script> put google api -->
+                <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAwMGV0Sc3cp_hEwFkOgUHO1IBohD1AK2g" type="text/javascript"></script> 
                 <script>
 
                 function calculateDistance() {
@@ -80,7 +80,7 @@
                 var res = addr2.split(",");
                 var x2 = parseFloat(res[0]);
                 var y2 = parseFloat(res[1]);               
-                 addr3 = document.getElementById('distance3').innerHTML;
+                addr3 = document.getElementById('distance3').innerHTML;
                 var res = addr3.split(",");
                 var x3 = parseFloat(res[0]);
                 var y3 = parseFloat(res[1]);                
@@ -116,8 +116,12 @@
                     avoidHighways: false,
                     avoidTolls: false
                 },callback);
+
                 }
-                      function callback(response, status) {
+                      
+                
+                function callback(response, status) {
+                    
                         var distance1 = response.rows[0].elements[0].distance;
                         var distance2 = response.rows[1].elements[0].distance;
                         var distance3 = response.rows[2].elements[0].distance;
@@ -138,7 +142,7 @@
         
         
         for (i = 1; i < 6; i++) {
-
+            var countShop= <?php echo(json_encode($countShop)); ?>;
                 document.getElementById('distance'+i).innerHTML = calculateDistance();
         }
         </script>

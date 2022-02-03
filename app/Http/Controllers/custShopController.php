@@ -23,8 +23,9 @@ class custShopController extends Controller
             'LoggedCustomerInfo'=> $customer
         ];
         $shops = shopOwner::all();
+        $countShops = count($shops);
 
-        return view('customer.shop.tables')->with('shops',$shops)->with('cust',$data);
+        return view('customer.shop.tables')->with('shops',$shops)->with('cust',$data)->with('countShop',$countShops);
     }
 
     public function shopdetails($shopID)

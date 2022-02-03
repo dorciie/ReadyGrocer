@@ -174,6 +174,9 @@
                                     
                                     @else
                                 <div class="row">
+                                <div class="alert alert-info">
+                                            You cannot cancel order after placing it
+                                        </div>
                                     <div class="col-md-6">
                                         <label>Total Price(RM)</label>
                                     </div>

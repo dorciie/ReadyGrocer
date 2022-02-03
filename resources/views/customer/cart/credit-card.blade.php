@@ -17,7 +17,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="">
-                    <p>You will be charged MYR {{$totalprice}}</p>
+                    <p>You will be charged MYR <?php echo number_format((float)$totalprice, 2, '.', '')?></p>
                 </div>
                 <div class="card">
                     <form action="{{route('checkout.credit-card')}}"  method="post" id="payment-form">
@@ -44,6 +44,8 @@
                           type="submit"
                           data-secret="{{ $intent }}"
                         > Pay </button>
+
+                        <a class="btn btn-outline-danger" href="{{route('cancelCC')}}" role="button">Cancel</a>
                         </div>
                         
                     </form>
