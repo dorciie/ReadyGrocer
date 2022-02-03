@@ -87,7 +87,7 @@
                         <li><a class="dropdown-item" href="{{url('stock')}}">You have {{$item}} items that low in stock</a></li>
                     @endif
                     @if($noStock > 0)
-                        <li><a class="dropdown-item" href="{{url('stock')}}">You have {{$noStock}} items that out of stock stock</a></li>
+                        <li><a class="dropdown-item" href="{{url('stock')}}">You have {{$noStock}} items that out of stock</a></li>
                     @endif
                 </ul>
             </li>

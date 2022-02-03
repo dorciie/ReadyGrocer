@@ -349,7 +349,7 @@ class ShopItemController extends Controller
         $time = now();
         $recommendation = DB::select("SELECT * FROM shop_items 
         WHERE shop_items.item_startPromo <= '$time' 
-        AND shop_items.item_stock > 0
+        -- AND shop_items.item_stock > 0
         AND shop_items.item_stock <= 10
         AND shop_items.category_id IN 
         (SELECT category_id FROM shop_items 

@@ -47,7 +47,7 @@ class ViewOrderController extends Controller
         ->join('customers','orders.customer_id','=','customers.id')
         ->where('orders.shop_id',$shopOwner->id)
         ->where('orders.status','=','Preparing')
-        ->orderBy('orders.status','ASC')
+        ->orderBy('orders.checkoutDelivery','ASC')
         ->get([
             'orders.id',
             'orders.total_payment',
@@ -61,7 +61,6 @@ class ViewOrderController extends Controller
         ->join('customers','orders.customer_id','=','customers.id')
         ->where('orders.shop_id',$shopOwner->id)
         ->where('orders.status','=','Delivering')
-        ->orderBy('orders.status','ASC')
         ->get([
             'orders.id',
             'orders.total_payment',
@@ -75,7 +74,6 @@ class ViewOrderController extends Controller
         ->join('customers','orders.customer_id','=','customers.id')
         ->where('orders.shop_id',$shopOwner->id)
         ->where('orders.status','=','Delivered')
-        ->orderBy('orders.status','ASC')
         ->get([
             'orders.id',
             'orders.total_payment',
