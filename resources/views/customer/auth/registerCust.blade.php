@@ -122,8 +122,6 @@
 
                                     </div><small>Format: Home Address</small><br>
                                    <br>
-                                   
-                                   
                                      
                                     </div>
                                     <!-- <div class="form-group row">
@@ -156,7 +154,7 @@
 
                                     <p id="demo"></p>
 
-                                    <div id="googleMap" style="width:100%; height:400px"></div>
+                                    <!-- <div id="googleMap" style="width:100%; height:400px"></div> -->
                                     <br>
                                     <div class="form-group row mb-0">
                                         <div class="col-md-6 offset-md-4">
@@ -185,7 +183,7 @@
                                         });
                                     </script>
 
-                                <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAwMGV0Sc3cp_hEwFkOgUHO1IBohD1AK2g"></script>
+                                <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key={{env('GOOGLE_MAP_API')}}"></script>
 
 
                                     <script>

@@ -46,26 +46,42 @@ class custProfileController extends Controller
     public function store(Request $request)
     {
         // $input = date("h-i", strtotime($request->dtdelivery));
+        if($request->dtdelivery!=NULL){
+            
         $input = new DateTime($request->dtdelivery);
-        $input->format('H:i a');
-        $end = DateTime::createFromFormat('h:i a', "10:00 pm");
-        $start = DateTime::createFromFormat('h:i a', "8:00 am");
+        $input=$input->format('H:i');
+        $input=strtotime($input);
+        // $end = DateTime::createFromFormat('h:i', "22:00");
+        // $start = DateTime::createFromFormat('h:i', "8:00");
+
+        $end =strtotime('20:00');
+        $start =strtotime('08:00');
+
         // $date = new DateTime('2000-01-01');
         // echo $date->format('Y-m-d H:i:s');
         if($input>=$end || $input<=$start) {
             return back()->with('error', 'Please choose different time');
+        }
+        
         }
 
         $update = customer::where('id',session('LoggedCustomer'))
         ->update([
             'name' => $request->name,
             'dtdelivery'=>$request->dtdelivery,
-            'autoDelivery'=>$request->autoDelivery,
+            'address'=>$request->address,
+            'address_latitude'=>$request->address_latitude,
+            'address_longitude'=>$request->address_longitude,
             ]);
+
+            if($request->dtdelivery!=NULL){
+                $update = customer::where('id',session('LoggedCustomer'))
+                ->update(['autoDelivery'=>$request->autoDelivery]);
+            }
 
             $info = customer::all()->where('id',session('LoggedCustomer'))->first();
 
-         return redirect()->route('custProfile.index')->with('success','Profile Successfully Updated!')->with('input',$input);
+         return redirect()->route('custProfile.index')->with('success','Profile Successfully Updated!');
 
     }
 

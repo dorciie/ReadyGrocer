@@ -72,12 +72,14 @@ Route::get('recommendation', [custDashboardController::class,'recommendationDeta
 Route::get('itemDetails/{itemID}', [custDashboardController::class,'itemdetails'])->name('itemDetails');
 Route::get('groceryList', [custDashboardController::class,'list'])->name('groceryList')->middleware('isLogged');
 Route::get('groceryCart', [custDashboardController::class,'cart'])->name('groceryCart')->middleware('isLogged');
+
 Route::get('checkout', [GroceryCartController::class,'checkout'])->name('checkout')->middleware('isLogged');
 
 Route::get('updateCart/{itemID}', [GroceryCartController::class,'cart'])->name('updateCart')->middleware('isLogged');
 Route::get('updateCart2/{itemID}', [GroceryCartController::class,'cart2'])->name('updateCart2')->middleware('isLogged');
 Route::get('deleteCart/{itemID}', [GroceryCartController::class,'destroy'])->name('deleteCart')->middleware('isLogged');
 Route::get('editCartItem/{cartItemID}', [GroceryCartController::class,'update'])->name('editCartItem')->middleware('isLogged');
+Route::get('groceryCart2', [GroceryCartController::class,'cancel'])->name('cancelCC')->middleware('isLogged');
 
 Route::get('updateList/{itemID}', [GroceryListController::class,'destroy'])->name('updateList')->middleware('isLogged');
 Route::get('updateList2/{itemID}', [GroceryListController::class,'update'])->name('updateList2')->middleware('isLogged');

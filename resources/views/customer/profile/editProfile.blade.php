@@ -199,8 +199,8 @@
                   </div>
                 <div class="form-group row">
                 <label for="autodelivery"
-                 class="col-sm-2 text-end control-label col-form-label">How Frequent do you <br>want to automated <br>checkout?</label>
-                        
+                 class="col-sm-2 text-end control-label col-form-label">How Frequent do you <br>want to automated <br>checkout?<br>
+                        <small>Please choose your <br>date time for <br>delivery before choosing </small></label>
                          <div class="col-sm-9 text-secondary">
                              <br>
                                 <select id="status" name="autoDelivery" value="{{$info->autoDelivery}}">
@@ -215,10 +215,10 @@
                 
                 <div class="form-group row">
                     <label for="fname"
-                        class="col-sm-2 text-end control-label col-form-label">Location <span class="text-danger">*</span></label>
+                        class="col-sm-2 text-end control-label col-form-label"></span></label>
                     <div class="col-md-9">
                         <div class="input-group">
-                            <input id="caddress" type="string" class="form-control " name="caddress" value="{{$info->address_latitude}}, {{$info->address_longitude}}" readonly><br>
+                            <input id="caddress" type="hidden" class="form-control " name="caddress" value="{{$info->address_latitude}}, {{$info->address_longitude}}" readonly><br>
                             <button class="btn btn-info" type="button" onclick="myMap()">Show On Map</button>
                             <input type="hidden" name="address_latitude" id="address_latitude" value="{{$info->address_latitude}}" />
                             <input type="hidden" name="address_longitude" id="address_longitude" value="{{$info->address_longitude}}" />
@@ -255,6 +255,8 @@
                                             google.maps.event.addListener(autocomplete, 'place_changed', function() {
                                                 var near_place = autocomplete.getPlace();
                                                 document.getElementById("caddress").value = near_place.geometry.location.lat() + "," + near_place.geometry.location.lng();
+                                                document.getElementById("address_latitude").value = near_place.geometry.location.lat() ;
+                                                document.getElementById("address_longitude").value = near_place.geometry.location.lng();
 
                                             });
                                         });

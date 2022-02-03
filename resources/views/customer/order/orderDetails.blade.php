@@ -26,9 +26,11 @@
                                             <p class="card-text">Order at   : {{$order->created_at}}
                                             <br> Payment  : {{$order->payment}}
                                             <br> Status    : {{$order->status}}</p>
+                                            @if($order->status==='Delivered')
                                             <div class="col-md-5" text-align="right">
                                                 <a href="{{ route('pdf',$order->id) }}" class="btn btn-danger">Export into PDF</a>
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
                                     @if(!empty($success))
@@ -66,15 +68,20 @@
                             </table>
 
                              @if($order->status==='Delivering')
-                             <form method="get" action="{{route('custOrder.edit',$order->id)}}">
+                             <div class="card-body" >
+                                 <form method="get" action="{{route('custOrder.edit',$order->id)}}">
                                     <input type="hidden" name="status" id="status" value="delivered" />
-                                    <button type="submit" class="btn btn-primary" >Order Received</button>
-
-                             </form>
+                                    <button type="submit" class="btn btn-primary btn-lg" >Order Received</button>
+                                </form>
+                            </div>
+                             
                             
                             @elseif($order->status==='Delivered')
                             @if($order->rate===NULL && $order->comment===NULL)
-                            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#rateshop">Rate Shop</button>
+                            <div class="card-body">
+                                    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#rateshop">Rate Shop</button>
+
+                            </div>
                             <!-- make modal display by default but howww -->
                             <div class="modal fade" id="rateshop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

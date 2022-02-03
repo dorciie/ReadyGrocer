@@ -5,6 +5,7 @@ use App\Models\Order;
 use App\Models\GroceryCart;
 use App\Models\ShopOwner;
 use App\Models\customer;
+use App\Models\ShopItem;
 use Illuminate\Http\Request;
 
 class CustOrderController extends Controller
@@ -150,7 +151,7 @@ class CustOrderController extends Controller
       $output .= '
       <tr>
        <td style="border: 1px solid; padding:12px;">'.$iterate.'</td>
-       <td style="border: 1px solid; padding:12px;">aaa</td>
+       <td style="border: 1px solid; padding:12px;">'.ShopItem::where('id',$cart->item_id)->value('item_name').'</td>
        <td style="border: 1px solid; padding:12px;">'.$cart->item_quantity.'</td>
        <td style="border: 1px solid; padding:12px;">'.$cart->total_price.'</td>
       </tr>
