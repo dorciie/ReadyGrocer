@@ -42,30 +42,30 @@ class shopOwnerController extends Controller
         $payment = Order::select(DB::raw("(sum(total_payment)) as payment"))
                    ->whereYear('created_at', date('Y'))
                    ->where('shop_id',$shopOwner->id)
-                   ->where('status','delivered')
+                   ->where('status','Delivered')
                    ->groupBy(DB::raw("MONTH(created_at)"))
                    ->pluck('payment');
 
         $months = Order::select(DB::raw("MONTH(created_at) as month"))
                  ->whereYear('created_at', date('Y'))
                  ->where('shop_id',$shopOwner->id)
-                 ->where('status','delivered')
+                 ->where('status','Delivered')
                  ->groupBy(DB::raw("MONTH(created_at)"))
                  ->pluck('month');
 
         $totalSales = Order::select(DB::raw("(sum(total_payment)) as payment"))
                  ->whereYear('created_at', date('Y'))
                  ->where('shop_id',$shopOwner->id)
-                 ->where('status','delivered')
+                 ->where('status','Delivered')
                  ->first();
         
         $year = Order::select(DB::raw("YEAR(created_at) as year"))->distinct()
               ->whereYear('created_at','!=', date('Y'))
               ->where('shop_id',$shopOwner->id)
-              ->where('status','delivered')
+              ->where('status','Delivered')
               ->get();
 
-        // if(empty(DB::table('orders')->where('orders.status','delivered')->where('orders.shop_id',$shopOwner->id)->whereYear('created_at', date('Y'))->count())){
+        // if(empty(DB::table('orders')->where('orders.status','Delivered')->where('orders.shop_id',$shopOwner->id)->whereYear('created_at', date('Y'))->count())){
         //     $Oneyear = shopOwner::select(DB::raw("YEAR(created_at) as years"))->distinct()
         //             // ->whereYear('created_at', date('Y'))
         //             ->where('id',$shopOwner->id)
@@ -74,7 +74,7 @@ class shopOwnerController extends Controller
         //     $Oneyear = Order::select(DB::raw("YEAR(created_at) as years"))->distinct()
         //             // ->whereYear('created_at', date('Y'))
         //             ->where('shop_id',$shopOwner->id)
-        //             ->where('status','delivered')
+        //             ->where('status','Delivered')
         //             ->first();
         // }
 
@@ -91,7 +91,7 @@ class shopOwnerController extends Controller
                  ->whereYear('orders.created_at', date('Y'))
                  ->where('grocery_carts.shop_id',$shopOwner->id)
                  ->where('grocery_carts.checkout','true')
-                 ->where('orders.status','delivered')
+                 ->where('orders.status','Delivered')
                  ->first();
 
         $itemSold = GroceryCart::select('categories.category_name',DB::raw("(sum(grocery_carts.item_quantity)) as totalItems, MONTH(orders.created_at) month"),'shop_items.id')
@@ -101,7 +101,7 @@ class shopOwnerController extends Controller
                 ->groupBy('shop_items.id','categories.category_name','month')
                 ->whereYear('grocery_carts.created_at', date('Y'))
                 ->where('grocery_carts.shop_id',$shopOwner->id)
-                ->where('orders.status','delivered')
+                ->where('orders.status','Delivered')
                 ->get();
 
         return view('shop.index', $data, compact('lowStock','noStock', 'datas','totalSales', 'year', 'Oneyear', 'totalItemSold','itemSold'));
@@ -136,30 +136,30 @@ class shopOwnerController extends Controller
         $payment = Order::select(DB::raw("(sum(total_payment)) as payment"))
                 ->whereYear('created_at', $request->year)
                 ->where('shop_id',$shopOwner->id)
-                ->where('status','delivered')
+                ->where('status','Delivered')
                 ->groupBy(DB::raw("MONTH(created_at)"))
                 ->pluck('payment');
 
         $months = Order::select(DB::raw("MONTH(created_at) as month"))
                 ->whereYear('created_at', $request->year)
                 ->where('shop_id',$shopOwner->id)
-                ->where('status','delivered')
+                ->where('status','Delivered')
                 ->groupBy(DB::raw("MONTH(created_at)"))
                 ->pluck('month');
 
         $totalSales = Order::select(DB::raw("(sum(total_payment)) as payment"))
                     ->whereYear('created_at', $request->year)
                     ->where('shop_id',$shopOwner->id)
-                    ->where('status','delivered')
+                    ->where('status','Delivered')
                     ->first();
 
         $year = Order::select(DB::raw("YEAR(created_at) as year"))->distinct()
                 // ->whereYear('created_at','!=', $request->year)
                 ->where('shop_id',$shopOwner->id)
-                ->where('status','delivered')
+                ->where('status','Delivered')
                 ->get();
 
-        // if(empty(DB::table('orders')->where('orders.status','delivered')->where('orders.shop_id',$shopOwner->id)->whereYear('created_at', $request->year)->count())){
+        // if(empty(DB::table('orders')->where('orders.status','Delivered')->where('orders.shop_id',$shopOwner->id)->whereYear('created_at', $request->year)->count())){
         //     $Oneyear = shopOwner::select(DB::raw("YEAR(created_at) as years"))->distinct()
         //             ->whereYear('created_at', $request->year)
         //             ->where('id',$shopOwner->id)
@@ -168,7 +168,7 @@ class shopOwnerController extends Controller
         //     $Oneyear = Order::select(DB::raw("YEAR(created_at) as years"))->distinct()
         //             ->whereYear('created_at', $request->year)
         //             ->where('shop_id',$shopOwner->id)
-        //             ->where('status','delivered')
+        //             ->where('status','Delivered')
         //             ->first();
         //     }
         $Oneyear = $request->year;
@@ -183,7 +183,7 @@ class shopOwnerController extends Controller
                  ->whereYear('orders.created_at', $request->year)
                  ->where('grocery_carts.shop_id',$shopOwner->id)
                  ->where('grocery_carts.checkout','true')
-                 ->where('orders.status','delivered')
+                 ->where('orders.status','Delivered')
                  ->first();
 
         $itemSold = GroceryCart::select('categories.category_name',DB::raw("(sum(grocery_carts.item_quantity)) as totalItems, MONTH(orders.created_at) month"),'shop_items.id')
@@ -193,7 +193,7 @@ class shopOwnerController extends Controller
                  ->groupBy('shop_items.id','categories.category_name','month')
                  ->whereYear('grocery_carts.created_at', $request->year)
                  ->where('grocery_carts.shop_id',$shopOwner->id)
-                 ->where('orders.status','delivered')
+                 ->where('orders.status','Delivered')
                  ->get();
                  
         return view('shop.index', $data, compact('lowStock','noStock', 'datas','totalSales', 'year', 'Oneyear', 'totalItemSold','itemSold'));

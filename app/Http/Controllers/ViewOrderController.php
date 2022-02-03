@@ -46,7 +46,7 @@ class ViewOrderController extends Controller
         $PreparingOrder=DB::table('orders')
         ->join('customers','orders.customer_id','=','customers.id')
         ->where('orders.shop_id',$shopOwner->id)
-        ->where('orders.status','=','preparing')
+        ->where('orders.status','=','Preparing')
         ->orderBy('orders.status','ASC')
         ->get([
             'orders.id',
@@ -60,7 +60,7 @@ class ViewOrderController extends Controller
         $DeliveringOrder=DB::table('orders')
         ->join('customers','orders.customer_id','=','customers.id')
         ->where('orders.shop_id',$shopOwner->id)
-        ->where('orders.status','=','delivering')
+        ->where('orders.status','=','Delivering')
         ->orderBy('orders.status','ASC')
         ->get([
             'orders.id',
@@ -74,7 +74,7 @@ class ViewOrderController extends Controller
         $DeliveredOrder=DB::table('orders')
         ->join('customers','orders.customer_id','=','customers.id')
         ->where('orders.shop_id',$shopOwner->id)
-        ->where('orders.status','=','delivered')
+        ->where('orders.status','=','Delivered')
         ->orderBy('orders.status','ASC')
         ->get([
             'orders.id',
@@ -230,7 +230,7 @@ class ViewOrderController extends Controller
         $query = DB::table('orders')
                 ->where('id', $deliveryOrder)
                 ->update([
-                    'status'=> 'delivering',
+                    'status'=> 'Delivering',
                     'updated_at'=> $todayDate
                 ]);
         if($query){
@@ -277,7 +277,7 @@ class ViewOrderController extends Controller
     //     $query = DB::table('orders')
     //             ->where('id', $confirmPurchase)
     //             ->update([
-    //                 'status'=> 'delivered',
+    //                 'status'=> 'Delivered',
     //                 'updated_at'=> $todayDate
     //             ]);
     //     if($query){

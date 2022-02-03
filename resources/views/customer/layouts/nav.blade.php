@@ -102,7 +102,7 @@
                 <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{{route('custProfile.index')}}"><i class="ti-user me-1 ms-1"></i>My Profile</a>
                  
-                    <a class="dropdown-item" href="Custlogout"><i class="fa fa-power-off me-1 ms-1"></i> Logout</a>
+                    <a class="dropdown-item" href="{{url('Custlogout')}}"><i class="fa fa-power-off me-1 ms-1"></i> Logout</a>
                 </ul>
             </li>
             
