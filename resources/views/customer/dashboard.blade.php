@@ -78,6 +78,7 @@
                         <div class="col" >
                                 <div class="card-body border border-secondary"style="height: 175px;" >
                                     <a href="{{route('itemDetails',['itemID' => $recommendation->id])}}"><h5 class="card-title">{{$recommendation->item_name}}</h5></a>
+                                    <p>{{$item->item_brand}} </p>
                                     <p>{{$recommendation->item_description}} </p>
                                     <small>SALE from {{$recommendation->item_startPromo}} until {{$recommendation->item_endPromo}}</small>
                                 </div> 
@@ -116,6 +117,7 @@
                             <div class="col" >
                                 <div class="card-body border border-secondary" style="height: 150px; ">
                                     <a href="{{route('itemDetails',['itemID' => $item->id])}}"><h5 class="card-title">{{$item->item_name}}</h5></a>
+                                    <p>{{$item->item_brand}} </p>
                                     <p>{{$item->item_description}} </p>
                                 </div>
                             </div>

@@ -28,8 +28,8 @@
             @php
                 date_default_timezone_set("Asia/Kuala_Lumpur");
                 $todayDate = date("Y-m-d");
-                $countPreparing = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','preparing')->count();
-                // $count = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','preparing')->where(DB::raw("(DATE_FORMAT(checkoutDelivery,'%Y-%m-%d'))"),'=',$todayDate)->count();
+                $countPreparing = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','Preparing')->count();
+                // $count = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','Preparing')->where(DB::raw("(DATE_FORMAT(checkoutDelivery,'%Y-%m-%d'))"),'=',$todayDate)->count();
             @endphp
 
             <ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">

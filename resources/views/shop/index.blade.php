@@ -18,7 +18,7 @@
                 <div class="box bg-success bg-gradient text-center shadow">
                     <h1 class="font-light text-white"><i class="mdi mdi-cart-outline"></i></h1>
                     <h6 class="text-white">Total orders</h6>
-                    <h6 class="text-white">{{\App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','=','delivered')->count()}}</h6>
+                    <h6 class="text-white">{{\App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','=','Delivered')->count()}}</h6>
                 </div>
             </div>
         </div>
@@ -70,10 +70,10 @@
                         <button type="submit" class="btn btn-info" style="padding: 3px 7px; font-size:14px">View</button>
                     </form>
                 </div><br>
-                @if((\App\Models\Order::where('orders.status','delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear)->count()) != NULL)
+                @if((\App\Models\Order::where('orders.status','Delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear)->count()) != NULL)
                     <h6 style="text-align: center;">Total sales ({{$Oneyear}}): RM{{$totalSales->payment}} </h6> 
                 @endif
-                @if((\App\Models\Order::where('orders.status','delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear)->count()) == NULL)
+                @if((\App\Models\Order::where('orders.status','Delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear)->count()) == NULL)
                     <h6 style="text-align: center;">Total sales ({{$Oneyear}}): NULL</h6> 
                 @endif
                 <div>
@@ -173,10 +173,10 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-body">
-                    @if((\App\Models\Order::where('orders.status','delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear)->count()) != NULL)
+                    @if((\App\Models\Order::where('orders.status','Delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear)->count()) != NULL)
                         <h6 style="text-align: center;">Total item(s) sold in {{$Oneyear}}:  {{$totalItemSold->totalItem}}</h6> 
                     @endif
-                    @if((\App\Models\Order::where('orders.status','delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear)->count()) == NULL)
+                    @if((\App\Models\Order::where('orders.status','Delivered')->where('orders.shop_id',$LoggedShopInfo->id)->whereYear('created_at', $Oneyear)->count()) == NULL)
                         <h6 style="text-align: center;">Total item sold in {{$Oneyear}}: NULL</h6> 
                     @endif
                     <hr>

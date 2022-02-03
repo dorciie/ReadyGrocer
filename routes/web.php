@@ -59,7 +59,7 @@ Route::post('verifiedShop/{shopID}', [RegisterController::class, 'show'])->name(
 Route::get('customer/custLogin',[LoginController::class,'login'])->middleware('AlreadyLoggedIn');
 Route::post('check',[LoginController::class,'check'])->name('auth.check'); //apply this at login page
 Route::get('dashboard', [LoginController::class,'custDashboard'])->name('custDashboard')->middleware('isLogged');
-Route::get('Custlogout',[LogoutController::class,'Custlogout']);
+Route::get('/Custlogout',[LogoutController::class,'Custlogout']);
 Route::get('customer/forgot_password',[ForgotPasswordController::class,'forgot']);
 Route::post('customer/forgot_password',[ForgotPasswordController::class,'password']);
 Route::get('customer/reset_password/{email}',[ForgotPasswordController::class,'reset']);
