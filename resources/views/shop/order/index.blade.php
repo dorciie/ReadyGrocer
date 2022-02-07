@@ -24,7 +24,7 @@
     @php
         date_default_timezone_set("Asia/Kuala_Lumpur");
         $todayDate = date("Y-m-d");
-        $countTodayOrder = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where(DB::raw("(DATE_FORMAT(checkoutDelivery,'%Y-%m-%d'))"),'=',$todayDate)->count();
+        $countTodayOrder = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where(DB::raw("(DATE_FORMAT(checkoutDelivery,'%Y-%m-%d'))"),'=',$todayDate)->where('status','like','Preparing')->count();
     @endphp
     <div class="alert alert-info alert-dismissible fade show" role="alert">
         You need to deliver {{$countTodayOrder}} order(s) today.

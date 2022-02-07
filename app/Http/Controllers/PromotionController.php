@@ -94,7 +94,7 @@ class PromotionController extends Controller
         // return $request->all();
         $this->validate($request,[
             'item_startPromo'=>'required',
-            'item_endPromo'=>'required|after_or_equal:item_startPromo',
+            'item_endPromo'=>'required',
             'item_discount'=>'required|numeric',
             'items_id' => 'required'
         ]);
