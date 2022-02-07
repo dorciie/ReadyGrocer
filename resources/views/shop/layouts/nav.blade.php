@@ -50,7 +50,7 @@
                 date_default_timezone_set("Asia/Kuala_Lumpur");
                 $todayDate = date("Y-m-d");
                 $count = \App\Models\Order::where('shop_id',$LoggedShopInfo->id)->where('status','like','Preparing')->count();
-                $item = \App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('item_stock','<','10')->where('item_stock','>','0')->count();
+                $item = \App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('item_stock','<=','10')->where('item_stock','>','0')->count();
                 $noStock = \App\Models\ShopItem::where('shop_id',$LoggedShopInfo->id)->where('item_stock','=','0')->count();
                 $total = 0;
             @endphp
