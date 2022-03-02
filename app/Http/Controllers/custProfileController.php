@@ -45,20 +45,15 @@ class custProfileController extends Controller
      */
     public function store(Request $request)
     {
-        // $input = date("h-i", strtotime($request->dtdelivery));
         if($request->dtdelivery!=NULL){
             
         $input = new DateTime($request->dtdelivery);
         $input=$input->format('H:i');
         $input=strtotime($input);
-        // $end = DateTime::createFromFormat('h:i', "22:00");
-        // $start = DateTime::createFromFormat('h:i', "8:00");
 
         $end =strtotime('20:00');
         $start =strtotime('08:00');
 
-        // $date = new DateTime('2000-01-01');
-        // echo $date->format('Y-m-d H:i:s');
         if($input>=$end || $input<=$start) {
             return back()->with('error', 'Please choose different time');
         }
@@ -149,16 +144,6 @@ class custProfileController extends Controller
         $customer = DB::table('customers')
                     ->where('id',session('LoggedCustomer'))
                     ->first();
-        // if(session()->has('LoggedShop')){
-        //     $shopOwner = DB::table('shop_owners')
-        //     ->where('id', session('LoggedShop'))
-        //     ->first();
-
-        //     $data = [
-        //         'LoggedShopInfo'=> $shopOwner
-        //     ];
-        // }
-        
 
         if(Hash::check($request->changePassword, $customer->password)){
                 if($request->newPassword == $request->confirmPassword){
@@ -172,7 +157,6 @@ class custProfileController extends Controller
                     if($query){
                         return redirect()->route('custProfile.index')->with('success','Successfully change password');
 
-                        // return view('customer.profile.custProfile')->with('success','Successfully change password')->with('info',$customer);
                     }else{
                         return back()->with('error','Something went wrong. Please try again later.')->withInput();
                     }

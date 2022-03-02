@@ -193,14 +193,6 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             
-                                         <!-- @if((\Carbon\Carbon::now())->between('22:00:00','08:00:00'))
-                                        <input type="radio" name="delivery"  value="deliveryNow" disabled/>&nbspDeliveryNow<br>
-                                        {{ \Carbon\Carbon::now()}}
-                                        @else
-                                        <input type="radio" name="delivery"  value="deliveryNow" />&nbspDeliveryNow<br>
-                                       {{ \Carbon\Carbon::now()}}
-
-                                        @endif -->
 
                                         @if($now>=$end || $now<=$start) 
                                             <input type="radio" name="delivery"  value="deliveryNow" disabled/>&nbspDeliveryNow<br>

@@ -14,7 +14,7 @@
         <div class="card">
             <div class="card-body">
 
-                <h5 class="card-title mb-0">Category Name</h5>
+                <h5 class="card-title mb-0">Recommended for you</h5>
 
             </div>
             @if(Session::get('success'))
