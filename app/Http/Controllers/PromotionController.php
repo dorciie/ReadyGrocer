@@ -226,8 +226,8 @@ class PromotionController extends Controller
                         ->update([
                             'item_startPromo'=> NULL, //
                             'item_endPromo'=> NULL, //
-                            'offer_price'=> NULL, //
-                            'item_discount'=> NULL, //
+                            'offer_price'=> 0, //
+                            'item_discount'=> 0, //
                             'updated_at'=> $todayDate
                         ]);
             if($query){

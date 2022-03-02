@@ -55,15 +55,34 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <div style="display: none">{{$total =0}}</div>
+
                                     @foreach($cart as $cart)
                                     <tr>
-                                        <th scope="row">1</th>
+                                        <th scope="row">{{ $loop->iteration }}</th>
                                         <td>{{\App\Models\ShopItem::where('id',$cart->item_id)->value('item_name')}}</td>
                                         <td>{{$cart->item_quantity}}</td>
                                         <td>{{$cart->total_price}}</td>
+                                        <div style="display: none">{{$total += $cart->total_price}}</div>
+
                                     </tr>
+                                    @if ($loop->last)
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>6% SST : </td>
+                                            <td>{{number_format((float)$total *0.06, 2, '.', '')}}</td>
+                                            <div style="display: none">{{$total = $total + $total *0.06}}</div>
+                                            <td></td>
+                                        </tr>
+                                     @endif
                                     @endforeach
-                                
+                                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{number_format((float)$total, 2, '.', '')}}</td>
+                    </tr>
                                 </tbody>
                             </table>
 

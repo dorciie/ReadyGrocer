@@ -67,7 +67,10 @@ class cronEmail extends Command
             elseif(($dtdelivery->autoDelivery)==='Fortnight'){
                     customer::where('id',$dtdelivery->id)->update(['dtdelivery' => $dtnow->addWeeks(2)]);}
             elseif(($dtdelivery->autoDelivery)==='Monthly'){
-                        customer::where('id',$dtdelivery->id)->update(['dtdelivery' => $dtnow->addMonths(1)]);}   
+                        customer::where('id',$dtdelivery->id)->update(['dtdelivery' => $dtnow->addMonths(1)]);}  
+            else{
+                customer::where('id',$dtdelivery->id)->update(['dtdelivery' => NULL]);
+            } 
         }
 
        

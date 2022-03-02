@@ -92,7 +92,7 @@ Route::post('cust_image_update',[custProfileController::class,'updateImage'])->m
 Route::resource('custOrder', 'App\Http\Controllers\CustOrderController')->middleware('isLogged');
 Route::get('dynamic_pdf/pdf/{orderID}', [CustOrderController::class,'pdf'])->name('pdf')->middleware('isLogged');
 
-Route::post('custpassword_change',[custProfileController::class,'updatePassword'])->middleware('ShopisLogged');
+Route::post('custpassword_change',[custProfileController::class,'updatePassword'])->middleware('isLogged');
 
 // Route::get('checkout','GroceryCartController@checkout');
 Route::post('checkout',[GroceryCartController::class,'afterpayment'])->name('checkout.credit-card');

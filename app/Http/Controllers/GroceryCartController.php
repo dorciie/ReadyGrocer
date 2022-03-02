@@ -289,10 +289,6 @@ class GroceryCartController extends Controller
                 $order = $createOrder;
                     if($request->payment ==='Credit/Debit Card'){
                         \Stripe\Stripe::setApiKey('sk_test_51KOJ8oCVYgvhDegI4dhcDA4r9kp37HJUYnhkk3hMPH53d0w3JCbj8NkUP2TWkAsyvB9KFfbNDfMdw79Nr8XazPH100MNpOM3IS');
-                        
-                        // $amount = 100;
-                        // $amount *= 100;
-                        // $amount = (int) $request->totalPrice;
             
                         $amount =$createOrder->total_payment;
                         $amount *= 100;

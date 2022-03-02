@@ -120,7 +120,7 @@ class RegisterController extends Controller
     {
         $request->validate([
             'name'=>'required',
-            'email'=>'required|email|unique:shop_owners',
+            'email'=>'required|email|unique:customers',
             'address'=>'required',
             'password'=>'required|min:5|max:12',
             'cpassword'=>'required|in:'.$request->password,

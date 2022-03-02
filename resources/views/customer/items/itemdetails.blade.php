@@ -61,7 +61,8 @@
                     @foreach($items as $item)
                     <div class="col-md-4">
                         <div class="profile-img"style="text-align:center;">
-                        <img src="{{ Storage::url($item->item_image) }}" width="100px">
+                        <img src="{{ Storage::url($item->item_image) }}" width="300" 
+     height="300">
 
                         </div>
                     </div>
@@ -80,21 +81,7 @@
                                 </li>
 
                             </ul>
-                        </div>
-                    </div>
-
-                </div>
-             
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="profile-work">
-
-                        </div>
-                    </div>
-                    <br>
-                    <div class="col-md-8">
-
-                        <div class="tab-content profile-tab" id="myTabContent">
+                            <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <br>
                                 <div class="row">
@@ -136,14 +123,6 @@
                                         </p>
                                     </div>
                                 </div>
-                                <!-- <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Promo price</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                      
-                                    </div>
-                                </div> -->
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Description</label>
@@ -292,6 +271,21 @@
 
 
                         </div>
+                        </div>
+                    </div>
+
+                </div>
+             
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="profile-work">
+
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-8">
+
+                        
                     </div>
                     @endforeach
 

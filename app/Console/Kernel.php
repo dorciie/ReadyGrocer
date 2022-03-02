@@ -37,9 +37,8 @@ class Kernel extends ConsoleKernel
                  ->everyMinute();
 
         $schedule->command('cart:update')
-                ->everyMinute();
-                // ->dailyAt('00:00')
-                // ->timezone('Asia/Kuala_Lumpur');
+                ->dailyAt('00:00')
+                ->timezone('Asia/Kuala_Lumpur');
     }
 
     /**
